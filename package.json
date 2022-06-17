@@ -4,7 +4,9 @@
   "description": "Get/Set value from/to JS object hierarchy properties",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "sh build.sh && tslint -c tslint.json 'src/**/*.ts'",
+    "build": "sh build.sh"
   },
   "repository": {
     "type": "git",
