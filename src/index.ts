@@ -1,4 +1,4 @@
-function hierarchyGet(target: any, ...hierarchyProps: (string | symbol)[]) {
+function hierarchyGet(target: any, ...hierarchyProps: (string | number | symbol)[]) {
 	let current = target;
 
 	if (current !== undefined && current !== null) {
@@ -11,7 +11,7 @@ function hierarchyGet(target: any, ...hierarchyProps: (string | symbol)[]) {
 	return current;
 }
 
-function hierarchyCreate(target: any, ...hierarchyProps: (string | symbol)[]) {
+function hierarchyCreate(target: any, ...hierarchyProps: (string | number | symbol)[]) {
 	let current = target || {};
 	hierarchyProps.forEach(hProp => {
 		if (!current[hProp] || typeof current[hProp] !== 'object') {
@@ -49,5 +49,6 @@ function hierarchySetIfNotExists(target: any, ...rest: any[]) {
 
 export {
 	hierarchyGet,
-	hierarchySet
+	hierarchySet,
+	hierarchySetIfNotExists
 }

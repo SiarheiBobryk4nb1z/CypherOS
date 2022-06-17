@@ -26,16 +26,32 @@ function hierarchyCreate(target) {
     });
     return current;
 }
-function hierarchySet() {
-    var args = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
-        args[_i] = arguments[_i];
+function hierarchySet(target) {
+    var rest = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        rest[_i - 1] = arguments[_i];
     }
-    var target = args[0];
-    var hierarchyProps = args.slice(1, args.length - 2);
-    var prop = args[args.length - 2];
-    var value = args[args.length - 1];
-    hierarchyCreate.apply(void 0, [target].concat(hierarchyProps))[prop] = value;
+    var hierarchyProps = rest.slice(0, rest.length - 2);
+    var prop = rest[rest.length - 2];
+    var value = rest[rest.length - 1];
+    var current = hierarchyCreate.apply(void 0, [target].concat(hierarchyProps));
+    if (prop) {
+        current[prop] = value;
+    }
     return target;
 }
-export { hierarchyGet, hierarchySet };
+function hierarchySetIfNotExists(target) {
+    var rest = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        rest[_i - 1] = arguments[_i];
+    }
+    var hierarchyProps = rest.slice(0, rest.length - 2);
+    var prop = rest[rest.length - 2];
+    var value = rest[rest.length - 1];
+    var current = hierarchyCreate.apply(void 0, [target].concat(hierarchyProps));
+    if (prop && current[prop] === null || current[prop] === undefined) {
+        current[prop] = value;
+    }
+    return target;
+}
+export { hierarchyGet, hierarchySet, hierarchySetIfNotExists };

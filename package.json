@@ -1,7 +1,7 @@
 {
   "name": "object-hierarchy-access",
-  "version": "0.1.0",
-  "description": "Get/Set value from/to object hierarchy properties",
+  "version": "0.2.0",
+  "description": "Get/Set value from/to JS object hierarchy properties",
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
