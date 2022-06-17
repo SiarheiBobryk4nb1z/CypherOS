@@ -17,7 +17,7 @@ function hierarchyCreate(target) {
     for (var _i = 1; _i < arguments.length; _i++) {
         hierarchyProps[_i - 1] = arguments[_i];
     }
-    var current = target || {};
+    var current = target;
     hierarchyProps.forEach(function (hProp) {
         if (!current[hProp] || typeof current[hProp] !== 'object') {
             current[hProp] = {};
@@ -34,11 +34,12 @@ function hierarchySet(target) {
     var hierarchyProps = rest.slice(0, rest.length - 2);
     var prop = rest[rest.length - 2];
     var value = rest[rest.length - 1];
-    var current = hierarchyCreate.apply(void 0, [target].concat(hierarchyProps));
+    var root = target || {};
+    var current = hierarchyCreate.apply(void 0, [root].concat(hierarchyProps));
     if (prop) {
         current[prop] = value;
     }
-    return target;
+    return root;
 }
 function hierarchySetIfNotExists(target) {
     var rest = [];
@@ -48,10 +49,11 @@ function hierarchySetIfNotExists(target) {
     var hierarchyProps = rest.slice(0, rest.length - 2);
     var prop = rest[rest.length - 2];
     var value = rest[rest.length - 1];
-    var current = hierarchyCreate.apply(void 0, [target].concat(hierarchyProps));
+    var root = target || {};
+    var current = hierarchyCreate.apply(void 0, [root].concat(hierarchyProps));
     if (prop && current[prop] === null || current[prop] === undefined) {
         current[prop] = value;
     }
-    return target;
+    return root;
 }
 export { hierarchyGet, hierarchySet, hierarchySetIfNotExists };
