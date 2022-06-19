@@ -18,6 +18,12 @@ expect(objSet3).eql({a: {b: {c: 300}}});
 const objSet4 = hierarchySet(undefined, 'a', 'b', 'c', 400);
 expect(objSet4).eql({a: {b: {c: 400}}});
 
+const sA = Symbol('symbol-a');
+const sB = Symbol('symbol-b');
+const sC = Symbol('symbol-c');
+const objSet5 = hierarchySet({}, sA, sB, sC, 500);
+expect(objSet5[sA][sB][sC]).equal(500);
+
 //set if not exists
 const objSoftSet1 = {};
 hierarchySetIfNotExists(objSoftSet1, 'a', 'b', 'c', 100);
