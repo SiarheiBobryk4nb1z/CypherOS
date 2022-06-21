@@ -33,8 +33,21 @@ expect(objSoftSet1).eql({a: {b: {c: 100, c1: 101}}});
 hierarchySetIfNotExists(objSoftSet1, 'a', 'b', 'c1', 111);
 expect(objSoftSet1).eql({a: {b: {c: 100, c1: 101}}});
 
+hierarchySetIfNotExists(objSoftSet1, 'a', 'b', 'c2', null);
+expect(objSoftSet1).eql({a: {b: {c: 100, c1: 101, c2: null}}});
+hierarchySetIfNotExists(objSoftSet1, 'a', 'b', 'c2', 112);
+expect(objSoftSet1).eql({a: {b: {c: 100, c1: 101, c2: null}}});
+
+hierarchySetIfNotExists(objSoftSet1, 'a', 'b', 'c3', undefined);
+expect(objSoftSet1).eql({a: {b: {c: 100, c1: 101, c2: null, c3: undefined}}});
+hierarchySetIfNotExists(objSoftSet1, 'a', 'b', 'c3', 113);
+expect(objSoftSet1).eql({a: {b: {c: 100, c1: 101, c2: null, c3: 113}}});
+
 const objSoftSet2 = hierarchySetIfNotExists(null, 'a', 'b', 'c', 200);
 expect(objSoftSet2).eql({a: {b: {c: 200}}});
+
+const objSoftSet3 = hierarchySetIfNotExists(undefined, 'a', 'b', 'c', 300);
+expect(objSoftSet3).eql({a: {b: {c: 300}}});
 
 //get
 const objGet1 = {a: {b: {c: 100}}};

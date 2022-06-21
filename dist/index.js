@@ -57,7 +57,7 @@
         var value = rest[rest.length - 1];
         var root = target || {};
         var current = hierarchyCreate.apply(void 0, [root].concat(hierarchyProps));
-        if (prop && current[prop] === null || current[prop] === undefined) {
+        if (prop && current[prop] === undefined) {
             current[prop] = value;
         }
         return root;

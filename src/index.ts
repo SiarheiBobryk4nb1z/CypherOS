@@ -43,7 +43,7 @@ function hierarchySetIfNotExists(target: any, ...rest: any[]) {
 
 	const root = target || {};
 	const current = hierarchyCreate(root, ...hierarchyProps);
-	if (prop && current[prop] === null || current[prop] === undefined) {
+	if (prop && current[prop] === undefined) {
 		current[prop] = value;
 	}
 	return root;
