@@ -11,7 +11,7 @@ function hierarchyGet(target: any, ...hierarchyProps: Array<string | number | sy
 	return current;
 }
 
-function hierarchyCreate(target: any, ...hierarchyProps: Array<string | number | symbol>) {
+function hierarchyCreate(target: any, hierarchyProps: Array<string | number | symbol>) {
 	let current = target;
 	hierarchyProps.forEach(hProp => {
 		if (!current[hProp] || typeof current[hProp] !== 'object') {
@@ -29,7 +29,7 @@ function hierarchySet(target: any, ...rest: any[]) {
 	const value = rest[rest.length - 1];
 
 	const root = target || {};
-	const current = hierarchyCreate(root, ...hierarchyProps);
+	const current = hierarchyCreate(root, hierarchyProps);
 	if (prop) {
 		current[prop] = value;
 	}
@@ -42,7 +42,7 @@ function hierarchySetIfNotExists(target: any, ...rest: any[]) {
 	const value = rest[rest.length - 1];
 
 	const root = target || {};
-	const current = hierarchyCreate(root, ...hierarchyProps);
+	const current = hierarchyCreate(root, hierarchyProps);
 	if (prop && current[prop] === undefined) {
 		current[prop] = value;
 	}

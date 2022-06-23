@@ -18,11 +18,7 @@
         }
         return current;
     }
-    function hierarchyCreate(target) {
-        var hierarchyProps = [];
-        for (var _i = 1; _i < arguments.length; _i++) {
-            hierarchyProps[_i - 1] = arguments[_i];
-        }
+    function hierarchyCreate(target, hierarchyProps) {
         var current = target;
         hierarchyProps.forEach(function (hProp) {
             if (!current[hProp] || typeof current[hProp] !== 'object') {
@@ -41,7 +37,7 @@
         var prop = rest[rest.length - 2];
         var value = rest[rest.length - 1];
         var root = target || {};
-        var current = hierarchyCreate.apply(void 0, [root].concat(hierarchyProps));
+        var current = hierarchyCreate(root, hierarchyProps);
         if (prop) {
             current[prop] = value;
         }
@@ -56,7 +52,7 @@
         var prop = rest[rest.length - 2];
         var value = rest[rest.length - 1];
         var root = target || {};
-        var current = hierarchyCreate.apply(void 0, [root].concat(hierarchyProps));
+        var current = hierarchyCreate(root, hierarchyProps);
         if (prop && current[prop] === undefined) {
             current[prop] = value;
         }
