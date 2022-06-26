@@ -1,6 +1,6 @@
 {
   "name": "object-hierarchy-access",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Get/Set value from/to JS object hierarchy properties",
   "main": "dist/index.js",
   "scripts": {

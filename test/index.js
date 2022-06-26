@@ -35,6 +35,12 @@ expect(objSet7).eql({a: {b: {c: {d: {e: {f: 700}}}}}});
 const objSet8 = hierarchySet({}, ['a', 'b', 'c'], 800);
 expect(objSet8).eql({a: {b: {c: 800}}});
 
+const objSet9 = hierarchySet({}, 'a','b','collection',[]);
+expect(objSet9).eql({a: {b: {collection:[]}}});
+
+const objSet10 = hierarchySet({}, ['a','b','collection'],[]);
+expect(objSet10).eql({a: {b: {collection:[]}}});
+
 //set if not exists
 const objSoftSet1 = {};
 hierarchySetIfNotExists(objSoftSet1, 'a', 'b', 'c', 100);

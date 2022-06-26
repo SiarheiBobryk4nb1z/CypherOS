@@ -1,3 +1,11 @@
+function _parseArgs(target: any, others: any[]) {
+	const value = others[others.length - 1];
+	const rest = Array.prototype.concat.apply([], others.slice(0, -1));  //exclude `value`
+	const hierarchyProps = rest.slice(0, -1);
+	const prop = rest[rest.length - 1];
+	return {hierarchyProps, prop, value};
+}
+
 function hierarchyGet(target: any, ...hierarchyProps: Array<string | number | symbol>) {
 	let current = target;
 
@@ -24,10 +32,7 @@ function hierarchyCreate(target: any, hierarchyProps: Array<string | number | sy
 }
 
 function hierarchySet(target: any, ...others: any[]) {
-	const rest = Array.prototype.concat.apply([], others);
-	const hierarchyProps = rest.slice(0, rest.length - 2);
-	const prop = rest[rest.length - 2];
-	const value = rest[rest.length - 1];
+	const {hierarchyProps, prop, value}=_parseArgs(target,others);
 
 	const root = target || {};
 	const current = hierarchyCreate(root, hierarchyProps);
@@ -38,10 +43,7 @@ function hierarchySet(target: any, ...others: any[]) {
 }
 
 function hierarchySetIfNotExists(target: any, ...others: any[]) {
-	const rest = Array.prototype.concat.apply([], others);
-	const hierarchyProps = rest.slice(0, rest.length - 2);
-	const prop = rest[rest.length - 2];
-	const value = rest[rest.length - 1];
+	const {hierarchyProps, prop, value}=_parseArgs(target,others);
 
 	const root = target || {};
 	const current = hierarchyCreate(root, hierarchyProps);
