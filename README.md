@@ -9,6 +9,16 @@ hierarchySet(obj, 'a', 'b', 'c', 100);
 console.log(obj.a.b.c); // 100
 ```
 
+Attributes could be in arrays:
+```javascript
+import { hierarchySet } from 'object-hierarchy-access';
+let obj = {};
+hierarchySet(obj, ['a', 'b', 'c'], 100);
+console.log(obj.a.b.c); // 100
+hierarchySet(obj, ['d', 'e', 'f'], ['g', 'h', 'i'], 200);
+console.log(obj.d.e.f.g.h.i); // 200
+```
+
 Create object at the same time:
 ```javascript
 import { hierarchySet } from 'object-hierarchy-access';
@@ -17,7 +27,7 @@ console.log(obj.a.b.c); // 100
 ```
 
 ## SetIfNotExists
-Only assign value if target property not exists or its value is `undefined`.
+Only assign value if target property not exists or its value is `undefined`:
 ```javascript
 import { hierarchySetIfNotExists } from 'object-hierarchy-access';
 let obj = {};

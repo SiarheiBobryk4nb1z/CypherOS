@@ -23,10 +23,11 @@ function hierarchyCreate(target, hierarchyProps) {
     return current;
 }
 function hierarchySet(target) {
-    var rest = [];
+    var others = [];
     for (var _i = 1; _i < arguments.length; _i++) {
-        rest[_i - 1] = arguments[_i];
+        others[_i - 1] = arguments[_i];
     }
+    var rest = Array.prototype.concat.apply([], others);
     var hierarchyProps = rest.slice(0, rest.length - 2);
     var prop = rest[rest.length - 2];
     var value = rest[rest.length - 1];
@@ -38,10 +39,11 @@ function hierarchySet(target) {
     return root;
 }
 function hierarchySetIfNotExists(target) {
-    var rest = [];
+    var others = [];
     for (var _i = 1; _i < arguments.length; _i++) {
-        rest[_i - 1] = arguments[_i];
+        others[_i - 1] = arguments[_i];
     }
+    var rest = Array.prototype.concat.apply([], others);
     var hierarchyProps = rest.slice(0, rest.length - 2);
     var prop = rest[rest.length - 2];
     var value = rest[rest.length - 1];

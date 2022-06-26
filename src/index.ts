@@ -23,7 +23,8 @@ function hierarchyCreate(target: any, hierarchyProps: Array<string | number | sy
 	return current;
 }
 
-function hierarchySet(target: any, ...rest: any[]) {
+function hierarchySet(target: any, ...others: any[]) {
+	const rest = Array.prototype.concat.apply([], others);
 	const hierarchyProps = rest.slice(0, rest.length - 2);
 	const prop = rest[rest.length - 2];
 	const value = rest[rest.length - 1];
@@ -36,7 +37,8 @@ function hierarchySet(target: any, ...rest: any[]) {
 	return root;
 }
 
-function hierarchySetIfNotExists(target: any, ...rest: any[]) {
+function hierarchySetIfNotExists(target: any, ...others: any[]) {
+	const rest = Array.prototype.concat.apply([], others);
 	const hierarchyProps = rest.slice(0, rest.length - 2);
 	const prop = rest[rest.length - 2];
 	const value = rest[rest.length - 1];

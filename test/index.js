@@ -24,6 +24,17 @@ const sC = Symbol('symbol-c');
 const objSet5 = hierarchySet({}, sA, sB, sC, 500);
 expect(objSet5[sA][sB][sC]).equal(500);
 
+const objSet6 = {};
+hierarchySet(objSet6, ['a', 'b', 'c'], 600);
+expect(objSet6).eql({a: {b: {c: 600}}});
+
+const objSet7 = {};
+hierarchySet(objSet7, ['a', 'b', 'c'], ['d', 'e', 'f'], 700);
+expect(objSet7).eql({a: {b: {c: {d: {e: {f: 700}}}}}});
+
+const objSet8 = hierarchySet({}, ['a', 'b', 'c'], 800);
+expect(objSet8).eql({a: {b: {c: 800}}});
+
 //set if not exists
 const objSoftSet1 = {};
 hierarchySetIfNotExists(objSoftSet1, 'a', 'b', 'c', 100);
