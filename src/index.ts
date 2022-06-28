@@ -32,22 +32,20 @@ function hierarchyCreate(target: any, hierarchyProps: Array<string | number | sy
 }
 
 function hierarchySet(target: any, ...others: any[]) {
-	const {hierarchyProps, prop, value}=_parseArgs(target,others);
+	const {hierarchyProps, prop, value} = _parseArgs(target, others);
 
 	const root = target || {};
 	const current = hierarchyCreate(root, hierarchyProps);
-	if (prop) {
-		current[prop] = value;
-	}
+	current[prop] = value;
 	return root;
 }
 
 function hierarchySetIfNotExists(target: any, ...others: any[]) {
-	const {hierarchyProps, prop, value}=_parseArgs(target,others);
+	const {hierarchyProps, prop, value} = _parseArgs(target, others);
 
 	const root = target || {};
 	const current = hierarchyCreate(root, hierarchyProps);
-	if (prop && current[prop] === undefined) {
+	if (current[prop] === undefined) {
 		current[prop] = value;
 	}
 	return root;

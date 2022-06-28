@@ -43,9 +43,7 @@
         var _a = _parseArgs(target, others), hierarchyProps = _a.hierarchyProps, prop = _a.prop, value = _a.value;
         var root = target || {};
         var current = hierarchyCreate(root, hierarchyProps);
-        if (prop) {
-            current[prop] = value;
-        }
+        current[prop] = value;
         return root;
     }
     function hierarchySetIfNotExists(target) {
@@ -56,7 +54,7 @@
         var _a = _parseArgs(target, others), hierarchyProps = _a.hierarchyProps, prop = _a.prop, value = _a.value;
         var root = target || {};
         var current = hierarchyCreate(root, hierarchyProps);
-        if (prop && current[prop] === undefined) {
+        if (current[prop] === undefined) {
             current[prop] = value;
         }
         return root;
