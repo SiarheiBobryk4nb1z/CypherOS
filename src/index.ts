@@ -6,7 +6,7 @@ function _parseArgs(others: any[]) {
 	return {hierarchyProps, prop, value};
 }
 
-function hierarchyGet(target: any, ...rest: any[]) {
+function get(target: any, ...rest: any[]) {
 	const props: Array<string | number | symbol> = Array.prototype.concat.apply([], rest);
 	let current = target;
 
@@ -20,7 +20,7 @@ function hierarchyGet(target: any, ...rest: any[]) {
 	return current;
 }
 
-function hierarchyCreate(target: any, hierarchyProps: Array<string | number | symbol>) {
+function create(target: any, hierarchyProps: Array<string | number | symbol>) {
 	let current = target;
 	hierarchyProps.forEach(hProp => {
 		if (!current[hProp] || typeof current[hProp] !== 'object') {
@@ -32,20 +32,20 @@ function hierarchyCreate(target: any, hierarchyProps: Array<string | number | sy
 	return current;
 }
 
-function hierarchySet(target: any, ...others: any[]) {
+function set(target: any, ...others: any[]) {
 	const {hierarchyProps, prop, value} = _parseArgs(others);
 
 	const root = target || {};
-	const current = hierarchyCreate(root, hierarchyProps);
+	const current = create(root, hierarchyProps);
 	current[prop] = value;
 	return root;
 }
 
-function hierarchySetIfNotExists(target: any, ...others: any[]) {
+function setIfUndef(target: any, ...others: any[]) {
 	const {hierarchyProps, prop, value} = _parseArgs(others);
 
 	const root = target || {};
-	const current = hierarchyCreate(root, hierarchyProps);
+	const current = create(root, hierarchyProps);
 	if (current[prop] === undefined) {
 		current[prop] = value;
 	}
@@ -53,7 +53,7 @@ function hierarchySetIfNotExists(target: any, ...others: any[]) {
 }
 
 export {
-	hierarchyGet,
-	hierarchySet,
-	hierarchySetIfNotExists
+	get,
+	set,
+	setIfUndef
 };

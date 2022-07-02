@@ -1,4 +1,4 @@
-declare function hierarchyGet(target: any, ...rest: any[]): any;
-declare function hierarchySet(target: any, ...others: any[]): any;
-declare function hierarchySetIfNotExists(target: any, ...others: any[]): any;
-export { hierarchyGet, hierarchySet, hierarchySetIfNotExists };
+declare function get(target: any, ...rest: any[]): any;
+declare function set(target: any, ...others: any[]): any;
+declare function setIfUndef(target: any, ...others: any[]): any;
+export { get, set, setIfUndef };

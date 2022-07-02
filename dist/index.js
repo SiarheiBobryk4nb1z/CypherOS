@@ -11,7 +11,7 @@
         var prop = rest[rest.length - 1];
         return { hierarchyProps: hierarchyProps, prop: prop, value: value };
     }
-    function hierarchyGet(target) {
+    function get(target) {
         var rest = [];
         for (var _i = 1; _i < arguments.length; _i++) {
             rest[_i - 1] = arguments[_i];
@@ -26,7 +26,7 @@
         }
         return current;
     }
-    function hierarchyCreate(target, hierarchyProps) {
+    function create(target, hierarchyProps) {
         var current = target;
         hierarchyProps.forEach(function (hProp) {
             if (!current[hProp] || typeof current[hProp] !== 'object') {
@@ -36,34 +36,34 @@
         });
         return current;
     }
-    function hierarchySet(target) {
+    function set(target) {
         var others = [];
         for (var _i = 1; _i < arguments.length; _i++) {
             others[_i - 1] = arguments[_i];
         }
         var _a = _parseArgs(others), hierarchyProps = _a.hierarchyProps, prop = _a.prop, value = _a.value;
         var root = target || {};
-        var current = hierarchyCreate(root, hierarchyProps);
+        var current = create(root, hierarchyProps);
         current[prop] = value;
         return root;
     }
-    function hierarchySetIfNotExists(target) {
+    function setIfUndef(target) {
         var others = [];
         for (var _i = 1; _i < arguments.length; _i++) {
             others[_i - 1] = arguments[_i];
         }
         var _a = _parseArgs(others), hierarchyProps = _a.hierarchyProps, prop = _a.prop, value = _a.value;
         var root = target || {};
-        var current = hierarchyCreate(root, hierarchyProps);
+        var current = create(root, hierarchyProps);
         if (current[prop] === undefined) {
             current[prop] = value;
         }
         return root;
     }
 
-    exports.hierarchyGet = hierarchyGet;
-    exports.hierarchySet = hierarchySet;
-    exports.hierarchySetIfNotExists = hierarchySetIfNotExists;
+    exports.get = get;
+    exports.set = set;
+    exports.setIfUndef = setIfUndef;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 
