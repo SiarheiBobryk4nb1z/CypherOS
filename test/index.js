@@ -74,6 +74,6 @@ expect(objSoftSet3).eql({a: {b: {c: 300}}});
 //get
 const objGet1 = {a: {b: {c: 100}}};
 expect(hierarchyGet(objGet1)).eql({a: {b: {c: 100}}});
-expect(hierarchyGet(objGet1.a)).eql({b: {c: 100}});
-expect(hierarchyGet(objGet1.a.b)).eql({c: 100});
-expect(hierarchyGet(objGet1.a.b.c)).equal(100);
+expect(hierarchyGet(objGet1, 'a')).eql({b: {c: 100}});
+expect(hierarchyGet(objGet1, 'a', 'b')).eql({c: 100});
+expect(hierarchyGet(objGet1, ['a', 'b', 'c'])).equal(100);

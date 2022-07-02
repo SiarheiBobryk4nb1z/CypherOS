@@ -1,4 +1,4 @@
-function _parseArgs(target, others) {
+function _parseArgs(others) {
     var value = others[others.length - 1];
     var rest = Array.prototype.concat.apply([], others.slice(0, -1)); //exclude `value`
     var hierarchyProps = rest.slice(0, -1);
@@ -6,14 +6,15 @@ function _parseArgs(target, others) {
     return { hierarchyProps: hierarchyProps, prop: prop, value: value };
 }
 function hierarchyGet(target) {
-    var hierarchyProps = [];
+    var rest = [];
     for (var _i = 1; _i < arguments.length; _i++) {
-        hierarchyProps[_i - 1] = arguments[_i];
+        rest[_i - 1] = arguments[_i];
     }
+    var props = Array.prototype.concat.apply([], rest);
     var current = target;
     if (current !== undefined && current !== null) {
-        hierarchyProps.every(function (hProp) {
-            current = current[hProp];
+        props.every(function (prop) {
+            current = current[prop];
             return current;
         });
     }
@@ -34,7 +35,7 @@ function hierarchySet(target) {
     for (var _i = 1; _i < arguments.length; _i++) {
         others[_i - 1] = arguments[_i];
     }
-    var _a = _parseArgs(target, others), hierarchyProps = _a.hierarchyProps, prop = _a.prop, value = _a.value;
+    var _a = _parseArgs(others), hierarchyProps = _a.hierarchyProps, prop = _a.prop, value = _a.value;
     var root = target || {};
     var current = hierarchyCreate(root, hierarchyProps);
     current[prop] = value;
@@ -45,7 +46,7 @@ function hierarchySetIfNotExists(target) {
     for (var _i = 1; _i < arguments.length; _i++) {
         others[_i - 1] = arguments[_i];
     }
-    var _a = _parseArgs(target, others), hierarchyProps = _a.hierarchyProps, prop = _a.prop, value = _a.value;
+    var _a = _parseArgs(others), hierarchyProps = _a.hierarchyProps, prop = _a.prop, value = _a.value;
     var root = target || {};
     var current = hierarchyCreate(root, hierarchyProps);
     if (current[prop] === undefined) {

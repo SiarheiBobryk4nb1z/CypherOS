@@ -54,4 +54,5 @@ import { hierarchyGet } from 'object-hierarchy-access';
 let obj = {a: {b: {c: 100}}};
 hierarchyGet(obj, 'a', 'b');    // returns {c: 100}
 hierarchyGet(obj, 'a', 'b', 'c');    // returns 100
+hierarchyGet(obj, ['a', 'b', 'c']);    // returns 100
 ```
