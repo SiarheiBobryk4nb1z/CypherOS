@@ -1,6 +1,6 @@
 function _parseArgs(others: any[]) {
 	const value = others[others.length - 1];
-	const rest = Array.prototype.concat.apply([], others.slice(0, -1));  //exclude `value`
+	const rest = Array.prototype.concat.apply([], others.slice(0, -1));  // exclude `value`
 	const hierarchyProps = rest.slice(0, -1);
 	const prop = rest[rest.length - 1];
 	return {hierarchyProps, prop, value};

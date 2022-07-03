@@ -6,7 +6,7 @@
 
     function _parseArgs(others) {
         var value = others[others.length - 1];
-        var rest = Array.prototype.concat.apply([], others.slice(0, -1)); //exclude `value`
+        var rest = Array.prototype.concat.apply([], others.slice(0, -1)); // exclude `value`
         var hierarchyProps = rest.slice(0, -1);
         var prop = rest[rest.length - 1];
         return { hierarchyProps: hierarchyProps, prop: prop, value: value };
