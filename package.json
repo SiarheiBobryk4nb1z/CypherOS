@@ -24,7 +24,6 @@
   "homepage": "https://github.com/mjpclab/object-hierarchy-access#readme",
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^5.2.0",
     "rollup": "^0.67.4",
     "rollup-plugin-commonjs": "^9.2.0",
     "rollup-plugin-node-resolve": "^4.0.0",
