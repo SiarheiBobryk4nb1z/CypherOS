@@ -36,34 +36,52 @@
         });
         return current;
     }
-    function set(target) {
+    function assign(target) {
         var others = [];
         for (var _i = 1; _i < arguments.length; _i++) {
             others[_i - 1] = arguments[_i];
         }
         var _a = _parseArgs(others), hierarchyProps = _a.hierarchyProps, prop = _a.prop, value = _a.value;
-        var root = target || {};
-        var current = create(root, hierarchyProps);
+        var current = create(target, hierarchyProps);
         current[prop] = value;
+        return current;
+    }
+    function set(target) {
+        var others = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            others[_i - 1] = arguments[_i];
+        }
+        var root = target || {};
+        assign.apply(void 0, [root].concat(others));
         return root;
+    }
+    function assignIfUndef(target) {
+        var others = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            others[_i - 1] = arguments[_i];
+        }
+        var _a = _parseArgs(others), hierarchyProps = _a.hierarchyProps, prop = _a.prop, value = _a.value;
+        var current = create(target, hierarchyProps);
+        if (current[prop] === undefined) {
+            current[prop] = value;
+        }
+        return current;
     }
     function setIfUndef(target) {
         var others = [];
         for (var _i = 1; _i < arguments.length; _i++) {
             others[_i - 1] = arguments[_i];
         }
-        var _a = _parseArgs(others), hierarchyProps = _a.hierarchyProps, prop = _a.prop, value = _a.value;
         var root = target || {};
-        var current = create(root, hierarchyProps);
-        if (current[prop] === undefined) {
-            current[prop] = value;
-        }
+        assignIfUndef.apply(void 0, [root].concat(others));
         return root;
     }
 
     exports.get = get;
     exports.set = set;
+    exports.assign = assign;
     exports.setIfUndef = setIfUndef;
+    exports.assignIfUndef = assignIfUndef;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 
