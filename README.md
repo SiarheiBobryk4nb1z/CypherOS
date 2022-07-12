@@ -1,7 +1,7 @@
 # Quick Start
 
 ## `set`
-Assign value to object's hierarchy properties:
+Set value to object's hierarchy properties:
 ```javascript
 import { set } from 'object-hierarchy-access';
 const obj = {};
@@ -27,7 +27,7 @@ console.log(obj.a.b.c); // 100
 ```
 
 ## `setIfUndef`
-Only assign value if target property not exists or its value is `undefined`:
+Only set value if target property not exists or its value is `undefined`:
 ```javascript
 import { setIfUndef } from 'object-hierarchy-access';
 const obj = {};
