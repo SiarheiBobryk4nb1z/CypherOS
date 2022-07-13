@@ -1,9 +1,9 @@
 function _parseArgs(others: any[]) {
 	const value = others[others.length - 1];
 	const rest = Array.prototype.concat.apply([], others.slice(0, -1));  // exclude `value`
-	const hierarchyProps = rest.slice(0, -1);
+	const hierarchies = rest.slice(0, -1);
 	const prop = rest[rest.length - 1];
-	return {hierarchyProps, prop, value};
+	return {hierarchies, prop, value};
 }
 
 function get(target: any, ...rest: any[]) {
@@ -20,22 +20,43 @@ function get(target: any, ...rest: any[]) {
 	return current;
 }
 
-function create(target: any, hierarchyProps: Array<string | number | symbol>) {
+function create(
+	target: any,
+	hierarchies: Array<string |
+		number |
+		symbol |
+		{
+			name: string,
+			type?: new () => object,
+			create?: () => object
+		}>
+) {
 	let current = target;
-	hierarchyProps.forEach(hProp => {
-		if (!current[hProp] || typeof current[hProp] !== 'object') {
-			current[hProp] = {};
+	hierarchies.forEach(info => {
+		let name, type, create;
+		if (info && typeof info === 'object') {
+			name = info.name;
+			type = info.type;
+			create = info.create;
+		} else {
+			name = info;
+			type = Object;
 		}
-		current = current[hProp];
+
+		if (!current[name] || typeof current[name] !== 'object') {
+			const obj = type ? new type() : create ? create() : {};
+			current[name] = obj;
+		}
+		current = current[name];
 	});
 
 	return current;
 }
 
 function assign(target: any, ...others: any[]) {
-	const {hierarchyProps, prop, value} = _parseArgs(others);
+	const {hierarchies, prop, value} = _parseArgs(others);
 
-	const current = create(target, hierarchyProps);
+	const current = create(target, hierarchies);
 	current[prop] = value;
 	return current;
 }
@@ -47,9 +68,9 @@ function set(target: any, ...others: any[]) {
 }
 
 function assignIfUndef(target: any, ...others: any[]) {
-	const {hierarchyProps, prop, value} = _parseArgs(others);
+	const {hierarchies, prop, value} = _parseArgs(others);
 
-	const current = create(target, hierarchyProps);
+	const current = create(target, hierarchies);
 	if (current[prop] === undefined) {
 		current[prop] = value;
 	}

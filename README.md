@@ -47,6 +47,22 @@ const obj = setIfUndef({}, 'a', 'b', 'c', 100);
 console.log(obj.a.b.c); // 100
 ```
 
+## Customize object creating
+Property can ba a descriptor object rather than a string for non-last property item. The descriptor shape is `{name, type|create}`.
+
+- `name` is the property name
+- `type` is a constructor function that creates object assign to parent object's `name`
+- `create` is a function that returns a customized object assign to parent object's `name`
+
+```javascript
+const obj = set({}, 'a', {name: 'b', type: Array}, '0', 100);
+console.log(obj); // {a: {b: [100]}}
+```
+```javascript
+const obj = set({}, 'a', {name: 'b', create: () => [1, 2, 3]}, '3', 200);
+console.log(obj); //  {a: {b: [1, 2, 3, 200]}}
+```
+
 ## `assign` and `assignIfUndef`
 Just like `set` and `setIfUndef`, but returns the second last hierarchy object which contains the last hierarchy property.
 Cannot create object at the same time since the whole object is not returned.

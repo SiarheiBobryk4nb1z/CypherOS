@@ -7,9 +7,9 @@
     function _parseArgs(others) {
         var value = others[others.length - 1];
         var rest = Array.prototype.concat.apply([], others.slice(0, -1)); // exclude `value`
-        var hierarchyProps = rest.slice(0, -1);
+        var hierarchies = rest.slice(0, -1);
         var prop = rest[rest.length - 1];
-        return { hierarchyProps: hierarchyProps, prop: prop, value: value };
+        return { hierarchies: hierarchies, prop: prop, value: value };
     }
     function get(target) {
         var rest = [];
@@ -26,13 +26,24 @@
         }
         return current;
     }
-    function create(target, hierarchyProps) {
+    function create(target, hierarchies) {
         var current = target;
-        hierarchyProps.forEach(function (hProp) {
-            if (!current[hProp] || typeof current[hProp] !== 'object') {
-                current[hProp] = {};
+        hierarchies.forEach(function (info) {
+            var name, type, create;
+            if (info && typeof info === 'object') {
+                name = info.name;
+                type = info.type;
+                create = info.create;
             }
-            current = current[hProp];
+            else {
+                name = info;
+                type = Object;
+            }
+            if (!current[name] || typeof current[name] !== 'object') {
+                var obj = type ? new type() : create ? create() : {};
+                current[name] = obj;
+            }
+            current = current[name];
         });
         return current;
     }
@@ -41,8 +52,8 @@
         for (var _i = 1; _i < arguments.length; _i++) {
             others[_i - 1] = arguments[_i];
         }
-        var _a = _parseArgs(others), hierarchyProps = _a.hierarchyProps, prop = _a.prop, value = _a.value;
-        var current = create(target, hierarchyProps);
+        var _a = _parseArgs(others), hierarchies = _a.hierarchies, prop = _a.prop, value = _a.value;
+        var current = create(target, hierarchies);
         current[prop] = value;
         return current;
     }
@@ -60,8 +71,8 @@
         for (var _i = 1; _i < arguments.length; _i++) {
             others[_i - 1] = arguments[_i];
         }
-        var _a = _parseArgs(others), hierarchyProps = _a.hierarchyProps, prop = _a.prop, value = _a.value;
-        var current = create(target, hierarchyProps);
+        var _a = _parseArgs(others), hierarchies = _a.hierarchies, prop = _a.prop, value = _a.value;
+        var current = create(target, hierarchies);
         if (current[prop] === undefined) {
             current[prop] = value;
         }
