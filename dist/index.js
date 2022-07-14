@@ -11,22 +11,7 @@
         var prop = rest[rest.length - 1];
         return { hierarchies: hierarchies, prop: prop, value: value };
     }
-    function get(target) {
-        var rest = [];
-        for (var _i = 1; _i < arguments.length; _i++) {
-            rest[_i - 1] = arguments[_i];
-        }
-        var props = Array.prototype.concat.apply([], rest);
-        var current = target;
-        if (current !== undefined && current !== null) {
-            props.every(function (prop) {
-                current = current[prop];
-                return current;
-            });
-        }
-        return current;
-    }
-    function create(target, hierarchies) {
+    function _create(target, hierarchies) {
         var current = target;
         hierarchies.forEach(function (info) {
             var name, type, create;
@@ -53,7 +38,7 @@
             others[_i - 1] = arguments[_i];
         }
         var _a = _parseArgs(others), hierarchies = _a.hierarchies, prop = _a.prop, value = _a.value;
-        var current = create(target, hierarchies);
+        var current = _create(target, hierarchies);
         current[prop] = value;
         return current;
     }
@@ -72,7 +57,7 @@
             others[_i - 1] = arguments[_i];
         }
         var _a = _parseArgs(others), hierarchies = _a.hierarchies, prop = _a.prop, value = _a.value;
-        var current = create(target, hierarchies);
+        var current = _create(target, hierarchies);
         if (current[prop] === undefined) {
             current[prop] = value;
         }
@@ -87,12 +72,27 @@
         assignIfUndef.apply(void 0, [root].concat(others));
         return root;
     }
+    function get(target) {
+        var rest = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            rest[_i - 1] = arguments[_i];
+        }
+        var props = Array.prototype.concat.apply([], rest);
+        var current = target;
+        if (current !== undefined && current !== null) {
+            props.every(function (prop) {
+                current = current[prop];
+                return current;
+            });
+        }
+        return current;
+    }
 
-    exports.get = get;
     exports.set = set;
     exports.assign = assign;
     exports.setIfUndef = setIfUndef;
     exports.assignIfUndef = assignIfUndef;
+    exports.get = get;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 

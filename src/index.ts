@@ -6,21 +6,7 @@ function _parseArgs(others: any[]) {
 	return {hierarchies, prop, value};
 }
 
-function get(target: any, ...rest: any[]) {
-	const props: Array<string | number | symbol> = Array.prototype.concat.apply([], rest);
-	let current = target;
-
-	if (current !== undefined && current !== null) {
-		props.every(prop => {
-			current = current[prop];
-			return current;
-		});
-	}
-
-	return current;
-}
-
-function create(
+function _create(
 	target: any,
 	hierarchies: Array<string |
 		number |
@@ -56,7 +42,7 @@ function create(
 function assign(target: any, ...others: any[]) {
 	const {hierarchies, prop, value} = _parseArgs(others);
 
-	const current = create(target, hierarchies);
+	const current = _create(target, hierarchies);
 	current[prop] = value;
 	return current;
 }
@@ -70,7 +56,7 @@ function set(target: any, ...others: any[]) {
 function assignIfUndef(target: any, ...others: any[]) {
 	const {hierarchies, prop, value} = _parseArgs(others);
 
-	const current = create(target, hierarchies);
+	const current = _create(target, hierarchies);
 	if (current[prop] === undefined) {
 		current[prop] = value;
 	}
@@ -83,10 +69,24 @@ function setIfUndef(target: any, ...others: any[]) {
 	return root;
 }
 
+function get(target: any, ...rest: any[]) {
+	const props: Array<string | number | symbol> = Array.prototype.concat.apply([], rest);
+	let current = target;
+
+	if (current !== undefined && current !== null) {
+		props.every(prop => {
+			current = current[prop];
+			return current;
+		});
+	}
+
+	return current;
+}
+
 export {
-	get,
 	set,
 	assign,
 	setIfUndef,
-	assignIfUndef
+	assignIfUndef,
+	get
 };
