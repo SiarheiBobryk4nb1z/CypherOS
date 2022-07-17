@@ -9,7 +9,7 @@ set(obj, 'a', 'b', 'c', 100);
 console.log(obj.a.b.c); // 100
 ```
 
-Attributes could be in arrays:
+Properties could be in arrays:
 ```javascript
 import { set } from 'object-hierarchy-access';
 const obj = {};
