@@ -14,7 +14,7 @@ function _create(
 		{
 			name: string,
 			type?: new () => object,
-			create?: () => object
+			create?: (name: string | number | symbol) => object
 		}>
 ) {
 	let current = target;
@@ -30,7 +30,7 @@ function _create(
 		}
 
 		if (!current[name] || typeof current[name] !== 'object') {
-			const obj = type ? new type() : create ? create() : {};
+			const obj = type ? new type() : create ? create.call(current, name) : {};
 			current[name] = obj;
 		}
 		current = current[name];

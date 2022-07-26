@@ -19,7 +19,7 @@ function _create(target, hierarchies) {
             type = Object;
         }
         if (!current[name] || typeof current[name] !== 'object') {
-            var obj = type ? new type() : create ? create() : {};
+            var obj = type ? new type() : create ? create.call(current, name) : {};
             current[name] = obj;
         }
         current = current[name];

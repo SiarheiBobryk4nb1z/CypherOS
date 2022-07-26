@@ -1,6 +1,6 @@
 {
   "name": "object-hierarchy-access",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "description": "Get/Set value from/to JS object hierarchy properties",
   "main": "dist/index.js",
   "scripts": {
@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/mjpclab/object-hierarchy-access#readme",
   "devDependencies": {
-    "rollup": "^0.67.4",
+    "rollup": "^0.68.1",
     "rollup-plugin-commonjs": "^9.2.0",
     "rollup-plugin-node-resolve": "^4.0.0",
     "rollup-plugin-uglify": "^6.0.0",
