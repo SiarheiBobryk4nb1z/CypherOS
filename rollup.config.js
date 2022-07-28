@@ -8,8 +8,7 @@ const getConfig = function (isMinify) {
 		output: {
 			name: 'object-hierarchy-access',
 			format: 'umd',
-			dir: 'dist',
-			file: `index${isMinify ? '.min' : ''}.js`,
+			file: `dist/index${isMinify ? '.min' : ''}.js`,
 		},
 		plugins: [
 			resolve(), // so Rollup can find `ms`
