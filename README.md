@@ -79,7 +79,12 @@ Get value from object's hierarchy properties:
 ```javascript
 import { get } from 'object-hierarchy-access';
 const obj = {a: {b: {c: 100}}};
-get(obj, 'a', 'b');    // returns {c: 100}
-get(obj, 'a', 'b', 'c');    // returns 100
-get(obj, ['a', 'b', 'c']);    // returns 100
+get(obj, 'a', 'b'); // returns {c: 100}
+get(obj, 'a', 'b', 'c'); // returns 100
+get(obj, ['a', 'b', 'c']); // returns 100
+```
+Property can be a function rather than a string. The parameter is current object, should returns the property name of current hierarchy.
+```javascript
+const obj = {a: {value: 1, b1: {c: 100}, b2: {c: 200}}};
+get(obj, 'a', curr => curr.value === 1 ? 'b1' : 'b2', 'c'); // returns 100
 ```

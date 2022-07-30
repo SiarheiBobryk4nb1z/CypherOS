@@ -71,11 +71,18 @@ function get(target) {
     for (var _i = 1; _i < arguments.length; _i++) {
         rest[_i - 1] = arguments[_i];
     }
-    var props = Array.prototype.concat.apply([], rest);
+    var hierarchies = Array.prototype.concat.apply([], rest);
     var current = target;
     if (current !== undefined && current !== null) {
-        props.every(function (prop) {
-            current = current[prop];
+        hierarchies.every(function (info) {
+            var property;
+            if (typeof info === 'function') {
+                property = info.call(current, current);
+            }
+            else {
+                property = info;
+            }
+            current = current[property];
             return current;
         });
     }
