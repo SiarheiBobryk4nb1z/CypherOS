@@ -52,7 +52,7 @@ Property can ba a descriptor object rather than a string for non-last property i
 
 - `name` is the property name
 - `type` is a constructor function that creates object assign to parent object's `name`
-- `create(this=parent, name)` is a function that returns a customized object assign to parent object's `name`
+- `create(parent, name)` is a function that returns a customized object assign to `parent` object's `name`.
 
 ```javascript
 const obj = set({}, 'a', {name: 'b', type: Array}, '0', 100);

@@ -6,9 +6,10 @@ assert.deepEqual(obj1, {a: {b: [100]}});
 
 let name;
 const obj2 = set(undefined, ['a', {
-	name: 'b', create: function (_name) {
+	name: 'b',
+	create: (current, _name) => {
 		name = _name;
-		this.b1 = 201;
+		current.b1 = 201;
 		return [1, 2, 3];
 	}
 }, '3'], 200);
