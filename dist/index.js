@@ -14,18 +14,22 @@
     function _create(target, hierarchies) {
         var current = target;
         hierarchies.forEach(function (info) {
-            var name, type, create;
+            var name, value, type, create;
             if (info && typeof info === 'object') {
                 name = info.name;
+                value = info.value;
                 type = info.type;
                 create = info.create;
             }
             else {
                 name = info;
-                type = Object;
+                value = {};
             }
             if (!current[name] || typeof current[name] !== 'object') {
-                var obj = type ? new type() : create ? create.call(current, current, name) : {};
+                var obj = value ? value :
+                    type ? new type() :
+                        create ? create.call(current, current, name) :
+                            {};
                 current[name] = obj;
             }
             current = current[name];

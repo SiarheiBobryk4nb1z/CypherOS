@@ -13,24 +13,29 @@ function _create(
 		symbol |
 		{
 			name: string,
+			value?: object,
 			type?: new () => object,
 			create?: (this: object, parent: object, name: string | number | symbol) => object
 		}>
 ) {
 	let current = target;
 	hierarchies.forEach(info => {
-		let name, type, create;
+		let name, value, type, create;
 		if (info && typeof info === 'object') {
 			name = info.name;
+			value = info.value;
 			type = info.type;
 			create = info.create;
 		} else {
 			name = info;
-			type = Object;
+			value = {};
 		}
 
 		if (!current[name] || typeof current[name] !== 'object') {
-			const obj = type ? new type() : create ? create.call(current, current, name) : {};
+			const obj = value ? value :
+				type ? new type() :
+					create ? create.call(current, current, name) :
+						{};
 			current[name] = obj;
 		}
 		current = current[name];

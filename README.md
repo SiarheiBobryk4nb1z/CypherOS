@@ -12,9 +12,11 @@ console.log(obj.a.b.c); // 100
 Properties could be in arrays:
 ```javascript
 import { set } from 'object-hierarchy-access';
+
 const obj = {};
 set(obj, ['a', 'b', 'c'], 100);
 console.log(obj.a.b.c); // 100
+
 set(obj, ['d', 'e', 'f'], ['g', 'h', 'i'], 200);
 console.log(obj.d.e.f.g.h.i); // 200
 ```
@@ -48,12 +50,20 @@ console.log(obj.a.b.c); // 100
 ```
 
 ## Customize object creating
-Property can ba a descriptor object rather than a string for non-last property item. The descriptor shape is `{name, type|create}`.
+Property can ba a descriptor object rather than a string for non-last property item. The descriptor shape is `{name, value|type|create}`.
 
 - `name` is the property name
+- `value` should be an object assign to parent object's `name`
 - `type` is a constructor function that creates object assign to parent object's `name`
-- `create(parent, name)` is a function that returns a customized object assign to `parent` object's `name`.
+- `create(parent, name)` is a function that returns a customized object assign to `parent` object's `name`
 
+```javascript
+const obj = set({}, 'a', {name: 'b', value: []}, '0', 100);
+console.log(obj); // {a: {b: [100]}}
+
+const obj2 = set({}, 'a', {name: 'b', value: {}}, 'c', 100);
+console.log(obj2); // {a: {b: {c: 100}}
+```
 ```javascript
 const obj = set({}, 'a', {name: 'b', type: Array}, '0', 100);
 console.log(obj); // {a: {b: [100]}}
