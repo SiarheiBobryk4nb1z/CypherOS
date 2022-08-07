@@ -20,7 +20,11 @@ function _create(
 ) {
 	let current = target;
 	hierarchies.forEach(info => {
-		let name, value, type, create;
+		let name;
+		let value;
+		let type;
+		let create;
+
 		if (info && typeof info === 'object') {
 			name = info.name;
 			value = info.value;

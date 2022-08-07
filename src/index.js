@@ -8,7 +8,10 @@ function _parseArgs(others) {
 function _create(target, hierarchies) {
     var current = target;
     hierarchies.forEach(function (info) {
-        var name, value, type, create;
+        var name;
+        var value;
+        var type;
+        var create;
         if (info && typeof info === 'object') {
             name = info.name;
             value = info.value;
