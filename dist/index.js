@@ -79,6 +79,7 @@
         assignIfUndef.apply(void 0, [root].concat(others));
         return root;
     }
+
     function get(target) {
         var rest = [];
         for (var _i = 1; _i < arguments.length; _i++) {
