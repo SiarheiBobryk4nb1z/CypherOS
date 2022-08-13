@@ -89,14 +89,24 @@
         var current = target;
         if (current !== undefined && current !== null) {
             hierarchies.every(function (info) {
-                var property;
-                if (typeof info === 'function') {
-                    property = info.call(current, current);
+                var name;
+                var onGotValue;
+                if (typeof info === 'object') {
+                    name = info.name ? info.name :
+                        info.getName ? info.getName.call(current, current) : 'undefined';
+                    onGotValue = info.onGotValue;
+                }
+                else if (typeof info === 'function') {
+                    name = info.call(current, current);
                 }
                 else {
-                    property = info;
+                    name = info;
                 }
-                current = current[property];
+                var parent = current;
+                current = current[name];
+                if (onGotValue) {
+                    onGotValue.call(parent, parent, name, current);
+                }
                 return current;
             });
         }

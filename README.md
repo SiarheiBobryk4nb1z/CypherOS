@@ -85,7 +85,10 @@ console.log(result); // {c: 100}
 ```
 
 ## `get`
-Get value from object's hierarchy properties:
+Get value from object's hierarchy properties.
+
+### String property
+Specifying properties by string:
 ```javascript
 import { get } from 'object-hierarchy-access';
 const obj = {a: {b: {c: 100}}};
@@ -93,8 +96,55 @@ get(obj, 'a', 'b'); // returns {c: 100}
 get(obj, 'a', 'b', 'c'); // returns 100
 get(obj, ['a', 'b', 'c']); // returns 100
 ```
-Property can be a function rather than a string. The parameter is current object, should returns the property name of current hierarchy.
+
+### Function property
+Property can be a function that returns property name. The parameter is parent object.
 ```javascript
 const obj = {a: {value: 1, b1: {c: 100}, b2: {c: 200}}};
-get(obj, 'a', curr => curr.value === 1 ? 'b1' : 'b2', 'c'); // returns 100
+get(obj, 'a', parent => parent.value === 1 ? 'b1' : 'b2', 'c'); // returns 100
+```
+
+### Object property
+Property can be a descriptor object, which its shape is `{name|getName, onGotValue?}`.
+
+- `name` is a string property name
+- `getName(parent)` is a function to get property name
+- `onGotValue(parent, name, current)` is a callback when value has been got via `name` property from `parent`.
+
+```javascript
+import { get } from 'object-hierarchy-access';
+const obj = {a: {b: {c: 100}}};
+get(obj,
+	{
+		name: 'a',
+		onGotValue: (parent, name, current) => {
+			/*
+			parent => {a: {b: {c: 100}}};
+			name => 'a';
+			current => {b: {c: 100}};
+			*/
+		}
+	},
+	{
+		name: 'b',
+		onGotValue: (parent, name, current) => {
+			/*
+			parent => {b: {c: 100}};
+			name => 'b';
+			current => {c: 100};
+			*/
+		}
+	},
+	{
+		name: 'c',
+		onGotValue: (parent, name, current) => {
+			/*
+			parent => {c: 100};
+			name => 'c';
+			current => 100;
+			*/
+		}
+	}
+);
+
 ```
