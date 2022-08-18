@@ -105,11 +105,11 @@ get(obj, 'a', parent => parent.value === 1 ? 'b1' : 'b2', 'c'); // returns 100
 ```
 
 ### Object property
-Property can be a descriptor object, which its shape is `{name|getName, onGotValue?}`.
+Property can be a descriptor object, which its shape is `{name|getName, got?}`.
 
 - `name` is a string property name
 - `getName(parent)` is a function to get property name
-- `onGotValue(parent, name, current)` is a callback when value has been got via `name` property from `parent`.
+- `got(parent, name, current)` is a callback when value has been got via `name` property from `parent`.
 
 ```javascript
 import { get } from 'object-hierarchy-access';
@@ -117,7 +117,7 @@ const obj = {a: {b: {c: 100}}};
 get(obj,
 	{
 		name: 'a',
-		onGotValue: (parent, name, current) => {
+		got: (parent, name, current) => {
 			/*
 			parent => {a: {b: {c: 100}}};
 			name => 'a';
@@ -127,7 +127,7 @@ get(obj,
 	},
 	{
 		name: 'b',
-		onGotValue: (parent, name, current) => {
+		got: (parent, name, current) => {
 			/*
 			parent => {b: {c: 100}};
 			name => 'b';
@@ -137,7 +137,7 @@ get(obj,
 	},
 	{
 		name: 'c',
-		onGotValue: (parent, name, current) => {
+		got: (parent, name, current) => {
 			/*
 			parent => {c: 100};
 			name => 'c';

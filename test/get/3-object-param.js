@@ -7,7 +7,7 @@ assert.equal(get(obj, 'a', {name: 'b'}, {getName: () => 'c'}), 100);
 get(obj,
 	{
 		name: 'a',
-		onGotValue: (parent, name, current) => {
+		got: (parent, name, current) => {
 			assert.deepEqual(parent, {a: {b: {c: 100}}});
 			assert.equal(name, 'a');
 			assert.deepEqual(current, {b: {c: 100}});
@@ -15,7 +15,7 @@ get(obj,
 	},
 	{
 		name: 'b',
-		onGotValue: (parent, name, current) => {
+		got: (parent, name, current) => {
 			assert.deepEqual(parent, {b: {c: 100}});
 			assert.equal(name, 'b');
 			assert.deepEqual(current, {c: 100});
@@ -23,7 +23,7 @@ get(obj,
 	},
 	{
 		name: 'c',
-		onGotValue: (parent, name, current) => {
+		got: (parent, name, current) => {
 			assert.deepEqual(parent, {c: 100});
 			assert.equal(name, 'c');
 			assert.equal(current, 100);

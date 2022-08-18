@@ -90,11 +90,11 @@
 	    if (current !== undefined && current !== null) {
 	        hierarchies.every(function (info) {
 	            var name;
-	            var onGotValue;
+	            var got;
 	            if (typeof info === 'object') {
 	                name = info.name ? info.name :
 	                    info.getName ? info.getName.call(current, current) : 'undefined';
-	                onGotValue = info.onGotValue;
+	                got = info.got;
 	            }
 	            else if (typeof info === 'function') {
 	                name = info.call(current, current);
@@ -104,8 +104,8 @@
 	            }
 	            var parent = current;
 	            current = current[name];
-	            if (onGotValue) {
-	                onGotValue.call(parent, parent, name, current);
+	            if (got) {
+	                got.call(parent, parent, name, current);
 	            }
 	            return current;
 	        });
