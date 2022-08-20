@@ -148,3 +148,18 @@ get(obj,
 );
 
 ```
+
+## `traverse`
+Go through each hierarchy with a callback:
+```javascript
+import { traverse } from 'object-hierarchy-access';
+const node1 = {}, node2 = {}, node3 = {};
+node1.next = node2;
+node2.next = node3;
+node3.next = null;
+const linkedList = { next: node1 };
+
+let nextId = 1;
+traverse(linkedList, 'next', 'next', 'next', (parent, name, current) => { current.id = nextId++; });
+console.log(node1.id, node2.id, node3.id); // 1, 2, 3
+```

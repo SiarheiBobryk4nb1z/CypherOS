@@ -8,3 +8,7 @@ export {
 export {
 	get
 } from './get';
+
+export {
+	traverse
+} from './traverse';

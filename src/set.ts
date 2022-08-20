@@ -1,3 +1,5 @@
+import {PropName} from './type';
+
 function _parseArgs(others: any[]) {
 	const value = others[others.length - 1];
 	const rest = Array.prototype.concat.apply([], others.slice(0, -1));  // exclude `value`
@@ -8,14 +10,12 @@ function _parseArgs(others: any[]) {
 
 function _create(
 	target: any,
-	hierarchies: Array<string |
-		number |
-		symbol |
+	hierarchies: Array<PropName |
 		{
 			name: string,
 			value?: object,
 			type?: new () => object,
-			create?: (this: object, parent: object, name: string | number | symbol) => object
+			create?: (this: object, parent: object, name: PropName) => object
 		}>
 ) {
 	let current = target;
