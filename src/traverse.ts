@@ -2,7 +2,7 @@ import {PropName} from './type';
 
 function _parseArgs(others: any[]) {
 	const callback = others[others.length - 1];
-	const hierarchies = Array.prototype.concat.apply([], others.slice(0, -1));  // exclude `value`
+	const hierarchies = Array.prototype.concat.apply([], others.slice(0, -1));  // exclude `callback`
 	return {hierarchies, callback};
 }
 
