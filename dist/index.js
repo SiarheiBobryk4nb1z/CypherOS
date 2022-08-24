@@ -115,7 +115,7 @@
 
 	function _parseArgs$1(others) {
 	    var callback = others[others.length - 1];
-	    var hierarchies = Array.prototype.concat.apply([], others.slice(0, -1)); // exclude `value`
+	    var hierarchies = Array.prototype.concat.apply([], others.slice(0, -1)); // exclude `callback`
 	    return { hierarchies: hierarchies, callback: callback };
 	}
 	function traverse(target) {

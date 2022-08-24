@@ -3,10 +3,12 @@
   "version": "0.13.1",
   "description": "Get/Set value from/to JS object hierarchy properties",
   "main": "dist/index.js",
+  "types": "built/index.d.ts",
   "scripts": {
+    "build": "npx tsc; npx rollup -c",
     "lint": "npx tslint -c tslint.json 'src/**/*.ts'",
-    "build": "npx rollup -c",
-    "test": "node test/index.js"
+    "test": "node test/index.js",
+    "publish-check": "git diff-index --quiet HEAD && npm run build && npm run lint && npm run test"
   },
   "repository": {
     "type": "git",
@@ -24,7 +26,6 @@
   "homepage": "https://github.com/mjpclab/object-hierarchy-access#readme",
   "devDependencies": {
     "rollup": "^1.0.2",
-    "rollup-plugin-commonjs": "^9.2.0",
     "rollup-plugin-node-resolve": "^4.0.0",
     "rollup-plugin-typescript": "^1.0.0",
     "rollup-plugin-uglify": "^6.0.0",
