@@ -84,6 +84,21 @@ console.log(obj.a.b.c); // 100
 console.log(result); // {c: 100}
 ```
 
+## `put` and `putIfUndef`
+Just like `set` and `setIfUndef`, but returns the last hierarchy value.
+Cannot create object at the same time since the whole object is not returned.
+```javascript
+import { putIfUndef } from 'object-hierarchy-access';
+const obj = {};
+const collection = putIfUndef(obj, 'a', 'b', 'collection', []);
+collection.push(100);
+
+const anotherCollection = putIfUndef(obj, 'a', 'b', 'collection', []);
+anotherCollection.push(200);
+console.log(anotherCollection); // [100, 200];
+console.log(collection === anotherCollection); // true
+```
+
 ## `get`
 Get value from object's hierarchy properties.
 

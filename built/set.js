@@ -33,6 +33,17 @@ function _create(target, hierarchies) {
     });
     return current;
 }
+function set(optionalTarget) {
+    var others = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        others[_i - 1] = arguments[_i];
+    }
+    var _a = _parseArgs(others), hierarchies = _a.hierarchies, prop = _a.prop, value = _a.value;
+    var target = optionalTarget || {};
+    var current = _create(target, hierarchies);
+    current[prop] = value;
+    return target;
+}
 function assign(target) {
     var others = [];
     for (var _i = 1; _i < arguments.length; _i++) {
@@ -43,14 +54,28 @@ function assign(target) {
     current[prop] = value;
     return current;
 }
-function set(target) {
+function put(target) {
     var others = [];
     for (var _i = 1; _i < arguments.length; _i++) {
         others[_i - 1] = arguments[_i];
     }
-    var root = target || {};
-    assign.apply(void 0, [root].concat(others));
-    return root;
+    var _a = _parseArgs(others), hierarchies = _a.hierarchies, prop = _a.prop, value = _a.value;
+    var current = _create(target, hierarchies);
+    current[prop] = value;
+    return value;
+}
+function setIfUndef(optionalTarget) {
+    var others = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        others[_i - 1] = arguments[_i];
+    }
+    var _a = _parseArgs(others), hierarchies = _a.hierarchies, prop = _a.prop, value = _a.value;
+    var target = optionalTarget || {};
+    var current = _create(target, hierarchies);
+    if (current[prop] === undefined) {
+        current[prop] = value;
+    }
+    return target;
 }
 function assignIfUndef(target) {
     var others = [];
@@ -64,13 +89,16 @@ function assignIfUndef(target) {
     }
     return current;
 }
-function setIfUndef(target) {
+function putIfUndef(target) {
     var others = [];
     for (var _i = 1; _i < arguments.length; _i++) {
         others[_i - 1] = arguments[_i];
     }
-    var root = target || {};
-    assignIfUndef.apply(void 0, [root].concat(others));
-    return root;
+    var _a = _parseArgs(others), hierarchies = _a.hierarchies, prop = _a.prop, value = _a.value;
+    var current = _create(target, hierarchies);
+    if (current[prop] === undefined) {
+        current[prop] = value;
+    }
+    return current[prop];
 }
-export { set, assign, setIfUndef, assignIfUndef };
+export { set, assign, put, setIfUndef, assignIfUndef, putIfUndef };

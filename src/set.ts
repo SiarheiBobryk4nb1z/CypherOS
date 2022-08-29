@@ -48,6 +48,15 @@ function _create(
 	return current;
 }
 
+function set(optionalTarget: any, ...others: any[]) {
+	const {hierarchies, prop, value} = _parseArgs(others);
+
+	const target = optionalTarget || {};
+	const current = _create(target, hierarchies);
+	current[prop] = value;
+	return target;
+}
+
 function assign(target: any, ...others: any[]) {
 	const {hierarchies, prop, value} = _parseArgs(others);
 
@@ -56,10 +65,23 @@ function assign(target: any, ...others: any[]) {
 	return current;
 }
 
-function set(target: any, ...others: any[]) {
-	const root = target || {};
-	assign(root, ...others);
-	return root;
+function put(target: any, ...others: any[]) {
+	const {hierarchies, prop, value} = _parseArgs(others);
+
+	const current = _create(target, hierarchies);
+	current[prop] = value;
+	return value;
+}
+
+function setIfUndef(optionalTarget: any, ...others: any[]) {
+	const {hierarchies, prop, value} = _parseArgs(others);
+
+	const target = optionalTarget || {};
+	const current = _create(target, hierarchies);
+	if (current[prop] === undefined) {
+		current[prop] = value;
+	}
+	return target;
 }
 
 function assignIfUndef(target: any, ...others: any[]) {
@@ -72,15 +94,21 @@ function assignIfUndef(target: any, ...others: any[]) {
 	return current;
 }
 
-function setIfUndef(target: any, ...others: any[]) {
-	const root = target || {};
-	assignIfUndef(root, ...others);
-	return root;
+function putIfUndef(target: any, ...others: any[]) {
+	const {hierarchies, prop, value} = _parseArgs(others);
+
+	const current = _create(target, hierarchies);
+	if (current[prop] === undefined) {
+		current[prop] = value;
+	}
+	return current[prop];
 }
 
 export {
 	set,
 	assign,
+	put,
 	setIfUndef,
-	assignIfUndef
+	assignIfUndef,
+	putIfUndef
 };

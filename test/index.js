@@ -1,6 +1,10 @@
-require('./assign');
 require('./set');
-require('./assign-if-undef');
+require('./assign');
+require('./put');
+
 require('./set-if-undef');
+require('./assign-if-undef');
+require('./put-if-undef');
+
 require('./get');
 require('./traverse');
