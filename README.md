@@ -1,4 +1,17 @@
 # Quick Start
+For ES module environment, use `import` to import methods:
+```javascript
+import { get, set } from 'object-hierarchy-access';
+```
+
+For commonjs environment, use `requre` to import methods:
+```javascript
+const { get, set } = require('object-hierarchy-access')
+```
+
+For AMD module environment, define module `object-hierarchy-access` from file `dist/index`.
+
+For global mode, methods are under global variable `ObjectHierarchyAccess`.
 
 ## `set`
 Set value to object's hierarchy properties:

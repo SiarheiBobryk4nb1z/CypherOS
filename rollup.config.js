@@ -6,7 +6,7 @@ const getConfig = function (isMinify) {
 	const config = {
 		input: 'src/index.ts',
 		output: {
-			name: 'object-hierarchy-access',
+			name: 'ObjectHierarchyAccess',
 			format: 'umd',
 			file: `dist/index${isMinify ? '.min' : ''}.js`,
 		},
