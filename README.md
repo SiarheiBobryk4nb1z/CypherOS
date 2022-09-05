@@ -95,6 +95,7 @@ const obj = {};
 const result = assign(obj, 'a', 'b', 'c', 100);
 console.log(obj.a.b.c); // 100
 console.log(result); // {c: 100}
+console.log(result === obj.a.b); // true
 ```
 
 ## `put` and `putIfUndef`
@@ -110,6 +111,7 @@ const anotherCollection = putIfUndef(obj, 'a', 'b', 'collection', []);
 anotherCollection.push(200);
 console.log(anotherCollection); // [100, 200];
 console.log(collection === anotherCollection); // true
+console.log(collection === obj.a.b.collection); // true
 ```
 
 ## `get`
