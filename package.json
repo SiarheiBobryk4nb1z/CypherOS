@@ -3,9 +3,10 @@
   "version": "0.14.1",
   "description": "Get/Set value from/to JS object hierarchy properties",
   "main": "dist/index.js",
+  "module": "dist/index.esm.js",
   "types": "built/index.d.ts",
   "scripts": {
-    "build": "npx tsc; npx rollup -c",
+    "build": "rm -rf built/* dist/*; npx tsc; npx rollup -c",
     "lint": "npx tslint -c tslint.json 'src/**/*.ts'",
     "test": "node test/index.js",
     "publish-check": "git diff-index --quiet HEAD && npm run build && npm run lint && npm run test"

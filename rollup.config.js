@@ -2,13 +2,13 @@ import resolve from 'rollup-plugin-node-resolve';
 import typescript from 'rollup-plugin-typescript';
 import {uglify} from 'rollup-plugin-uglify';
 
-const getConfig = function (isMinify) {
+const getConfig = function (format, isMinify, filename) {
 	const config = {
 		input: 'src/index.ts',
 		output: {
 			name: 'ObjectHierarchyAccess',
-			format: 'umd',
-			file: `dist/index${isMinify ? '.min' : ''}.js`,
+			format: format,
+			file: `dist/${filename}.js`,
 		},
 		plugins: [
 			resolve(),
@@ -21,6 +21,7 @@ const getConfig = function (isMinify) {
 };
 
 export default [
-	getConfig(false),
-	getConfig(true)
+	getConfig('umd', false, 'index'),
+	getConfig('umd', true, 'index.min'),
+	getConfig('esm', false, 'index.esm')
 ];
