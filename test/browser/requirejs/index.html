@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>RequireJS - paths</title>
+</head>
+<body>
+<script src="require.js"></script>
+<script>
+	require.config({
+		paths: {
+			'object-hierarchy-access': '../../../dist/index'
+		}
+	});
+
+	require(['object-hierarchy-access'], function (ObjectHierarchyAccess) {
+		var set = ObjectHierarchyAccess.set;
+		var get = ObjectHierarchyAccess.get;
+		var obj = set({}, 'a', 'b', 'c', 100);
+		document.write(get(obj, 'a', 'b', 'c'));
+	});
+</script>
+</body>
+</html>

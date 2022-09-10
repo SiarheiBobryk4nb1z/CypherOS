@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Global</title>
+</head>
+<body>
+<script src="../../../dist/index.js"></script>
+<script>
+	var set = ObjectHierarchyAccess.set;
+	var get = ObjectHierarchyAccess.get;
+	var obj = set({}, 'a', 'b', 'c', 100);
+	document.write(get(obj, 'a', 'b', 'c'));
+</script>
+</body>
+</html>
