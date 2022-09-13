@@ -165,6 +165,30 @@
 	        });
 	    }
 	}
+	function traverseReverse(target) {
+	    var others = [];
+	    for (var _i = 1; _i < arguments.length; _i++) {
+	        others[_i - 1] = arguments[_i];
+	    }
+	    var args = _parseArgs$1(others);
+	    var hierarchies = args.hierarchies;
+	    var callback = args.callback;
+	    var current = target;
+	    if (current !== undefined && current !== null) {
+	        var params_1 = [];
+	        hierarchies.every(function (info) {
+	            var name = typeof info === 'function' ? info.call(current, current) : info;
+	            var parent = current;
+	            current = current[name];
+	            params_1.push({ parent: parent, name: name, current: current });
+	            return current;
+	        });
+	        for (var i = params_1.length - 1; i >= 0; i--) {
+	            var item = params_1[i];
+	            callback.call(item.parent, item.parent, item.name, item.current);
+	        }
+	    }
+	}
 
 	exports.set = set;
 	exports.assign = assign;
@@ -174,6 +198,7 @@
 	exports.putIfUndef = putIfUndef;
 	exports.get = get;
 	exports.traverse = traverse;
+	exports.traverseReverse = traverseReverse;
 
 	Object.defineProperty(exports, '__esModule', { value: true });
 

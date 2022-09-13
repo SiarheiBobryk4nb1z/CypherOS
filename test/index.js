@@ -8,3 +8,4 @@ require('./put-if-undef');
 
 require('./get');
 require('./traverse');
+require('./traverse-reverse');

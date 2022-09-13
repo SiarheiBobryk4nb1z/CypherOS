@@ -12,5 +12,6 @@ export {
 } from './get';
 
 export {
-	traverse
+	traverse,
+	traverseReverse
 } from './traverse';

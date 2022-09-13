@@ -193,3 +193,30 @@ let nextId = 1;
 traverse(linkedList, 'next', 'next', 'next', (parent, name, current) => { current.id = nextId++; });
 console.log(node1.id, node2.id, node3.id); // 1, 2, 3
 ```
+
+## `traverseReverse`
+Just like `traverse`, but callback was invoked from last hierarchy to first hierarchy.
+```javascript
+import { traverseReverse } from 'object-hierarchy-access';
+const task = {
+	done: false,
+	subTasks: [
+		{
+			done: false,
+			subTasks: [
+				{done: false},  // will be done
+				{done: true}
+			]
+		}
+	]
+};
+
+task.subTasks[0].subTasks[0].done = true;
+traverseReverse(task, 'subTasks', 0, 'subTasks', (parent, name, current) => {
+	if (Array.isArray(current)) {
+		parent.done = current.every(task => task.done);
+	}
+});
+console.log(task.done); // true
+console.log(task.subTasks[0].done); // true
+```
