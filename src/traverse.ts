@@ -1,7 +1,7 @@
 import {PropName} from './type';
 
 type TraverseHierarchy = PropName | ((this: object, parent: object) => PropName);
-type TraverseCallback = (this: object, parent: object, name: PropName, current: object) => void;
+type TraverseCallback = (this: object, parent: object, name: PropName, current: object) => any;
 
 function _parseArgs(others: any[]) {
 	const callback = others[others.length - 1];
@@ -19,8 +19,8 @@ function traverse(target: any, ...others: any[]) {
 			const name = typeof info === 'function' ? info.call(current, current) : info;
 			const parent = current;
 			current = current[name];
-			callback.call(parent, parent, name, current);
-			return current;
+			const result = callback.call(parent, parent, name, current);
+			return result !== false;
 		});
 	}
 }
@@ -45,7 +45,10 @@ function traverseReverse(target: any, ...others: any[]) {
 		});
 		for (let i = params.length - 1; i >= 0; i--) {
 			const item = params[i];
-			callback.call(item.parent, item.parent, item.name, item.current);
+			const result = callback.call(item.parent, item.parent, item.name, item.current);
+			if (result === false) {
+				break;
+			}
 		}
 	}
 }

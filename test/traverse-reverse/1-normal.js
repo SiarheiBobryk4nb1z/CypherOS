@@ -32,3 +32,14 @@ assert.deepEqual(task, {
 		}
 	]
 });
+
+
+const result2 = [];
+const obj2 = {x: {y: {z: 300}}};
+traverseReverse(obj2, 'x', 'y', 'z', (parent, name) => {
+	result2.push(name);
+	if (name === 'y') {
+		return false;
+	}
+});
+assert.deepEqual(result2, ['z', 'y']);

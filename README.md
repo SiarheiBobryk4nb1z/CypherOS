@@ -180,7 +180,7 @@ get(obj,
 ```
 
 ## `traverse`
-Go through each hierarchy with a callback:
+Go through each hierarchy with a callback. Returns `false` in callback to terminate hierarchy iteration.
 ```javascript
 import { traverse } from 'object-hierarchy-access';
 const node1 = {}, node2 = {}, node3 = {};
@@ -196,6 +196,7 @@ console.log(node1.id, node2.id, node3.id); // 1, 2, 3
 
 ## `traverseReverse`
 Just like `traverse`, but callback was invoked from last hierarchy to first hierarchy.
+ Returns `false` in callback to terminate hierarchy iteration.
 ```javascript
 import { traverseReverse } from 'object-hierarchy-access';
 const task = {

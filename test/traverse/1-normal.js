@@ -23,3 +23,13 @@ assert.deepEqual(result2, [
 	{parent: {b: {c: 200}}, name: 'b', current: {c: 200}},
 	{parent: {c: 200}, name: 'c', current: 200}
 ]);
+
+const result3 = [];
+const obj3 = {x: {y: {z: 300}}};
+traverse(obj3, 'x', 'y', 'z', (parent, name) => {
+	result3.push(name);
+	if (name === 'y') {
+		return false;
+	}
+});
+assert.deepEqual(result3, ['x', 'y']);

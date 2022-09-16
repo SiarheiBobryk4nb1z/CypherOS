@@ -154,8 +154,8 @@ function traverse(target) {
             var name = typeof info === 'function' ? info.call(current, current) : info;
             var parent = current;
             current = current[name];
-            callback.call(parent, parent, name, current);
-            return current;
+            var result = callback.call(parent, parent, name, current);
+            return result !== false;
         });
     }
 }
@@ -179,7 +179,10 @@ function traverseReverse(target) {
         });
         for (var i = params_1.length - 1; i >= 0; i--) {
             var item = params_1[i];
-            callback.call(item.parent, item.parent, item.name, item.current);
+            var result = callback.call(item.parent, item.parent, item.name, item.current);
+            if (result === false) {
+                break;
+            }
         }
     }
 }
