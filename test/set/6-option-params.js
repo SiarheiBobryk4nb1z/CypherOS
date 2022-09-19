@@ -21,3 +21,56 @@ assert.equal(name, 'b');
 
 const obj4 = set(null, 'a', {name: 'b'}, 'c', 400);
 assert.deepEqual(obj4, {a: {b: {c: 400}}});
+
+const obj5 = {a: {}};
+set(obj5,
+	{
+		name: 'a',
+		created: (parent, name, current) => {
+			assert.fail()
+		},
+		skipped: (parent, name, current) => {
+			assert.deepEqual(parent, obj5);
+			assert.equal(name, 'a');
+			assert.deepEqual(current, {});
+		},
+		got: (parent, name, current) => {
+			assert.equal(parent, obj5);
+			assert.equal(name, 'a');
+			assert.equal(current, obj5.a);
+		}
+	},
+	{
+		name: 'b',
+		created: (parent, name, current) => {
+			assert.deepEqual(parent, obj5.a);
+			assert.equal(name, 'b');
+			assert.deepEqual(current, {});
+		},
+		skipped: (parent, name, current) => {
+			assert.fail();
+		},
+		got: (parent, name, current) => {
+			assert.deepEqual(parent, obj5.a);
+			assert.equal(name, 'b');
+			assert.equal(current, obj5.a.b);
+		}
+	},
+	{
+		name: 'c',
+		created: (parent, name, current) => {
+			assert.deepEqual(parent, obj5.a.b);
+			assert.equal(name, 'c');
+			assert.deepEqual(current, {});
+		},
+		skipped: (parent, name, current) => {
+			assert.fail();
+		},
+		got: (parent, name, current) => {
+			assert.deepEqual(parent, obj5.a.b);
+			assert.equal(name, 'c');
+			assert.equal(current, obj5.a.b.c);
+		}
+	},
+	500
+);

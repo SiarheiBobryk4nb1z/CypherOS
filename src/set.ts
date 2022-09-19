@@ -15,7 +15,10 @@ function _create(
 			name: string,
 			value?: object,
 			type?: new () => object,
-			create?: (this: object, parent: object, name: PropName) => object
+			create?: (this: object, parent: object, name: PropName) => object,
+			created?: (this: object, parent: object, name: PropName, current: object) => void,
+			skipped?: (this: object, parent: object, name: PropName, current: object) => void,
+			got?: (this: object, parent: object, name: PropName, current: object) => void
 		}>
 ) {
 	let current = target;
@@ -24,12 +27,18 @@ function _create(
 		let value;
 		let type;
 		let create;
+		let created;
+		let skipped;
+		let got;
 
 		if (info && typeof info === 'object') {
 			name = info.name;
 			value = info.value;
 			type = info.type;
 			create = info.create;
+			created = info.created;
+			skipped = info.skipped;
+			got = info.got;
 		} else {
 			name = info;
 			value = {};
@@ -41,8 +50,21 @@ function _create(
 					create ? create.call(current, current, name) :
 						{};
 			current[name] = obj;
+
+			if (created) {
+				created.call(current, current, name, obj);
+			}
+		} else {
+			if (skipped) {
+				skipped.call(current, current, name, current[name]);
+			}
 		}
+
+		const parent = current;
 		current = current[name];
+		if (got) {
+			got.call(parent, parent, name, current);
+		}
 	});
 
 	return current;

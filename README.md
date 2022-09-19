@@ -62,13 +62,16 @@ const obj = setIfUndef({}, 'a', 'b', 'c', 100);
 console.log(obj.a.b.c); // 100
 ```
 
-## Customize object creating
-Property can ba a descriptor object rather than a string for non-last property item. The descriptor shape is `{name, value|type|create}`.
+## Customize hierarchy object creating
+Property can ba a descriptor object rather than a string for non-last property item. The descriptor shape is `{name, value|type|create, created?, skipped?, got?}`.
 
 - `name` is the property name
 - `value` should be an object assign to parent object's `name`
 - `type` is a constructor function that creates object assign to parent object's `name`
 - `create(parent, name)` is a function that returns a customized object assign to `parent` object's `name`
+- `created(parent, name, current)` is a callback function when new hierarchy object has been created
+- `skipped(parent, name, current)` is a callback function when hierarchy object already exists and skipped
+- `got(parent, name, current)` is a callback function when current hierarchy object got no matter it is created or skipped.
 
 ```javascript
 const obj = set({}, 'a', {name: 'b', value: []}, '0', 100);

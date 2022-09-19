@@ -12,11 +12,17 @@ function _create(target, hierarchies) {
         var value;
         var type;
         var create;
+        var created;
+        var skipped;
+        var got;
         if (info && typeof info === 'object') {
             name = info.name;
             value = info.value;
             type = info.type;
             create = info.create;
+            created = info.created;
+            skipped = info.skipped;
+            got = info.got;
         }
         else {
             name = info;
@@ -28,8 +34,20 @@ function _create(target, hierarchies) {
                     create ? create.call(current, current, name) :
                         {};
             current[name] = obj;
+            if (created) {
+                created.call(current, current, name, obj);
+            }
         }
+        else {
+            if (skipped) {
+                skipped.call(current, current, name, current[name]);
+            }
+        }
+        var parent = current;
         current = current[name];
+        if (got) {
+            got.call(parent, parent, name, current);
+        }
     });
     return current;
 }
