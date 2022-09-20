@@ -1,4 +1,4 @@
-import {PropName} from './type';
+import {PropName, HierarchyCallback} from './type';
 
 function get(target: any, ...rest: any[]) {
 	const hierarchies: Array<PropName |
@@ -6,7 +6,7 @@ function get(target: any, ...rest: any[]) {
 		{
 			name?: PropName,
 			getName?: ((this: object, parent: object) => PropName),
-			got?: ((this: object, parent: object, name: PropName, current: object) => void)
+			got?: HierarchyCallback
 		}> = Array.prototype.concat.apply([], rest);
 	let current = target;
 	if (current !== undefined && current !== null) {

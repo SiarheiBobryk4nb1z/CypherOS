@@ -1,4 +1,10 @@
-import {PropName} from './type';
+import {PropName, IPropDescriptor, HierarchyCallback} from './type';
+
+interface ICreatePropDescriptor extends IPropDescriptor {
+	created?: HierarchyCallback;
+	skipped?: HierarchyCallback;
+	got?: HierarchyCallback;
+}
 
 function _parseArgs(others: any[]) {
 	const value = others[others.length - 1];
@@ -10,16 +16,7 @@ function _parseArgs(others: any[]) {
 
 function _create(
 	target: any,
-	hierarchies: Array<PropName |
-		{
-			name: string,
-			value?: object,
-			type?: new () => object,
-			create?: (this: object, parent: object, name: PropName) => object,
-			created?: (this: object, parent: object, name: PropName, current: object) => void,
-			skipped?: (this: object, parent: object, name: PropName, current: object) => void,
-			got?: (this: object, parent: object, name: PropName, current: object) => void
-		}>
+	hierarchies: Array<PropName | ICreatePropDescriptor>
 ) {
 	let current = target;
 	hierarchies.forEach(info => {

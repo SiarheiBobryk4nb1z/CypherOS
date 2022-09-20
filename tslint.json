@@ -14,7 +14,8 @@
       "single"
     ],
     "trailing-comma": false,
-    "arrow-parens": false
+    "arrow-parens": false,
+    "ordered-imports": false
   },
   "rulesDirectory": []
 }
