@@ -1,6 +1,7 @@
 import {PropName, IPropDescriptor, HierarchyCallback} from './type';
 
 interface ICreatePropDescriptor extends IPropDescriptor {
+	override?: boolean;
 	created?: HierarchyCallback;
 	skipped?: HierarchyCallback;
 	got?: HierarchyCallback;
@@ -23,6 +24,7 @@ function _create(
 		let name;
 		let value;
 		let type;
+		let override;
 		let create;
 		let created;
 		let skipped;
@@ -32,6 +34,7 @@ function _create(
 			name = info.name;
 			value = info.value;
 			type = info.type;
+			override = info.override;
 			create = info.create;
 			created = info.created;
 			skipped = info.skipped;
@@ -41,7 +44,7 @@ function _create(
 			value = {};
 		}
 
-		if (!current[name] || typeof current[name] !== 'object') {
+		if (override || !current[name] || typeof current[name] !== 'object') {
 			const obj = value ? value :
 				type ? new type() :
 					create ? create.call(current, current, name) :

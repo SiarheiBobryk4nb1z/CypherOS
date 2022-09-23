@@ -63,11 +63,12 @@ console.log(obj.a.b.c); // 100
 ```
 
 ## Customize hierarchy object creating
-Property can ba a descriptor object rather than a string for non-last property item. The descriptor shape is `{name, value|type|create, created?, skipped?, got?}`.
+Property can ba a descriptor object rather than a string for non-last property item. The descriptor shape is `{name, value|type|create, override?, created?, skipped?, got?}`.
 
 - `name` is the property name
 - `value` should be an object assign to parent object's `name`
 - `type` is a constructor function that creates object assign to parent object's `name`
+- `override` determines if always create new hierarchy object even property already exists
 - `create(parent, name)` is a function that returns a customized object assign to `parent` object's `name`
 - `created(parent, name, current)` is a callback function when new hierarchy object has been created
 - `skipped(parent, name, current)` is a callback function when hierarchy object already exists and skipped
@@ -87,6 +88,14 @@ console.log(obj); // {a: {b: [100]}}
 ```javascript
 const obj = set({}, 'a', {name: 'b', create: () => [1, 2, 3]}, '3', 200);
 console.log(obj); //  {a: {b: [1, 2, 3, 200]}}
+```
+```javascript
+const obj = set({}, 'a', 'b', 'c', 100);
+setIfUndef(obj, 'a', 'b', 'c', 200);
+console.log(obj.a.b.c); // 100
+
+setIfUndef(obj, 'a', {name: 'b', override: true}, 'c', 300);
+console.log(obj.a.b.c); // 300
 ```
 
 ## `assign` and `assignIfUndef`

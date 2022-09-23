@@ -74,3 +74,7 @@ set(obj5,
 	},
 	500
 );
+
+const obj6 = set({}, 'a', 'b', 'c1', 600);
+set(obj6, 'a', {name: 'b', override: "true"}, 'c2', 601);
+assert.deepEqual(obj6, {a: {b: {c2: 601}}});

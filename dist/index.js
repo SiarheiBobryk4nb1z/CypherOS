@@ -17,6 +17,7 @@
 	        var name;
 	        var value;
 	        var type;
+	        var override;
 	        var create;
 	        var created;
 	        var skipped;
@@ -25,6 +26,7 @@
 	            name = info.name;
 	            value = info.value;
 	            type = info.type;
+	            override = info.override;
 	            create = info.create;
 	            created = info.created;
 	            skipped = info.skipped;
@@ -34,7 +36,7 @@
 	            name = info;
 	            value = {};
 	        }
-	        if (!current[name] || typeof current[name] !== 'object') {
+	        if (override || !current[name] || typeof current[name] !== 'object') {
 	            var obj = value ? value :
 	                type ? new type() :
 	                    create ? create.call(current, current, name) :
