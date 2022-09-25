@@ -6,6 +6,14 @@ require('./set-if-undef');
 require('./assign-if-undef');
 require('./put-if-undef');
 
+require('./set-prop');
+require('./assign-prop');
+require('./put-prop');
+
+require('./set-prop-if-undef');
+require('./assign-prop-if-undef');
+require('./put-prop-if-undef');
+
 require('./get');
 require('./traverse');
 require('./traverse-reverse');

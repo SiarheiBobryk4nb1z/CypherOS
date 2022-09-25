@@ -78,3 +78,6 @@ set(obj5,
 const obj6 = set({}, 'a', 'b', 'c1', 600);
 set(obj6, 'a', {name: 'b', override: "true"}, 'c2', 601);
 assert.deepEqual(obj6, {a: {b: {c2: 601}}});
+
+const obj7 = set({}, [{name: 'a'}, {name: 'b'}, {name: 'c', type: Array}, 0], 700);
+assert.deepEqual(obj7, {a: {b: {c: [700]}}});

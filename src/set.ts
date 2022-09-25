@@ -1,11 +1,4 @@
-import {PropName, IPropDescriptor, HierarchyCallback} from './type';
-
-interface ICreatePropDescriptor extends IPropDescriptor {
-	override?: boolean;
-	created?: HierarchyCallback;
-	skipped?: HierarchyCallback;
-	got?: HierarchyCallback;
-}
+import {setupIfUndef} from './setup';
 
 function _parseArgs(others: any[]) {
 	const value = others[others.length - 1];
@@ -15,66 +8,11 @@ function _parseArgs(others: any[]) {
 	return {hierarchies, prop, value};
 }
 
-function _create(
-	target: any,
-	hierarchies: Array<PropName | ICreatePropDescriptor>
-) {
-	let current = target;
-	hierarchies.forEach(info => {
-		let name;
-		let value;
-		let type;
-		let override;
-		let create;
-		let created;
-		let skipped;
-		let got;
-
-		if (info && typeof info === 'object') {
-			name = info.name;
-			value = info.value;
-			type = info.type;
-			override = info.override;
-			create = info.create;
-			created = info.created;
-			skipped = info.skipped;
-			got = info.got;
-		} else {
-			name = info;
-			value = {};
-		}
-
-		if (override || !current[name] || typeof current[name] !== 'object') {
-			const obj = value ? value :
-				type ? new type() :
-					create ? create.call(current, current, name) :
-						{};
-			current[name] = obj;
-
-			if (created) {
-				created.call(current, current, name, obj);
-			}
-		} else {
-			if (skipped) {
-				skipped.call(current, current, name, current[name]);
-			}
-		}
-
-		const parent = current;
-		current = current[name];
-		if (got) {
-			got.call(parent, parent, name, current);
-		}
-	});
-
-	return current;
-}
-
 function set(optionalTarget: any, ...others: any[]) {
 	const {hierarchies, prop, value} = _parseArgs(others);
 
 	const target = optionalTarget || {};
-	const current = _create(target, hierarchies);
+	const current = setupIfUndef(target, hierarchies);
 	current[prop] = value;
 	return target;
 }
@@ -82,7 +20,7 @@ function set(optionalTarget: any, ...others: any[]) {
 function assign(target: any, ...others: any[]) {
 	const {hierarchies, prop, value} = _parseArgs(others);
 
-	const current = _create(target, hierarchies);
+	const current = setupIfUndef(target, hierarchies);
 	current[prop] = value;
 	return current;
 }
@@ -90,7 +28,7 @@ function assign(target: any, ...others: any[]) {
 function put(target: any, ...others: any[]) {
 	const {hierarchies, prop, value} = _parseArgs(others);
 
-	const current = _create(target, hierarchies);
+	const current = setupIfUndef(target, hierarchies);
 	current[prop] = value;
 	return value;
 }
@@ -99,7 +37,7 @@ function setIfUndef(optionalTarget: any, ...others: any[]) {
 	const {hierarchies, prop, value} = _parseArgs(others);
 
 	const target = optionalTarget || {};
-	const current = _create(target, hierarchies);
+	const current = setupIfUndef(target, hierarchies);
 	if (current[prop] === undefined) {
 		current[prop] = value;
 	}
@@ -109,7 +47,7 @@ function setIfUndef(optionalTarget: any, ...others: any[]) {
 function assignIfUndef(target: any, ...others: any[]) {
 	const {hierarchies, prop, value} = _parseArgs(others);
 
-	const current = _create(target, hierarchies);
+	const current = setupIfUndef(target, hierarchies);
 	if (current[prop] === undefined) {
 		current[prop] = value;
 	}
@@ -119,7 +57,7 @@ function assignIfUndef(target: any, ...others: any[]) {
 function putIfUndef(target: any, ...others: any[]) {
 	const {hierarchies, prop, value} = _parseArgs(others);
 
-	const current = _create(target, hierarchies);
+	const current = setupIfUndef(target, hierarchies);
 	if (current[prop] === undefined) {
 		current[prop] = value;
 	}

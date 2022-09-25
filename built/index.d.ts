@@ -1,3 +1,4 @@
-export { set, assign, put, setIfUndef, assignIfUndef, putIfUndef } from './set';
-export { get } from './get';
-export { traverse, traverseReverse } from './traverse';
+export * from './set';
+export * from './set-prop';
+export * from './get';
+export * from './traverse';

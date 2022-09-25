@@ -13,10 +13,18 @@ interface IPropDescriptor extends IValueDescriptor {
 	name: string;
 }
 
+interface ISetupPropDescriptor extends IPropDescriptor {
+	override?: boolean;
+	created?: HierarchyCallback;
+	skipped?: HierarchyCallback;
+	got?: HierarchyCallback;
+}
+
 export {
 	PropName,
 	IValueDescriptor,
 	IPropDescriptor,
+	ISetupPropDescriptor,
 	LastHierarchyCallback,
 	HierarchyCallback
 };

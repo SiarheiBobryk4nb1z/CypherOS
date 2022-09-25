@@ -1,18 +1,11 @@
-function _parseArgs(others) {
-    var value = others[others.length - 1];
-    var rest = Array.prototype.concat.apply([], others.slice(0, -1)); // exclude `value`
-    var hierarchies = rest.slice(0, -1);
-    var prop = rest[rest.length - 1];
-    return { hierarchies: hierarchies, prop: prop, value: value };
-}
-function _create(target, hierarchies) {
+function setupIfUndef(target, hierarchies) {
     var current = target;
     hierarchies.forEach(function (info) {
         var name;
         var value;
         var type;
-        var override;
         var create;
+        var override;
         var created;
         var skipped;
         var got;
@@ -20,8 +13,8 @@ function _create(target, hierarchies) {
             name = info.name;
             value = info.value;
             type = info.type;
-            override = info.override;
             create = info.create;
+            override = info.override;
             created = info.created;
             skipped = info.skipped;
             got = info.got;
@@ -53,6 +46,22 @@ function _create(target, hierarchies) {
     });
     return current;
 }
+function setup(target, hierarchies) {
+    var current = setupIfUndef(target, hierarchies.slice(0, -1));
+    var lastDescriptor = hierarchies[hierarchies.length - 1];
+    var lastName = typeof lastDescriptor === 'object' ? lastDescriptor.name : lastDescriptor;
+    current[lastName] = undefined;
+    var last = setupIfUndef(current, [lastDescriptor]);
+    return { current: current, last: last };
+}
+
+function _parseArgs(others) {
+    var value = others[others.length - 1];
+    var rest = Array.prototype.concat.apply([], others.slice(0, -1)); // exclude `value`
+    var hierarchies = rest.slice(0, -1);
+    var prop = rest[rest.length - 1];
+    return { hierarchies: hierarchies, prop: prop, value: value };
+}
 function set(optionalTarget) {
     var others = [];
     for (var _i = 1; _i < arguments.length; _i++) {
@@ -60,7 +69,7 @@ function set(optionalTarget) {
     }
     var _a = _parseArgs(others), hierarchies = _a.hierarchies, prop = _a.prop, value = _a.value;
     var target = optionalTarget || {};
-    var current = _create(target, hierarchies);
+    var current = setupIfUndef(target, hierarchies);
     current[prop] = value;
     return target;
 }
@@ -70,7 +79,7 @@ function assign(target) {
         others[_i - 1] = arguments[_i];
     }
     var _a = _parseArgs(others), hierarchies = _a.hierarchies, prop = _a.prop, value = _a.value;
-    var current = _create(target, hierarchies);
+    var current = setupIfUndef(target, hierarchies);
     current[prop] = value;
     return current;
 }
@@ -80,7 +89,7 @@ function put(target) {
         others[_i - 1] = arguments[_i];
     }
     var _a = _parseArgs(others), hierarchies = _a.hierarchies, prop = _a.prop, value = _a.value;
-    var current = _create(target, hierarchies);
+    var current = setupIfUndef(target, hierarchies);
     current[prop] = value;
     return value;
 }
@@ -91,7 +100,7 @@ function setIfUndef(optionalTarget) {
     }
     var _a = _parseArgs(others), hierarchies = _a.hierarchies, prop = _a.prop, value = _a.value;
     var target = optionalTarget || {};
-    var current = _create(target, hierarchies);
+    var current = setupIfUndef(target, hierarchies);
     if (current[prop] === undefined) {
         current[prop] = value;
     }
@@ -103,7 +112,7 @@ function assignIfUndef(target) {
         others[_i - 1] = arguments[_i];
     }
     var _a = _parseArgs(others), hierarchies = _a.hierarchies, prop = _a.prop, value = _a.value;
-    var current = _create(target, hierarchies);
+    var current = setupIfUndef(target, hierarchies);
     if (current[prop] === undefined) {
         current[prop] = value;
     }
@@ -115,11 +124,71 @@ function putIfUndef(target) {
         others[_i - 1] = arguments[_i];
     }
     var _a = _parseArgs(others), hierarchies = _a.hierarchies, prop = _a.prop, value = _a.value;
-    var current = _create(target, hierarchies);
+    var current = setupIfUndef(target, hierarchies);
     if (current[prop] === undefined) {
         current[prop] = value;
     }
     return current[prop];
+}
+
+function _parseHierarchies(hierarchies) {
+    return Array.prototype.concat.apply([], hierarchies);
+}
+function setProp(optionalTarget) {
+    var hierarchies = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        hierarchies[_i - 1] = arguments[_i];
+    }
+    var arrHierarchies = _parseHierarchies(hierarchies);
+    var target = optionalTarget || {};
+    setup(target, arrHierarchies);
+    return target;
+}
+function assignProp(target) {
+    var hierarchies = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        hierarchies[_i - 1] = arguments[_i];
+    }
+    var arrHierarchies = _parseHierarchies(hierarchies);
+    var current = setup(target, arrHierarchies).current;
+    return current;
+}
+function putProp(target) {
+    var hierarchies = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        hierarchies[_i - 1] = arguments[_i];
+    }
+    var arrHierarchies = _parseHierarchies(hierarchies);
+    var last = setup(target, arrHierarchies).last;
+    return last;
+}
+function setPropIfUndef(optionalTarget) {
+    var hierarchies = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        hierarchies[_i - 1] = arguments[_i];
+    }
+    var arrHierarchies = _parseHierarchies(hierarchies);
+    var target = optionalTarget || {};
+    setupIfUndef(target, arrHierarchies);
+    return target;
+}
+function assignPropIfUndef(target) {
+    var hierarchies = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        hierarchies[_i - 1] = arguments[_i];
+    }
+    var arrHierarchies = _parseHierarchies(hierarchies);
+    var current = setupIfUndef(target, arrHierarchies.slice(0, -1));
+    setupIfUndef(current, arrHierarchies.slice(-1));
+    return current;
+}
+function putPropIfUndef(target) {
+    var hierarchies = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        hierarchies[_i - 1] = arguments[_i];
+    }
+    var arrHierarchies = _parseHierarchies(hierarchies);
+    return setupIfUndef(target, arrHierarchies);
 }
 
 function get(target) {
@@ -207,4 +276,4 @@ function traverseReverse(target) {
     }
 }
 
-export { set, assign, put, setIfUndef, assignIfUndef, putIfUndef, get, traverse, traverseReverse };
+export { set, assign, put, setIfUndef, assignIfUndef, putIfUndef, setProp, assignProp, putProp, setPropIfUndef, assignPropIfUndef, putPropIfUndef, get, traverse, traverseReverse };
