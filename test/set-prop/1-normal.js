@@ -30,3 +30,12 @@ assert.equal(result4, obj5);
 
 const obj6 = setProp({}, [{name: 'a'}, {name: 'b'}, {name: 'c', value: [600]}]);
 assert.deepEqual(obj6, {a: {b: {c: [600]}}});
+
+const obj7 = setProp({}, 'a', 'b', 'c');
+assert.deepEqual(obj7, {a: {b: {c: {}}}});
+setProp(obj7, 'a', 'b', {name: 'c', value: []});
+assert.deepEqual(obj7, {a: {b: {c: []}}});
+setProp(obj7, 'a', 'b', {name: 'c', value: [700], override: false});
+assert.deepEqual(obj7, {a: {b: {c: [700]}}});
+setProp(obj7, 'a', 'b', {name: 'c', value: [701], override: true});
+assert.deepEqual(obj7, {a: {b: {c: [701]}}});
