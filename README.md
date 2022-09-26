@@ -44,7 +44,7 @@ set(obj, ['d', 'e', 'f'], ['g', 'h', 'i'], 200);
 console.log(obj.d.e.f.g.h.i); // 200
 ```
 
-Create object at the same time:
+Create root object at the same time:
 ```javascript
 import { set } from 'object-hierarchy-access';
 const obj = set({}, 'a', 'b', 'c', 100);
@@ -110,7 +110,7 @@ console.log(obj.a.b.c); // 300
 
 ### `assign` and `assignIfUndef`
 Just like `set` and `setIfUndef`, but returns the second last hierarchy object which contains the last hierarchy property.
-Cannot create object at the same time since the whole object is not returned.
+Cannot create root object at the same time since the whole object is not returned.
 ```javascript
 import { assign } from 'object-hierarchy-access';
 const obj = {};
@@ -122,7 +122,7 @@ console.log(result === obj.a.b); // true
 
 ### `put` and `putIfUndef`
 Just like `set` and `setIfUndef`, but returns the last hierarchy value.
-Cannot create object at the same time since the whole object is not returned.
+Cannot create root object at the same time since the whole object is not returned.
 ```javascript
 import { putIfUndef } from 'object-hierarchy-access';
 const obj = {};
@@ -148,7 +148,7 @@ createHierarchyProperty(targetObject, [hierarchyProperties]);
 
 ### `setProp`
 Use string as property name or property descriptor object to create hierarchy property.
-Can create object at the same time. Returns the object.
+Can create root object at the same time. Returns the object.
 ```javascript
 import { setProp } from 'object-hierarchy-access';
 const obj1 = {};
@@ -173,7 +173,7 @@ console.log(obj); // {a:{b:{c:[100]}}}
 
 ### `assignProp` and `assignPropIfUndef`
 Just like `setProp` and `setPropIfUndef`, but returns the second last hierarchy.
-Cannot create object at the same time.
+Cannot create root object at the same time.
 ```javascript
 import { assignProp } from 'object-hierarchy-access';
 const obj = {};
@@ -184,7 +184,7 @@ console.log(result); // {c:{}}
 
 ### `putProp` and `putPropIfUndef`
 Just like `setProp` and `setPropIfUndef`, but returns the last hierarchy.
-Cannot create object at the same time.
+Cannot create root object at the same time.
 ```javascript
 import { putProp } from 'object-hierarchy-access';
 const obj = {};
