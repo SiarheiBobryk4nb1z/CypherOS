@@ -2,29 +2,32 @@ type PropName = string | number | symbol;
 
 type LastHierarchyCallback = (this: object, parent: object, name: PropName) => object;
 type HierarchyCallback = (this: object, parent: object, name: PropName, current: object) => void;
+type GetNameCallback = ((this: object, parent: object) => PropName);
 
-interface IValueDescriptor {
+interface INameDescriptor {
+	name?: PropName;
+	getName?: GetNameCallback;
+}
+
+interface IGotPropDescriptor extends INameDescriptor {
+	got?: HierarchyCallback;
+}
+
+interface ISetupPropDescriptor extends IGotPropDescriptor {
 	value?: object;
 	type?: new () => object;
 	create?: LastHierarchyCallback;
-}
-
-interface IPropDescriptor extends IValueDescriptor {
-	name: string;
-}
-
-interface ISetupPropDescriptor extends IPropDescriptor {
 	override?: boolean;
 	created?: HierarchyCallback;
 	skipped?: HierarchyCallback;
-	got?: HierarchyCallback;
 }
 
 export {
 	PropName,
-	IValueDescriptor,
-	IPropDescriptor,
-	ISetupPropDescriptor,
 	LastHierarchyCallback,
-	HierarchyCallback
+	HierarchyCallback,
+	GetNameCallback,
+	INameDescriptor,
+	IGotPropDescriptor,
+	ISetupPropDescriptor
 };

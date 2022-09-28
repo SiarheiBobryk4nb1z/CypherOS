@@ -81,3 +81,9 @@ assert.deepEqual(obj6, {a: {b: {c2: 601}}});
 
 const obj7 = set({}, [{name: 'a'}, {name: 'b'}, {name: 'c', type: Array}, 0], 700);
 assert.deepEqual(obj7, {a: {b: {c: [700]}}});
+
+const obj8 = {a: {b1: {}, b2: {}}};
+set(obj8, 'a', parent => parent.b2 ? 'b2' : 'b1', 'c', 800);
+assert.deepEqual(obj8, {a: {b1: {}, b2: {c: 800}}});
+set(obj8, 'a', {getName: parent => parent.b1 ? 'b1' : 'b2'}, 'c', 801);
+assert.deepEqual(obj8, {a: {b1: {c: 801}, b2: {c: 800}}});

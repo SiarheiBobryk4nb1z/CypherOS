@@ -1,31 +1,37 @@
-import {PropName, ISetupPropDescriptor} from './type';
+import {PropName, GetNameCallback, ISetupPropDescriptor} from './type';
 
-function setupIfUndef(target: any, hierarchies: Array<PropName | ISetupPropDescriptor>) {
+function normalizeDescriptor(
+	current: object,
+	info: PropName | GetNameCallback | ISetupPropDescriptor
+): ISetupPropDescriptor {
+	if (info && typeof info === 'object') {
+		return info;
+	} else if (typeof info === 'function') {
+		const name = info.call(current, current);
+		return {
+			name,
+			value: {}
+		};
+	} else {
+		return {
+			name: info,
+			value: {}
+		};
+	}
+}
+
+function getPropName(current: object, descriptor: ISetupPropDescriptor): PropName {
+	const {name, getName} = descriptor;
+	return name || (getName && getName.call(current, current)) || 'undefined';
+}
+
+function setupIfUndef(target: any, hierarchies: Array<PropName | GetNameCallback | ISetupPropDescriptor>) {
 	let current = target;
 	hierarchies.forEach(info => {
-		let name;
-		let value;
-		let type;
-		let create;
-		let override;
-		let created;
-		let skipped;
-		let got;
+		const descriptor = normalizeDescriptor(current, info);
+		const {value, type, create, override, created, skipped, got} = descriptor;
 
-		if (info && typeof info === 'object') {
-			name = info.name;
-			value = info.value;
-			type = info.type;
-			create = info.create;
-			override = info.override;
-			created = info.created;
-			skipped = info.skipped;
-			got = info.got;
-		} else {
-			name = info;
-			value = {};
-		}
-
+		const name = getPropName(current, descriptor);
 		if (override || !current[name] || typeof current[name] !== 'object') {
 			const obj = value ? value :
 				type ? new type() :
@@ -54,11 +60,11 @@ function setupIfUndef(target: any, hierarchies: Array<PropName | ISetupPropDescr
 
 function setup(target: any, hierarchies: Array<PropName | ISetupPropDescriptor>) {
 	const current = setupIfUndef(target, hierarchies.slice(0, -1));
-	const lastDescriptor = hierarchies[hierarchies.length - 1];
-
-	const lastName = typeof lastDescriptor === 'object' ? lastDescriptor.name : lastDescriptor;
+	const lastDescriptor = normalizeDescriptor(current, hierarchies[hierarchies.length - 1]);
+	const lastName = getPropName(current, lastDescriptor);
 	current[lastName] = undefined;
 
+	lastDescriptor.name = lastName;
 	const last = setupIfUndef(current, [lastDescriptor]);
 
 	return {current, last};

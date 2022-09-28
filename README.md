@@ -73,9 +73,10 @@ console.log(obj.a.b.c); // 100
 ```
 
 ### Customize hierarchy object creating
-Property can ba a descriptor object rather than a string for non-last property item. The descriptor shape is `{name, value|type|create, override?, created?, skipped?, got?}`.
+Property can ba a descriptor object rather than a primitive value for non-last property item. The descriptor shape is `{name|getName, value|type|create, override?, created?, skipped?, got?}`.
 
-- `name` is the property name
+- `name` is a primitive property name
+- `getName(parent)` is a callback function to get property name
 - `value` should be an object assign to parent object's `name`
 - `type` is a constructor function(or class) with no parameter that can be used to create object, assign to parent object's `name`
 - `create(parent, name)` is a function that returns a customized object assign to `parent` object's `name`
@@ -83,6 +84,8 @@ Property can ba a descriptor object rather than a string for non-last property i
 - `created(parent, name, current)` is a callback function when new hierarchy object has been created
 - `skipped(parent, name, current)` is a callback function when hierarchy object already exists and skipped
 - `got(parent, name, current)` is a callback function when current hierarchy object got no matter it is created or skipped.
+
+Property can also be a function, it just act as `getName` callback in object descriptor.
 
 ```javascript
 const obj = set({}, 'a', {name: 'b', value: []}, '0', 100);
@@ -147,7 +150,7 @@ createHierarchyProperty(targetObject, [hierarchyProperties]);
 ```
 
 ### `setProp`
-Use string as property name or property descriptor object to create hierarchy property.
+Use primitive value as property name or property descriptor object to create hierarchy property.
 Can create root object at the same time. Returns the object.
 ```javascript
 import { setProp } from 'object-hierarchy-access';
@@ -248,8 +251,8 @@ Last Hierarchy|`put`, `putIfUndef`|`putProp`, `putPropIfUndef`
 ### `get`
 Get value from object's hierarchy properties.
 
-#### String property
-Specifying properties by string:
+#### Primitive name property
+Specifying properties by string, number or symbol:
 ```javascript
 import { get } from 'object-hierarchy-access';
 const obj = {a: {b: {c: 100}}};
@@ -258,18 +261,11 @@ get(obj, 'a', 'b', 'c'); // returns 100
 get(obj, ['a', 'b', 'c']); // returns 100
 ```
 
-#### Function property
-Property can be a function that returns property name. The parameter is parent object.
-```javascript
-const obj = {a: {value: 1, b1: {c: 100}, b2: {c: 200}}};
-get(obj, 'a', parent => parent.value === 1 ? 'b1' : 'b2', 'c'); // returns 100
-```
-
 #### Object property
 Property can be a descriptor object, which its shape is `{name|getName, got?}`.
 
-- `name` is a string property name
-- `getName(parent)` is a function to get property name
+- `name` is a primitive property name
+- `getName(parent)` is a callback function to get property name
 - `got(parent, name, current)` is a callback when value has been got via `name` property from `parent`.
 
 ```javascript
@@ -307,7 +303,13 @@ get(obj,
 		}
 	}
 );
+```
 
+#### Function property
+Property can also be a function, it just act as `getName` callback in object descriptor.
+```javascript
+const obj = {a: {value: 1, b1: {c: 100}, b2: {c: 200}}};
+get(obj, 'a', parent => parent.value === 1 ? 'b1' : 'b2', 'c'); // returns 100
 ```
 
 ### `traverse`
