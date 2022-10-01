@@ -87,6 +87,10 @@ Property can ba a descriptor object rather than a primitive value for non-last p
 
 Property can also be a function, it just act as `getName` callback in object descriptor.
 
+If no *name* related option specified, property name will be `undefined`.
+
+If no *value* related option specified, value will be `{}`.
+
 ```javascript
 const obj = set({}, 'a', {name: 'b', value: []}, '0', 100);
 console.log(obj); // {a: {b: [100]}}
