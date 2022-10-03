@@ -28,7 +28,7 @@ function getPropName(current: object, descriptor: ISetupPropDescriptor): PropNam
 function generate(
 	target: any,
 	hierarchies: Array<PropName | GetNameCallback | ISetupPropDescriptor>,
-	forceOverride = false
+	forceOverride?: boolean
 ) {
 	let current = target;
 	hierarchies.forEach(info => {

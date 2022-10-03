@@ -21,7 +21,6 @@ function getPropName(current, descriptor) {
     return name || (getName && getName.call(current, current)) || 'undefined';
 }
 function generate(target, hierarchies, forceOverride) {
-    if (forceOverride === void 0) { forceOverride = false; }
     var current = target;
     hierarchies.forEach(function (info) {
         var descriptor = normalizeDescriptor(current, info);
