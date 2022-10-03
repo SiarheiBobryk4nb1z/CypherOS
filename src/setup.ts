@@ -25,14 +25,18 @@ function getPropName(current: object, descriptor: ISetupPropDescriptor): PropNam
 	return name || (getName && getName.call(current, current)) || 'undefined';
 }
 
-function setupIfUndef(target: any, hierarchies: Array<PropName | GetNameCallback | ISetupPropDescriptor>) {
+function generate(
+	target: any,
+	hierarchies: Array<PropName | GetNameCallback | ISetupPropDescriptor>,
+	forceOverride = false
+) {
 	let current = target;
 	hierarchies.forEach(info => {
 		const descriptor = normalizeDescriptor(current, info);
 		const {value, type, create, override, created, skipped, got} = descriptor;
 
 		const name = getPropName(current, descriptor);
-		if (override || !current[name] || typeof current[name] !== 'object') {
+		if (forceOverride || override || !current[name] || typeof current[name] !== 'object') {
 			const obj = value ? value :
 				type ? new type() :
 					create ? create.call(current, current, name) :
@@ -58,14 +62,13 @@ function setupIfUndef(target: any, hierarchies: Array<PropName | GetNameCallback
 	return current;
 }
 
-function setup(target: any, hierarchies: Array<PropName | ISetupPropDescriptor>) {
-	const current = setupIfUndef(target, hierarchies.slice(0, -1));
-	const lastDescriptor = normalizeDescriptor(current, hierarchies[hierarchies.length - 1]);
-	const lastName = getPropName(current, lastDescriptor);
-	current[lastName] = undefined;
+function setupIfUndef(target: any, hierarchies: Array<PropName | GetNameCallback | ISetupPropDescriptor>) {
+	return generate(target, hierarchies);
+}
 
-	lastDescriptor.name = lastName;
-	const last = setupIfUndef(current, [lastDescriptor]);
+function setup(target: any, hierarchies: Array<PropName | ISetupPropDescriptor>) {
+	const current = generate(target, hierarchies.slice(0, -1));
+	const last = generate(current, hierarchies.slice(-1), true);
 
 	return {current, last};
 }

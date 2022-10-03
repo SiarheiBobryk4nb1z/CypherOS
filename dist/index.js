@@ -26,13 +26,14 @@
 	    var name = descriptor.name, getName = descriptor.getName;
 	    return name || (getName && getName.call(current, current)) || 'undefined';
 	}
-	function setupIfUndef(target, hierarchies) {
+	function generate(target, hierarchies, forceOverride) {
+	    if (forceOverride === void 0) { forceOverride = false; }
 	    var current = target;
 	    hierarchies.forEach(function (info) {
 	        var descriptor = normalizeDescriptor(current, info);
 	        var value = descriptor.value, type = descriptor.type, create = descriptor.create, override = descriptor.override, created = descriptor.created, skipped = descriptor.skipped, got = descriptor.got;
 	        var name = getPropName(current, descriptor);
-	        if (override || !current[name] || typeof current[name] !== 'object') {
+	        if (forceOverride || override || !current[name] || typeof current[name] !== 'object') {
 	            var obj = value ? value :
 	                type ? new type() :
 	                    create ? create.call(current, current, name) :
@@ -55,13 +56,12 @@
 	    });
 	    return current;
 	}
+	function setupIfUndef(target, hierarchies) {
+	    return generate(target, hierarchies);
+	}
 	function setup(target, hierarchies) {
-	    var current = setupIfUndef(target, hierarchies.slice(0, -1));
-	    var lastDescriptor = normalizeDescriptor(current, hierarchies[hierarchies.length - 1]);
-	    var lastName = getPropName(current, lastDescriptor);
-	    current[lastName] = undefined;
-	    lastDescriptor.name = lastName;
-	    var last = setupIfUndef(current, [lastDescriptor]);
+	    var current = generate(target, hierarchies.slice(0, -1));
+	    var last = generate(current, hierarchies.slice(-1), true);
 	    return { current: current, last: last };
 	}
 
