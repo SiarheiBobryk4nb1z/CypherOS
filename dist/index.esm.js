@@ -1,11 +1,10 @@
-function normalizeDescriptor(current, info) {
+function normalizeDescriptor(info) {
     if (info && typeof info === 'object') {
         return info;
     }
     else if (typeof info === 'function') {
-        var name = info.call(current, current);
         return {
-            name: name,
+            getName: info,
             value: {}
         };
     }
@@ -16,14 +15,16 @@ function normalizeDescriptor(current, info) {
         };
     }
 }
+
 function getPropName(current, descriptor) {
     var name = descriptor.name, getName = descriptor.getName;
     return name || (getName && getName.call(current, current)) || 'undefined';
 }
+
 function generate(target, hierarchies, forceOverride) {
     var current = target;
     hierarchies.forEach(function (info) {
-        var descriptor = normalizeDescriptor(current, info);
+        var descriptor = normalizeDescriptor(info);
         var value = descriptor.value, type = descriptor.type, create = descriptor.create, override = descriptor.override, created = descriptor.created, skipped = descriptor.skipped, got = descriptor.got;
         var name = getPropName(current, descriptor);
         if (forceOverride || override || !current[name] || typeof current[name] !== 'object') {
@@ -194,6 +195,22 @@ function putPropIfUndef(target) {
     return setupIfUndef(target, arrHierarchies);
 }
 
+function normalizeDescriptor$1(info) {
+    if (typeof info === 'object') {
+        return info;
+    }
+    else if (typeof info === 'function') {
+        return {
+            getName: info
+        };
+    }
+    else {
+        return {
+            name: info
+        };
+    }
+}
+
 function get(target) {
     var rest = [];
     for (var _i = 1; _i < arguments.length; _i++) {
@@ -203,19 +220,9 @@ function get(target) {
     var current = target;
     if (current !== undefined && current !== null) {
         hierarchies.every(function (info) {
-            var name;
-            var got;
-            if (typeof info === 'object') {
-                name = info.name ? info.name :
-                    info.getName ? info.getName.call(current, current) : 'undefined';
-                got = info.got;
-            }
-            else if (typeof info === 'function') {
-                name = info.call(current, current);
-            }
-            else {
-                name = info;
-            }
+            var descriptor = normalizeDescriptor$1(info);
+            var got = descriptor.got;
+            var name = getPropName(current, descriptor);
             var parent = current;
             current = current[name];
             if (got) {

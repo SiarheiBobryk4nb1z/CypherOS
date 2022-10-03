@@ -1,29 +1,9 @@
-function normalizeDescriptor(current, info) {
-    if (info && typeof info === 'object') {
-        return info;
-    }
-    else if (typeof info === 'function') {
-        var name_1 = info.call(current, current);
-        return {
-            name: name_1,
-            value: {}
-        };
-    }
-    else {
-        return {
-            name: info,
-            value: {}
-        };
-    }
-}
-function getPropName(current, descriptor) {
-    var name = descriptor.name, getName = descriptor.getName;
-    return name || (getName && getName.call(current, current)) || 'undefined';
-}
+import { normalizeDescriptor } from 'utility/setup';
+import { getPropName } from 'utility/common';
 function generate(target, hierarchies, forceOverride) {
     var current = target;
     hierarchies.forEach(function (info) {
-        var descriptor = normalizeDescriptor(current, info);
+        var descriptor = normalizeDescriptor(info);
         var value = descriptor.value, type = descriptor.type, create = descriptor.create, override = descriptor.override, created = descriptor.created, skipped = descriptor.skipped, got = descriptor.got;
         var name = getPropName(current, descriptor);
         if (forceOverride || override || !current[name] || typeof current[name] !== 'object') {

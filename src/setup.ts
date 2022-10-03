@@ -1,29 +1,6 @@
 import {PropName, GetNameCallback, ISetupPropDescriptor} from './type';
-
-function normalizeDescriptor(
-	current: object,
-	info: PropName | GetNameCallback | ISetupPropDescriptor
-): ISetupPropDescriptor {
-	if (info && typeof info === 'object') {
-		return info;
-	} else if (typeof info === 'function') {
-		const name = info.call(current, current);
-		return {
-			name,
-			value: {}
-		};
-	} else {
-		return {
-			name: info,
-			value: {}
-		};
-	}
-}
-
-function getPropName(current: object, descriptor: ISetupPropDescriptor): PropName {
-	const {name, getName} = descriptor;
-	return name || (getName && getName.call(current, current)) || 'undefined';
-}
+import {normalizeDescriptor} from 'utility/setup';
+import {getPropName} from 'utility/common';
 
 function generate(
 	target: any,
@@ -32,7 +9,7 @@ function generate(
 ) {
 	let current = target;
 	hierarchies.forEach(info => {
-		const descriptor = normalizeDescriptor(current, info);
+		const descriptor = normalizeDescriptor(info);
 		const {value, type, create, override, created, skipped, got} = descriptor;
 
 		const name = getPropName(current, descriptor);
