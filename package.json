@@ -1,6 +1,6 @@
 {
   "name": "object-hierarchy-access",
-  "version": "0.20.1",
+  "version": "0.20.2",
   "description": "Get/Set value from/to JS object hierarchy properties",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",

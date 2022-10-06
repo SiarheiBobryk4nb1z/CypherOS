@@ -1,5 +1,8 @@
 function getPropName(current, descriptor) {
     var name = descriptor.name, getName = descriptor.getName;
-    return name || (getName && getName.call(current, current)) || 'undefined';
+    if (typeof name !== 'undefined') {
+        return name;
+    }
+    return getName && getName.call(current, current) || 'undefined';
 }
 export { getPropName };
