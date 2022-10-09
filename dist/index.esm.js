@@ -253,9 +253,14 @@ function traverse(target) {
     var current = target;
     if (current !== undefined && current !== null) {
         hierarchies.every(function (info) {
-            var name = typeof info === 'function' ? info.call(current, current) : info;
+            var descriptor = normalizeDescriptor$1(info);
+            var got = descriptor.got;
+            var name = getPropName(current, descriptor);
             var parent = current;
             current = current[name];
+            if (got) {
+                got.call(parent, parent, name, current);
+            }
             var result = callback.call(parent, parent, name, current);
             return result !== false;
         });
@@ -273,9 +278,14 @@ function traverseReverse(target) {
     if (current !== undefined && current !== null) {
         var params_1 = [];
         hierarchies.every(function (info) {
-            var name = typeof info === 'function' ? info.call(current, current) : info;
+            var descriptor = normalizeDescriptor$1(info);
+            var got = descriptor.got;
+            var name = getPropName(current, descriptor);
             var parent = current;
             current = current[name];
+            if (got) {
+                got.call(parent, parent, name, current);
+            }
             params_1.push({ parent: parent, name: name, current: current });
             return current;
         });

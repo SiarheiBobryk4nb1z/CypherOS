@@ -1,6 +1,7 @@
-import {PropName} from './type';
+import {GetNameCallback, IGotPropDescriptor, PropName} from './type';
+import {getPropName} from './utility/common';
+import {normalizeDescriptor} from './utility/get';
 
-type TraverseHierarchy = PropName | ((this: object, parent: object) => PropName);
 type TraverseCallback = (this: object, parent: object, name: PropName, current: object) => any;
 
 function _parseArgs(others: any[]) {
@@ -11,14 +12,20 @@ function _parseArgs(others: any[]) {
 
 function traverse(target: any, ...others: any[]) {
 	const args = _parseArgs(others);
-	const hierarchies: TraverseHierarchy[] = args.hierarchies;
+	const hierarchies: Array<PropName | GetNameCallback | IGotPropDescriptor> = args.hierarchies;
 	const callback: TraverseCallback = args.callback;
 	let current = target;
 	if (current !== undefined && current !== null) {
 		hierarchies.every(info => {
-			const name = typeof info === 'function' ? info.call(current, current) : info;
+			const descriptor = normalizeDescriptor(info);
+			const {got} = descriptor;
+			const name = getPropName(current, descriptor);
+
 			const parent = current;
 			current = current[name];
+			if (got) {
+				got.call(parent, parent, name, current);
+			}
 			const result = callback.call(parent, parent, name, current);
 			return result !== false;
 		});
@@ -27,7 +34,7 @@ function traverse(target: any, ...others: any[]) {
 
 function traverseReverse(target: any, ...others: any[]) {
 	const args = _parseArgs(others);
-	const hierarchies: TraverseHierarchy[] = args.hierarchies;
+	const hierarchies: Array<PropName | GetNameCallback | IGotPropDescriptor> = args.hierarchies;
 	const callback: TraverseCallback = args.callback;
 	let current = target;
 	if (current !== undefined && current !== null) {
@@ -37,9 +44,15 @@ function traverseReverse(target: any, ...others: any[]) {
 			current: object
 		}> = [];
 		hierarchies.every(info => {
-			const name = typeof info === 'function' ? info.call(current, current) : info;
+			const descriptor = normalizeDescriptor(info);
+			const {got} = descriptor;
+			const name = getPropName(current, descriptor);
+
 			const parent = current;
 			current = current[name];
+			if (got) {
+				got.call(parent, parent, name, current);
+			}
 			params.push({parent, name, current});
 			return current;
 		});

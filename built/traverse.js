@@ -1,3 +1,5 @@
+import { getPropName } from './utility/common';
+import { normalizeDescriptor } from './utility/get';
 function _parseArgs(others) {
     var callback = others[others.length - 1];
     var hierarchies = Array.prototype.concat.apply([], others.slice(0, -1)); // exclude `callback`
@@ -14,9 +16,14 @@ function traverse(target) {
     var current = target;
     if (current !== undefined && current !== null) {
         hierarchies.every(function (info) {
-            var name = typeof info === 'function' ? info.call(current, current) : info;
+            var descriptor = normalizeDescriptor(info);
+            var got = descriptor.got;
+            var name = getPropName(current, descriptor);
             var parent = current;
             current = current[name];
+            if (got) {
+                got.call(parent, parent, name, current);
+            }
             var result = callback.call(parent, parent, name, current);
             return result !== false;
         });
@@ -34,9 +41,14 @@ function traverseReverse(target) {
     if (current !== undefined && current !== null) {
         var params_1 = [];
         hierarchies.every(function (info) {
-            var name = typeof info === 'function' ? info.call(current, current) : info;
+            var descriptor = normalizeDescriptor(info);
+            var got = descriptor.got;
+            var name = getPropName(current, descriptor);
             var parent = current;
             current = current[name];
+            if (got) {
+                got.call(parent, parent, name, current);
+            }
             params_1.push({ parent: parent, name: name, current: current });
             return current;
         });

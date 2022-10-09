@@ -26,7 +26,13 @@ assert.deepEqual(result2, [
 
 const result3 = [];
 const obj3 = {x: {y: {z: 300}}};
-traverse(obj3, 'x', 'y', 'z', (parent, name) => {
+traverse(obj3, () => 'x', {name: 'y'}, {
+	getName: () => 'z', got: (parent, name, current) => {
+		assert.deepEqual(parent, obj3.x.y);
+		assert.equal(name, 'z1');
+		assert.equal(current, obj3.x.y.z);
+	}
+}, (parent, name) => {
 	result3.push(name);
 	if (name === 'y') {
 		return false;
