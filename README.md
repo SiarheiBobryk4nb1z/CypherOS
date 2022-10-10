@@ -318,7 +318,7 @@ get(obj, 'a', parent => parent.value === 1 ? 'b1' : 'b2', 'c'); // returns 100
 
 ### `traverse`
 Go through each hierarchy with a callback `(parent, name, current) => false?`.
-Hierarchy property can be a primitive value, a descriptor object or a callback, same as `get`. 
+Valid hierarchy property format is same as `get`.
 Returns `false` in callback to terminate hierarchy iteration.
 ```javascript
 import { traverse } from 'object-hierarchy-access';
