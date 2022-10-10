@@ -2,7 +2,7 @@ import {PropName, INameDescriptor} from '../type';
 
 function getPropName(current: object, descriptor: INameDescriptor): PropName {
 	const {name, getName} = descriptor;
-	if (typeof name !== 'undefined') {
+	if (name !== undefined) {
 		return name;
 	}
 
