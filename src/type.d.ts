@@ -9,11 +9,11 @@ interface INameDescriptor {
 	getName?: GetNameCallback;
 }
 
-interface IGotPropDescriptor extends INameDescriptor {
+interface IGotDescriptor {
 	got?: HierarchyCallback;
 }
 
-interface ISetupPropDescriptor extends IGotPropDescriptor {
+interface ISetupPropDescriptor extends INameDescriptor, IGotDescriptor {
 	value?: object;
 	type?: new () => object;
 	create?: LastHierarchyCallback;
@@ -22,12 +22,16 @@ interface ISetupPropDescriptor extends IGotPropDescriptor {
 	skipped?: HierarchyCallback;
 }
 
+interface IGetPropDescriptor extends INameDescriptor, IGotDescriptor {
+}
+
 export {
 	PropName,
 	LastHierarchyCallback,
 	HierarchyCallback,
 	GetNameCallback,
 	INameDescriptor,
-	IGotPropDescriptor,
-	ISetupPropDescriptor
+	IGotDescriptor,
+	ISetupPropDescriptor,
+	IGetPropDescriptor
 };

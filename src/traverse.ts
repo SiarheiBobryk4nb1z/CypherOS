@@ -1,4 +1,4 @@
-import {GetNameCallback, IGotPropDescriptor, PropName} from './type';
+import {GetNameCallback, IGetPropDescriptor, PropName} from './type';
 import {getPropName} from './utility/common';
 import {normalizeDescriptor} from './utility/get';
 
@@ -12,7 +12,7 @@ function _parseArgs(others: any[]) {
 
 function traverse(target: any, ...others: any[]) {
 	const args = _parseArgs(others);
-	const hierarchies: Array<PropName | GetNameCallback | IGotPropDescriptor> = args.hierarchies;
+	const hierarchies: Array<PropName | GetNameCallback | IGetPropDescriptor> = args.hierarchies;
 	const callback: TraverseCallback = args.callback;
 	let current = target;
 	if (current !== undefined && current !== null) {
@@ -34,7 +34,7 @@ function traverse(target: any, ...others: any[]) {
 
 function traverseReverse(target: any, ...others: any[]) {
 	const args = _parseArgs(others);
-	const hierarchies: Array<PropName | GetNameCallback | IGotPropDescriptor> = args.hierarchies;
+	const hierarchies: Array<PropName | GetNameCallback | IGetPropDescriptor> = args.hierarchies;
 	const callback: TraverseCallback = args.callback;
 	let current = target;
 	if (current !== undefined && current !== null) {

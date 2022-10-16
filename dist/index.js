@@ -5,7 +5,7 @@
 }(this, function (exports) { 'use strict';
 
 	function normalizeDescriptor(info) {
-	    if (info && typeof info === 'object') {
+	    if (typeof info === 'object') {
 	        return info;
 	    }
 	    else if (typeof info === 'function') {

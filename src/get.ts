@@ -1,9 +1,9 @@
-import {PropName, GetNameCallback, IGotPropDescriptor} from './type';
+import {PropName, GetNameCallback, IGetPropDescriptor} from './type';
 import {normalizeDescriptor} from 'utility/get';
 import {getPropName} from 'utility/common';
 
 function get(target: any, ...rest: any[]) {
-	const hierarchies: Array<PropName | GetNameCallback | IGotPropDescriptor> = Array.prototype.concat.apply([], rest);
+	const hierarchies: Array<PropName | GetNameCallback | IGetPropDescriptor> = Array.prototype.concat.apply([], rest);
 	let current = target;
 	if (current !== undefined && current !== null) {
 		hierarchies.every(info => {
