@@ -17,33 +17,33 @@ function normalizeDescriptor(info) {
 }
 
 function getPropName(current, descriptor) {
-    var name = descriptor.name, getName = descriptor.getName;
+    const { name, getName } = descriptor;
     if (name !== undefined) {
         return name;
     }
     return getName && getName.call(current, current) || 'undefined';
 }
 function getOwnEnumerablePropKeys(target) {
-    var keys = Object.keys(target);
+    const keys = Object.keys(target);
     if (Object.getOwnPropertySymbols) {
-        var symbols = Object.getOwnPropertySymbols(target)
-            .filter(function (symbol) {
-            var descriptor = Object.getOwnPropertyDescriptor(target, symbol);
+        const symbols = Object.getOwnPropertySymbols(target)
+            .filter(symbol => {
+            const descriptor = Object.getOwnPropertyDescriptor(target, symbol);
             return descriptor && descriptor.enumerable;
         });
         if (symbols.length) {
-            keys.push.apply(keys, symbols);
+            keys.push(...symbols);
         }
     }
     return keys;
 }
 function getPropNames(current, descriptor) {
-    var names = descriptor.names, getNames = descriptor.getNames;
+    const { names, getNames } = descriptor;
     if (names !== undefined) {
         return Array.isArray(names) ? names : [names];
     }
     if (getNames) {
-        var gotNames = getNames.call(current, current);
+        const gotNames = getNames.call(current, current);
         if (gotNames !== undefined) {
             return Array.isArray(gotNames) ? gotNames : [gotNames];
         }
@@ -52,13 +52,13 @@ function getPropNames(current, descriptor) {
 }
 
 function generate(target, hierarchies, forceOverride) {
-    var current = target;
-    hierarchies.forEach(function (info) {
-        var descriptor = normalizeDescriptor(info);
-        var value = descriptor.value, type = descriptor.type, create = descriptor.create, override = descriptor.override, created = descriptor.created, skipped = descriptor.skipped, got = descriptor.got;
-        var name = getPropName(current, descriptor);
+    let current = target;
+    hierarchies.forEach(info => {
+        const descriptor = normalizeDescriptor(info);
+        const { value, type, create, override, created, skipped, got } = descriptor;
+        const name = getPropName(current, descriptor);
         if (forceOverride || override || !current[name] || typeof current[name] !== 'object') {
-            var obj = value ? value :
+            const obj = value ? value :
                 type ? new type() :
                     create ? create.call(current, current, name) :
                         {};
@@ -72,7 +72,7 @@ function generate(target, hierarchies, forceOverride) {
                 skipped.call(current, current, name, current[name]);
             }
         }
-        var parent = current;
+        const parent = current;
         current = current[name];
         if (got) {
             got.call(parent, parent, name, current);
@@ -84,81 +84,57 @@ function setupIfUndef(target, hierarchies) {
     return generate(target, hierarchies);
 }
 function setup(target, hierarchies) {
-    var current = generate(target, hierarchies.slice(0, -1));
-    var last = generate(current, hierarchies.slice(-1), true);
-    return { current: current, last: last };
+    const current = generate(target, hierarchies.slice(0, -1));
+    const last = generate(current, hierarchies.slice(-1), true);
+    return { current, last };
 }
 
 function _parseArgs(others) {
-    var value = others[others.length - 1];
-    var rest = Array.prototype.concat.apply([], others.slice(0, -1)); // exclude `value`
-    var hierarchies = rest.slice(0, -1);
-    var prop = rest[rest.length - 1];
-    return { hierarchies: hierarchies, prop: prop, value: value };
+    const value = others[others.length - 1];
+    const rest = Array.prototype.concat.apply([], others.slice(0, -1)); // exclude `value`
+    const hierarchies = rest.slice(0, -1);
+    const prop = rest[rest.length - 1];
+    return { hierarchies, prop, value };
 }
-function set(optionalTarget) {
-    var others = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        others[_i - 1] = arguments[_i];
-    }
-    var _a = _parseArgs(others), hierarchies = _a.hierarchies, prop = _a.prop, value = _a.value;
-    var target = optionalTarget || {};
-    var current = setupIfUndef(target, hierarchies);
+function set(optionalTarget, ...others) {
+    const { hierarchies, prop, value } = _parseArgs(others);
+    const target = optionalTarget || {};
+    const current = setupIfUndef(target, hierarchies);
     current[prop] = value;
     return target;
 }
-function assign(target) {
-    var others = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        others[_i - 1] = arguments[_i];
-    }
-    var _a = _parseArgs(others), hierarchies = _a.hierarchies, prop = _a.prop, value = _a.value;
-    var current = setupIfUndef(target, hierarchies);
+function assign(target, ...others) {
+    const { hierarchies, prop, value } = _parseArgs(others);
+    const current = setupIfUndef(target, hierarchies);
     current[prop] = value;
     return current;
 }
-function put(target) {
-    var others = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        others[_i - 1] = arguments[_i];
-    }
-    var _a = _parseArgs(others), hierarchies = _a.hierarchies, prop = _a.prop, value = _a.value;
-    var current = setupIfUndef(target, hierarchies);
+function put(target, ...others) {
+    const { hierarchies, prop, value } = _parseArgs(others);
+    const current = setupIfUndef(target, hierarchies);
     current[prop] = value;
     return value;
 }
-function setIfUndef(optionalTarget) {
-    var others = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        others[_i - 1] = arguments[_i];
-    }
-    var _a = _parseArgs(others), hierarchies = _a.hierarchies, prop = _a.prop, value = _a.value;
-    var target = optionalTarget || {};
-    var current = setupIfUndef(target, hierarchies);
+function setIfUndef(optionalTarget, ...others) {
+    const { hierarchies, prop, value } = _parseArgs(others);
+    const target = optionalTarget || {};
+    const current = setupIfUndef(target, hierarchies);
     if (current[prop] === undefined) {
         current[prop] = value;
     }
     return target;
 }
-function assignIfUndef(target) {
-    var others = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        others[_i - 1] = arguments[_i];
-    }
-    var _a = _parseArgs(others), hierarchies = _a.hierarchies, prop = _a.prop, value = _a.value;
-    var current = setupIfUndef(target, hierarchies);
+function assignIfUndef(target, ...others) {
+    const { hierarchies, prop, value } = _parseArgs(others);
+    const current = setupIfUndef(target, hierarchies);
     if (current[prop] === undefined) {
         current[prop] = value;
     }
     return current;
 }
-function putIfUndef(target) {
-    var others = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        others[_i - 1] = arguments[_i];
-    }
-    var _a = _parseArgs(others), hierarchies = _a.hierarchies, prop = _a.prop, value = _a.value;
-    var current = setupIfUndef(target, hierarchies);
+function putIfUndef(target, ...others) {
+    const { hierarchies, prop, value } = _parseArgs(others);
+    const current = setupIfUndef(target, hierarchies);
     if (current[prop] === undefined) {
         current[prop] = value;
     }
@@ -168,60 +144,36 @@ function putIfUndef(target) {
 function _parseHierarchies(hierarchies) {
     return Array.prototype.concat.apply([], hierarchies);
 }
-function setProp(optionalTarget) {
-    var hierarchies = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        hierarchies[_i - 1] = arguments[_i];
-    }
-    var arrHierarchies = _parseHierarchies(hierarchies);
-    var target = optionalTarget || {};
+function setProp(optionalTarget, ...hierarchies) {
+    const arrHierarchies = _parseHierarchies(hierarchies);
+    const target = optionalTarget || {};
     setup(target, arrHierarchies);
     return target;
 }
-function assignProp(target) {
-    var hierarchies = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        hierarchies[_i - 1] = arguments[_i];
-    }
-    var arrHierarchies = _parseHierarchies(hierarchies);
-    var current = setup(target, arrHierarchies).current;
+function assignProp(target, ...hierarchies) {
+    const arrHierarchies = _parseHierarchies(hierarchies);
+    const { current } = setup(target, arrHierarchies);
     return current;
 }
-function putProp(target) {
-    var hierarchies = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        hierarchies[_i - 1] = arguments[_i];
-    }
-    var arrHierarchies = _parseHierarchies(hierarchies);
-    var last = setup(target, arrHierarchies).last;
+function putProp(target, ...hierarchies) {
+    const arrHierarchies = _parseHierarchies(hierarchies);
+    const { last } = setup(target, arrHierarchies);
     return last;
 }
-function setPropIfUndef(optionalTarget) {
-    var hierarchies = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        hierarchies[_i - 1] = arguments[_i];
-    }
-    var arrHierarchies = _parseHierarchies(hierarchies);
-    var target = optionalTarget || {};
+function setPropIfUndef(optionalTarget, ...hierarchies) {
+    const arrHierarchies = _parseHierarchies(hierarchies);
+    const target = optionalTarget || {};
     setupIfUndef(target, arrHierarchies);
     return target;
 }
-function assignPropIfUndef(target) {
-    var hierarchies = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        hierarchies[_i - 1] = arguments[_i];
-    }
-    var arrHierarchies = _parseHierarchies(hierarchies);
-    var current = setupIfUndef(target, arrHierarchies.slice(0, -1));
+function assignPropIfUndef(target, ...hierarchies) {
+    const arrHierarchies = _parseHierarchies(hierarchies);
+    const current = setupIfUndef(target, arrHierarchies.slice(0, -1));
     setupIfUndef(current, arrHierarchies.slice(-1));
     return current;
 }
-function putPropIfUndef(target) {
-    var hierarchies = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        hierarchies[_i - 1] = arguments[_i];
-    }
-    var arrHierarchies = _parseHierarchies(hierarchies);
+function putPropIfUndef(target, ...hierarchies) {
+    const arrHierarchies = _parseHierarchies(hierarchies);
     return setupIfUndef(target, arrHierarchies);
 }
 
@@ -241,19 +193,15 @@ function normalizeDescriptor$1(info) {
     }
 }
 
-function get(target) {
-    var rest = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        rest[_i - 1] = arguments[_i];
-    }
-    var hierarchies = Array.prototype.concat.apply([], rest);
-    var current = target;
+function get(target, ...rest) {
+    const hierarchies = Array.prototype.concat.apply([], rest);
+    let current = target;
     if (current !== undefined && current !== null) {
-        hierarchies.every(function (info) {
-            var descriptor = normalizeDescriptor$1(info);
-            var got = descriptor.got;
-            var name = getPropName(current, descriptor);
-            var parent = current;
+        hierarchies.every(info => {
+            const descriptor = normalizeDescriptor$1(info);
+            const { got } = descriptor;
+            const name = getPropName(current, descriptor);
+            const parent = current;
             current = current[name];
             if (got) {
                 got.call(parent, parent, name, current);
@@ -265,60 +213,52 @@ function get(target) {
 }
 
 function _parseArgs$1(others) {
-    var callback = others[others.length - 1];
-    var hierarchies = Array.prototype.concat.apply([], others.slice(0, -1)); // exclude `callback`
-    return { hierarchies: hierarchies, callback: callback };
+    const callback = others[others.length - 1];
+    const hierarchies = Array.prototype.concat.apply([], others.slice(0, -1)); // exclude `callback`
+    return { hierarchies, callback };
 }
-function traverse(target) {
-    var others = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        others[_i - 1] = arguments[_i];
-    }
-    var args = _parseArgs$1(others);
-    var hierarchies = args.hierarchies;
-    var callback = args.callback;
-    var current = target;
+function traverse(target, ...others) {
+    const args = _parseArgs$1(others);
+    const hierarchies = args.hierarchies;
+    const callback = args.callback;
+    let current = target;
     if (current !== undefined && current !== null) {
-        hierarchies.every(function (info) {
-            var descriptor = normalizeDescriptor$1(info);
-            var got = descriptor.got;
-            var name = getPropName(current, descriptor);
-            var parent = current;
+        hierarchies.every(info => {
+            const descriptor = normalizeDescriptor$1(info);
+            const { got } = descriptor;
+            const name = getPropName(current, descriptor);
+            const parent = current;
             current = current[name];
             if (got) {
                 got.call(parent, parent, name, current);
             }
-            var result = callback.call(parent, parent, name, current);
+            const result = callback.call(parent, parent, name, current);
             return result !== false;
         });
     }
 }
-function traverseReverse(target) {
-    var others = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        others[_i - 1] = arguments[_i];
-    }
-    var args = _parseArgs$1(others);
-    var hierarchies = args.hierarchies;
-    var callback = args.callback;
-    var current = target;
+function traverseReverse(target, ...others) {
+    const args = _parseArgs$1(others);
+    const hierarchies = args.hierarchies;
+    const callback = args.callback;
+    let current = target;
     if (current !== undefined && current !== null) {
-        var params_1 = [];
-        hierarchies.every(function (info) {
-            var descriptor = normalizeDescriptor$1(info);
-            var got = descriptor.got;
-            var name = getPropName(current, descriptor);
-            var parent = current;
+        const params = [];
+        hierarchies.every(info => {
+            const descriptor = normalizeDescriptor$1(info);
+            const { got } = descriptor;
+            const name = getPropName(current, descriptor);
+            const parent = current;
             current = current[name];
             if (got) {
                 got.call(parent, parent, name, current);
             }
-            params_1.push({ parent: parent, name: name, current: current });
+            params.push({ parent, name, current });
             return current;
         });
-        for (var i = params_1.length - 1; i >= 0; i--) {
-            var item = params_1[i];
-            var result = callback.call(item.parent, item.parent, item.name, item.current);
+        for (let i = params.length - 1; i >= 0; i--) {
+            const item = params[i];
+            const result = callback.call(item.parent, item.parent, item.name, item.current);
             if (result === false) {
                 break;
             }
@@ -359,13 +299,13 @@ function cloneContainer(from) {
     }
 }
 function generate$1(current, result, hierarchies, index) {
-    var descriptor = normalizeDescriptor$2(hierarchies[index]);
-    var got = descriptor.got;
-    var names = getPropNames(current, descriptor);
-    var lastIndex = hierarchies.length - 1;
-    names.forEach(function (name) {
+    const descriptor = normalizeDescriptor$2(hierarchies[index]);
+    const { got } = descriptor;
+    const names = getPropNames(current, descriptor);
+    const lastIndex = hierarchies.length - 1;
+    names.forEach(name => {
         if (name in current) {
-            var next = current[name];
+            const next = current[name];
             if (index < lastIndex) {
                 result[name] = cloneContainer(next);
             }
@@ -381,13 +321,9 @@ function generate$1(current, result, hierarchies, index) {
         }
     });
 }
-function select(target) {
-    var hierarchyProps = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        hierarchyProps[_i - 1] = arguments[_i];
-    }
-    var current = target;
-    var result;
+function select(target, ...hierarchyProps) {
+    const current = target;
+    let result;
     if (current !== undefined && current !== null) {
         result = cloneContainer(current);
         generate$1(current, result, hierarchyProps, 0);

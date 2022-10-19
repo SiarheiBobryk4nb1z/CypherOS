@@ -2,7 +2,10 @@ import resolve from 'rollup-plugin-node-resolve';
 import typescript from 'rollup-plugin-typescript';
 import {uglify} from 'rollup-plugin-uglify';
 
-const getConfig = function (format, isMinify, filename) {
+const getConfig = function (format, filename) {
+	const tsOption = format === 'esm' ? {target: 'es2015'} : undefined;
+	const isMinify = filename.indexOf('.min') >= 0;
+
 	const config = {
 		input: 'src/index.ts',
 		output: {
@@ -12,7 +15,7 @@ const getConfig = function (format, isMinify, filename) {
 		},
 		plugins: [
 			resolve(),
-			typescript(),
+			typescript(tsOption),
 			isMinify && uglify({ie8: true})
 		],
 	};
@@ -21,7 +24,7 @@ const getConfig = function (format, isMinify, filename) {
 };
 
 export default [
-	getConfig('umd', false, 'index'),
-	getConfig('umd', true, 'index.min'),
-	getConfig('esm', false, 'index.esm')
+	getConfig('umd', 'index'),
+	getConfig('umd', 'index.min'),
+	getConfig('esm', 'index.esm')
 ];
