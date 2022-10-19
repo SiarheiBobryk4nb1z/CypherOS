@@ -3,10 +3,16 @@ type PropName = string | number | symbol;
 type LastHierarchyCallback = (this: object, parent: object, name: PropName) => object;
 type HierarchyCallback = (this: object, parent: object, name: PropName, current: object) => void;
 type GetNameCallback = ((this: object, parent: object) => PropName);
+type GetNamesCallback = ((this: object, parent: object) => PropName[]);
 
 interface INameDescriptor {
 	name?: PropName;
 	getName?: GetNameCallback;
+}
+
+interface INamesDescriptor {
+	names?: PropName | PropName[];
+	getNames?: GetNamesCallback;
 }
 
 interface IGotDescriptor {
@@ -25,13 +31,22 @@ interface ISetupPropDescriptor extends INameDescriptor, IGotDescriptor {
 interface IGetPropDescriptor extends INameDescriptor, IGotDescriptor {
 }
 
+interface ISelectPropsDescriptor extends INamesDescriptor, IGotDescriptor {
+}
+
 export {
 	PropName,
+
 	LastHierarchyCallback,
 	HierarchyCallback,
 	GetNameCallback,
+	GetNamesCallback,
+
 	INameDescriptor,
+	INamesDescriptor,
 	IGotDescriptor,
+
 	ISetupPropDescriptor,
-	IGetPropDescriptor
+	IGetPropDescriptor,
+	ISelectPropsDescriptor
 };

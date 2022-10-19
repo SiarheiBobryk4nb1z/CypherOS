@@ -1,3 +1,4 @@
-import { PropName, INameDescriptor } from '../type';
+import { PropName, INameDescriptor, INamesDescriptor } from '../type';
 declare function getPropName(current: object, descriptor: INameDescriptor): PropName;
-export { getPropName };
+declare function getPropNames(current: object, descriptor: INamesDescriptor): PropName[];
+export { getPropName, getPropNames };

@@ -17,3 +17,5 @@ require('./put-prop-if-undef');
 require('./get');
 require('./traverse');
 require('./traverse-reverse');
+
+require('./select');

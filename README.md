@@ -18,11 +18,9 @@ For global mode, methods are under global variable `ObjectHierarchyAccess`.
 All methods for setting a value below have same parameters definition:
 ```javascript
 setValue(targetObject, ...hierarchyProperties, lastProperty, value);
-```
-or
-```javascript
 setValue(targetObject, [...hierarchyProperties, lastProperty], value);
 ```
+
 ### `set`
 Set value to object's hierarchy properties, returns the object:
 ```javascript
@@ -147,9 +145,6 @@ console.log(collection === obj.a.b.collection); // true
 All methods for creating hierarchy properties structure below have same parameters definition:
 ```javascript
 createHierarchyProperty(targetObject, ...hierarchyProperties);
-```
-or
-```javascript
 createHierarchyProperty(targetObject, [hierarchyProperties]);
 ```
 
@@ -255,6 +250,11 @@ Last Hierarchy|`put`, `putIfUndef`|`putProp`, `putPropIfUndef`
 ### `get`
 Get value from object's hierarchy properties.
 
+Parameter definition:
+```javascript
+get(targetObject, ...hierarchyProperties);
+get(targetObject, [hierarchyProperties]);
+```
 #### Primitive name property
 Specifying properties by string, number or symbol:
 ```javascript
@@ -320,6 +320,13 @@ get(obj, 'a', parent => parent.value === 1 ? 'b1' : 'b2', 'c'); // returns 100
 Go through each hierarchy with a callback `(parent, name, current) => false?`.
 Valid hierarchy property format is same as `get`.
 Returns `false` in callback to terminate hierarchy iteration.
+
+Parameter definition:
+```javascript
+traverse(targetObject, ...hierarchyProperties, callback);
+traverse(targetObject, [hierarchyProperties], callback);
+```
+
 ```javascript
 import { traverse } from 'object-hierarchy-access';
 const node1 = {}, node2 = {}, node3 = {};
@@ -359,4 +366,55 @@ traverseReverse(task, 'subTasks', 0, 'subTasks', (parent, name, current) => {
 });
 console.log(task.done); // true
 console.log(task.subTasks[0].done); // true
+```
+
+### `select`
+Choose hierarchy properties from object, and got a new object only contains chosen properties.
+
+Parameter definition:
+```javascript
+select(targetObject, ...selectedHierarchyProperties);
+```
+Each selected hierarchy property parameter can be an array of properties, a single primitive property,
+a descriptor object `{names|getNames, got?}` or a callback function as descriptor object's `getNames`.
+- `names` is an array of primitive properties, or a single primitive property
+- `getNames(current)` is a callback function to get property names, should returns array of properties or a single property.
+
+To select all properties of an object, specify `undefined` as names, no matter this object is an array or regular object.
+```javascript
+import { select } from 'object-hierarchy-access';
+const rooms = {
+	building1: {
+		floor1: [{roomNo: '1-101'}, {roomNo: '1-102'}, {roomNo: '1-103'}],
+		floor2: [{roomNo: '1-201'}, {roomNo: '1-202'}, {roomNo: '1-203'}],
+		floor3: [{roomNo: '1-301'}, {roomNo: '1-302'}, {roomNo: '1-303'}]
+	},
+	building2: {
+		floor1: [{roomNo: '2-101'}, {roomNo: '2-102'}, {roomNo: '2-103'}],
+		floor2: [{roomNo: '2-201'}, {roomNo: '2-202'}, {roomNo: '2-203'}],
+		floor3: [{roomNo: '2-301'}, {roomNo: '2-302'}, {roomNo: '2-303'}]
+	},
+	building3: {
+		floor1: [{roomNo: '3-101'}, {roomNo: '3-102'}, {roomNo: '3-103'}],
+		floor2: [{roomNo: '3-201'}, {roomNo: '3-202'}, {roomNo: '3-203'}],
+		floor3: [{roomNo: '3-301'}, {roomNo: '3-302'}, {roomNo: '3-303'}]
+	},
+	building4: {}
+};
+
+const allFloor1Rooms = select(rooms, ['building1', 'building2', 'building3', 'building4'], 'floor1');
+/*
+{
+	building1: {
+		floor1: [{roomNo: '1-101'}, {roomNo: '1-102'}, {roomNo: '1-103'}]
+	},
+	building2: {
+		floor1: [{roomNo: '2-101'}, {roomNo: '2-102'}, {roomNo: '2-103'}]
+	},
+	building3: {
+		floor1: [{roomNo: '3-101'}, {roomNo: '3-102'}, {roomNo: '3-103'}]
+	},
+	building4: {}
+}
+*/
 ```

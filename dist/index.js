@@ -29,6 +29,33 @@
 	    }
 	    return getName && getName.call(current, current) || 'undefined';
 	}
+	function getOwnEnumerablePropKeys(target) {
+	    var keys = Object.keys(target);
+	    if (Object.getOwnPropertySymbols) {
+	        var symbols = Object.getOwnPropertySymbols(target)
+	            .filter(function (symbol) {
+	            var descriptor = Object.getOwnPropertyDescriptor(target, symbol);
+	            return descriptor && descriptor.enumerable;
+	        });
+	        if (symbols.length) {
+	            keys.push.apply(keys, symbols);
+	        }
+	    }
+	    return keys;
+	}
+	function getPropNames(current, descriptor) {
+	    var names = descriptor.names, getNames = descriptor.getNames;
+	    if (names !== undefined) {
+	        return Array.isArray(names) ? names : [names];
+	    }
+	    if (getNames) {
+	        var gotNames = getNames.call(current, current);
+	        if (gotNames !== undefined) {
+	            return Array.isArray(gotNames) ? gotNames : [gotNames];
+	        }
+	    }
+	    return getOwnEnumerablePropKeys(current);
+	}
 
 	function generate(target, hierarchies, forceOverride) {
 	    var current = target;
@@ -305,6 +332,75 @@
 	    }
 	}
 
+	function normalizeDescriptor$2(info) {
+	    if (Array.isArray(info)) {
+	        return {
+	            names: info
+	        };
+	    }
+	    else if (typeof info === 'object') {
+	        return info;
+	    }
+	    else if (typeof info === 'function') {
+	        return {
+	            getNames: info
+	        };
+	    }
+	    else {
+	        return {
+	            names: info
+	        };
+	    }
+	}
+
+	function cloneContainer(from) {
+	    if (Array.isArray(from) || from instanceof Array) {
+	        return [];
+	    }
+	    else if (typeof from === 'object') {
+	        return {};
+	    }
+	    else {
+	        return from;
+	    }
+	}
+	function generate$1(current, result, hierarchies, index) {
+	    var descriptor = normalizeDescriptor$2(hierarchies[index]);
+	    var got = descriptor.got;
+	    var names = getPropNames(current, descriptor);
+	    var lastIndex = hierarchies.length - 1;
+	    names.forEach(function (name) {
+	        if (name in current) {
+	            var next = current[name];
+	            if (index < lastIndex) {
+	                result[name] = cloneContainer(next);
+	            }
+	            else {
+	                result[name] = next;
+	            }
+	            if (got) {
+	                got.call(current, current, name, next);
+	            }
+	            if (index < lastIndex && result !== undefined && typeof next === 'object') {
+	                generate$1(next, result[name], hierarchies, index + 1);
+	            }
+	        }
+	    });
+	}
+	function select(target) {
+	    var hierarchyProps = [];
+	    for (var _i = 1; _i < arguments.length; _i++) {
+	        hierarchyProps[_i - 1] = arguments[_i];
+	    }
+	    var current = target;
+	    var result;
+	    if (current !== undefined && current !== null) {
+	        result = cloneContainer(current);
+	        generate$1(current, result, hierarchyProps, 0);
+	    }
+	    return result;
+	}
+
 	exports.set = set;
 	exports.assign = assign;
 	exports.put = put;
@@ -320,6 +416,7 @@
 	exports.get = get;
 	exports.traverse = traverse;
 	exports.traverseReverse = traverseReverse;
+	exports.select = select;
 
 	Object.defineProperty(exports, '__esModule', { value: true });
 
