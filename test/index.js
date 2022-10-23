@@ -19,3 +19,4 @@ require('./traverse');
 require('./traverse-reverse');
 
 require('./select');
+require('./pick');
