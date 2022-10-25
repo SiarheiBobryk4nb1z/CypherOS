@@ -5,6 +5,7 @@ import {uglify} from 'rollup-plugin-uglify';
 const getConfig = function (format, filename) {
 	const tsOption = format === 'esm' ? {target: 'es2015'} : undefined;
 	const isMinify = filename.indexOf('.min') >= 0;
+	const uglifyOption = format === 'esm' ? undefined : {ie8: true};
 
 	const config = {
 		input: 'src/index.ts',
@@ -16,7 +17,7 @@ const getConfig = function (format, filename) {
 		plugins: [
 			resolve(),
 			typescript(tsOption),
-			isMinify && uglify({ie8: true})
+			isMinify && uglify(uglifyOption)
 		],
 	};
 
