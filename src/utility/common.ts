@@ -1,14 +1,5 @@
 import {PropName, INameDescriptor, INamesDescriptor} from '../type';
 
-function getPropName(current: object, descriptor: INameDescriptor): PropName {
-	const {name, getName} = descriptor;
-	if (name !== undefined) {
-		return name;
-	}
-
-	return getName && getName.call(current, current) || 'undefined';
-}
-
 function getOwnEnumerablePropKeys(target: object) {
 	const keys: Array<string | symbol> = Object.keys(target);
 
@@ -26,6 +17,25 @@ function getOwnEnumerablePropKeys(target: object) {
 	}
 
 	return keys;
+}
+
+function cloneContainer(from: object): object {
+	if (Array.isArray(from) || from instanceof Array) {
+		return [];
+	} else if (typeof from === 'object') {
+		return {};
+	} else {
+		return from;
+	}
+}
+
+function getPropName(current: object, descriptor: INameDescriptor): PropName {
+	const {name, getName} = descriptor;
+	if (name !== undefined) {
+		return name;
+	}
+
+	return getName && getName.call(current, current) || 'undefined';
 }
 
 function getPropNames(current: object, descriptor: INamesDescriptor): PropName[] {
@@ -46,6 +56,9 @@ function getPropNames(current: object, descriptor: INamesDescriptor): PropName[]
 }
 
 export {
+	getOwnEnumerablePropKeys,
+	cloneContainer,
+
 	getPropName,
 	getPropNames
 };

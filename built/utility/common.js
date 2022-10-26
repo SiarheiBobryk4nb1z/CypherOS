@@ -1,10 +1,3 @@
-function getPropName(current, descriptor) {
-    var name = descriptor.name, getName = descriptor.getName;
-    if (name !== undefined) {
-        return name;
-    }
-    return getName && getName.call(current, current) || 'undefined';
-}
 function getOwnEnumerablePropKeys(target) {
     var keys = Object.keys(target);
     if (Object.getOwnPropertySymbols) {
@@ -19,6 +12,24 @@ function getOwnEnumerablePropKeys(target) {
     }
     return keys;
 }
+function cloneContainer(from) {
+    if (Array.isArray(from) || from instanceof Array) {
+        return [];
+    }
+    else if (typeof from === 'object') {
+        return {};
+    }
+    else {
+        return from;
+    }
+}
+function getPropName(current, descriptor) {
+    var name = descriptor.name, getName = descriptor.getName;
+    if (name !== undefined) {
+        return name;
+    }
+    return getName && getName.call(current, current) || 'undefined';
+}
 function getPropNames(current, descriptor) {
     var names = descriptor.names, getNames = descriptor.getNames;
     if (names !== undefined) {
@@ -32,4 +43,4 @@ function getPropNames(current, descriptor) {
     }
     return getOwnEnumerablePropKeys(current);
 }
-export { getPropName, getPropNames };
+export { getOwnEnumerablePropKeys, cloneContainer, getPropName, getPropNames };

@@ -1,16 +1,5 @@
 import { normalizeDescriptor } from 'utility/select';
-import { getPropNames } from 'utility/common';
-function cloneContainer(from) {
-    if (Array.isArray(from) || from instanceof Array) {
-        return [];
-    }
-    else if (typeof from === 'object') {
-        return {};
-    }
-    else {
-        return from;
-    }
-}
+import { getPropNames, cloneContainer } from 'utility/common';
 function generate(current, result, hierarchies, index) {
     var descriptor = normalizeDescriptor(hierarchies[index]);
     var got = descriptor.got;

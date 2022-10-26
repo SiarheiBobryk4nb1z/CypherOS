@@ -1,18 +1,8 @@
 import {PropName, GetNamesCallback, ISelectPropsDescriptor} from './type';
 import {normalizeDescriptor} from 'utility/select';
-import {getPropNames} from 'utility/common';
+import {getPropNames, cloneContainer} from 'utility/common';
 
 type SelectHierarchyProp = PropName | PropName[] | GetNamesCallback | ISelectPropsDescriptor;
-
-function cloneContainer(from: object): object {
-	if (Array.isArray(from) || from instanceof Array) {
-		return [];
-	} else if (typeof from === 'object') {
-		return {};
-	} else {
-		return from;
-	}
-}
 
 function generate(current: any, result: any, hierarchies: SelectHierarchyProp[], index: number) {
 	const descriptor = normalizeDescriptor(hierarchies[index]);

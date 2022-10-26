@@ -22,13 +22,6 @@
 	    }
 	}
 
-	function getPropName(current, descriptor) {
-	    var name = descriptor.name, getName = descriptor.getName;
-	    if (name !== undefined) {
-	        return name;
-	    }
-	    return getName && getName.call(current, current) || 'undefined';
-	}
 	function getOwnEnumerablePropKeys(target) {
 	    var keys = Object.keys(target);
 	    if (Object.getOwnPropertySymbols) {
@@ -42,6 +35,24 @@
 	        }
 	    }
 	    return keys;
+	}
+	function cloneContainer(from) {
+	    if (Array.isArray(from) || from instanceof Array) {
+	        return [];
+	    }
+	    else if (typeof from === 'object') {
+	        return {};
+	    }
+	    else {
+	        return from;
+	    }
+	}
+	function getPropName(current, descriptor) {
+	    var name = descriptor.name, getName = descriptor.getName;
+	    if (name !== undefined) {
+	        return name;
+	    }
+	    return getName && getName.call(current, current) || 'undefined';
 	}
 	function getPropNames(current, descriptor) {
 	    var names = descriptor.names, getNames = descriptor.getNames;
@@ -353,17 +364,6 @@
 	    }
 	}
 
-	function cloneContainer(from) {
-	    if (Array.isArray(from) || from instanceof Array) {
-	        return [];
-	    }
-	    else if (typeof from === 'object') {
-	        return {};
-	    }
-	    else {
-	        return from;
-	    }
-	}
 	function generate$1(current, result, hierarchies, index) {
 	    var descriptor = normalizeDescriptor$2(hierarchies[index]);
 	    var got = descriptor.got;
@@ -433,6 +433,26 @@
 	    return result;
 	}
 
+	function group(target, callback) {
+	    var targetIsArray = Array.isArray(target) || target instanceof Array;
+	    var result = {};
+	    var keys = getOwnEnumerablePropKeys(target);
+	    keys.forEach(function (key) {
+	        var child = target[key];
+	        var groupName = callback.call(target, target, key, child);
+	        if (!result[groupName]) {
+	            result[groupName] = cloneContainer(target);
+	        }
+	        if (targetIsArray) {
+	            result[groupName].push(child);
+	        }
+	        else {
+	            result[groupName][key] = child;
+	        }
+	    });
+	    return result;
+	}
+
 	exports.set = set;
 	exports.assign = assign;
 	exports.put = put;
@@ -450,6 +470,7 @@
 	exports.traverseReverse = traverseReverse;
 	exports.select = select;
 	exports.pick = pick;
+	exports.group = group;
 
 	Object.defineProperty(exports, '__esModule', { value: true });
 

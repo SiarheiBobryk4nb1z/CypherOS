@@ -16,13 +16,6 @@ function normalizeDescriptor(info) {
     }
 }
 
-function getPropName(current, descriptor) {
-    const { name, getName } = descriptor;
-    if (name !== undefined) {
-        return name;
-    }
-    return getName && getName.call(current, current) || 'undefined';
-}
 function getOwnEnumerablePropKeys(target) {
     const keys = Object.keys(target);
     if (Object.getOwnPropertySymbols) {
@@ -36,6 +29,24 @@ function getOwnEnumerablePropKeys(target) {
         }
     }
     return keys;
+}
+function cloneContainer(from) {
+    if (Array.isArray(from) || from instanceof Array) {
+        return [];
+    }
+    else if (typeof from === 'object') {
+        return {};
+    }
+    else {
+        return from;
+    }
+}
+function getPropName(current, descriptor) {
+    const { name, getName } = descriptor;
+    if (name !== undefined) {
+        return name;
+    }
+    return getName && getName.call(current, current) || 'undefined';
 }
 function getPropNames(current, descriptor) {
     const { names, getNames } = descriptor;
@@ -287,17 +298,6 @@ function normalizeDescriptor$2(info) {
     }
 }
 
-function cloneContainer(from) {
-    if (Array.isArray(from) || from instanceof Array) {
-        return [];
-    }
-    else if (typeof from === 'object') {
-        return {};
-    }
-    else {
-        return from;
-    }
-}
 function generate$1(current, result, hierarchies, index) {
     const descriptor = normalizeDescriptor$2(hierarchies[index]);
     const { got } = descriptor;
@@ -359,4 +359,24 @@ function pick(target, ...hierarchyProps) {
     return result;
 }
 
-export { set, assign, put, setIfUndef, assignIfUndef, putIfUndef, setProp, assignProp, putProp, setPropIfUndef, assignPropIfUndef, putPropIfUndef, get, traverse, traverseReverse, select, pick };
+function group(target, callback) {
+    const targetIsArray = Array.isArray(target) || target instanceof Array;
+    const result = {};
+    const keys = getOwnEnumerablePropKeys(target);
+    keys.forEach(key => {
+        const child = target[key];
+        const groupName = callback.call(target, target, key, child);
+        if (!result[groupName]) {
+            result[groupName] = cloneContainer(target);
+        }
+        if (targetIsArray) {
+            result[groupName].push(child);
+        }
+        else {
+            result[groupName][key] = child;
+        }
+    });
+    return result;
+}
+
+export { set, assign, put, setIfUndef, assignIfUndef, putIfUndef, setProp, assignProp, putProp, setPropIfUndef, assignPropIfUndef, putPropIfUndef, get, traverse, traverseReverse, select, pick, group };
