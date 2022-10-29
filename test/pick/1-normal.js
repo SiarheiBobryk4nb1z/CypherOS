@@ -20,6 +20,12 @@ const rooms = {
 		floor3: [{roomNo: '3-301'}, {roomNo: '3-302'}, {roomNo: '3-303'}]
 	},
 	building4: {},
+	building5: {
+		floor1: undefined
+	},
+	building6: {
+		floor1: []
+	},
 	[buildingX]: {
 		floor1: [{roomNo: 'x-101'}, {roomNo: 'x-102'}, {roomNo: 'x-103'}],
 		floor2: [{roomNo: 'x-201'}, {roomNo: 'x-202'}, {roomNo: 'x-203'}],
