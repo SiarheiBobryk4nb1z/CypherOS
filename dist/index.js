@@ -433,24 +433,29 @@
 	    return result;
 	}
 
-	function group(target, callback) {
+	function distribute(target, callback, rootContainer) {
 	    var targetIsArray = Array.isArray(target) || target instanceof Array;
-	    var result = {};
 	    var keys = getOwnEnumerablePropKeys(target);
 	    keys.forEach(function (key) {
 	        var child = target[key];
 	        var groupName = callback.call(target, target, key, child);
-	        if (!result[groupName]) {
-	            result[groupName] = cloneContainer(target);
+	        if (!rootContainer[groupName]) {
+	            rootContainer[groupName] = cloneContainer(target);
 	        }
 	        if (targetIsArray) {
-	            result[groupName].push(child);
+	            rootContainer[groupName].push(child);
 	        }
 	        else {
-	            result[groupName][key] = child;
+	            rootContainer[groupName][key] = child;
 	        }
 	    });
-	    return result;
+	    return rootContainer;
+	}
+	function group(target, callback) {
+	    return distribute(target, callback, {});
+	}
+	function assort(target, callback) {
+	    return distribute(target, callback, []);
 	}
 
 	exports.set = set;
@@ -471,6 +476,7 @@
 	exports.select = select;
 	exports.pick = pick;
 	exports.group = group;
+	exports.assort = assort;
 
 	Object.defineProperty(exports, '__esModule', { value: true });
 

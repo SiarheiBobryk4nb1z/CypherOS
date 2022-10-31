@@ -3,27 +3,35 @@ import {cloneContainer, getOwnEnumerablePropKeys} from './utility/common';
 
 type GroupCallback = (this: object, parent: object, name: PropName, current: object) => PropName;
 
-function group(target: any, callback: GroupCallback) {
+function distribute(target: any, callback: GroupCallback, rootContainer: any) {
 	const targetIsArray = Array.isArray(target) || target instanceof Array;
-	const result: any = {};
 	const keys = getOwnEnumerablePropKeys(target);
 	keys.forEach(key => {
 		const child = target[key];
 		const groupName = callback.call(target, target, key, child);
-		if (!result[groupName]) {
-			result[groupName] = cloneContainer(target);
+		if (!rootContainer[groupName]) {
+			rootContainer[groupName] = cloneContainer(target);
 		}
 
 		if (targetIsArray) {
-			result[groupName].push(child);
+			rootContainer[groupName].push(child);
 		} else {
-			result[groupName][key] = child;
+			rootContainer[groupName][key] = child;
 		}
 	});
 
-	return result;
+	return rootContainer;
+}
+
+function group(target: any, callback: GroupCallback) {
+	return distribute(target, callback, {});
+}
+
+function assort(target: any, callback: GroupCallback) {
+	return distribute(target, callback, []);
 }
 
 export {
-	group
+	group,
+	assort
 };

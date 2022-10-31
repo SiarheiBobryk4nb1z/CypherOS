@@ -359,24 +359,29 @@ function pick(target, ...hierarchyProps) {
     return result;
 }
 
-function group(target, callback) {
+function distribute(target, callback, rootContainer) {
     const targetIsArray = Array.isArray(target) || target instanceof Array;
-    const result = {};
     const keys = getOwnEnumerablePropKeys(target);
     keys.forEach(key => {
         const child = target[key];
         const groupName = callback.call(target, target, key, child);
-        if (!result[groupName]) {
-            result[groupName] = cloneContainer(target);
+        if (!rootContainer[groupName]) {
+            rootContainer[groupName] = cloneContainer(target);
         }
         if (targetIsArray) {
-            result[groupName].push(child);
+            rootContainer[groupName].push(child);
         }
         else {
-            result[groupName][key] = child;
+            rootContainer[groupName][key] = child;
         }
     });
-    return result;
+    return rootContainer;
+}
+function group(target, callback) {
+    return distribute(target, callback, {});
+}
+function assort(target, callback) {
+    return distribute(target, callback, []);
 }
 
-export { set, assign, put, setIfUndef, assignIfUndef, putIfUndef, setProp, assignProp, putProp, setPropIfUndef, assignPropIfUndef, putPropIfUndef, get, traverse, traverseReverse, select, pick, group };
+export { set, assign, put, setIfUndef, assignIfUndef, putIfUndef, setProp, assignProp, putProp, setPropIfUndef, assignPropIfUndef, putPropIfUndef, get, traverse, traverseReverse, select, pick, group, assort };

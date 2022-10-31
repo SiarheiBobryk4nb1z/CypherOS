@@ -20,4 +20,6 @@ require('./traverse-reverse');
 
 require('./select');
 require('./pick');
+
 require('./group');
+require('./assort');
