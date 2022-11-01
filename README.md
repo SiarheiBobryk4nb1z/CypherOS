@@ -524,21 +524,21 @@ Just like `group`, but the root container object is an array.
 ```javascript
 import { assort } from 'object-hierarchy-access';
 const buildings = {
-	northBuliding: {buildingNo:1},
-	eastBuliding: {buildingNo:2},
-	southBuliding: {buildingNo:3},
-	westBuliding: {buildingNo:4}
+	northBuliding: {buildingNo: 1},
+	eastBuliding: {buildingNo: 2},
+	southBuliding: {buildingNo: 3},
+	westBuliding: {buildingNo: 4}
 };
 const arrBuildings = assort(buildings, (parent, name, current) => current.buildingNo % 2);
 /*
 [
 	{
-		eastBuliding: {buildingNo:2},
-		westBuliding: {buildingNo:4}
+		eastBuliding: {buildingNo: 2},
+		westBuliding: {buildingNo: 4}
 	},
 	{
-		northBuliding: {buildingNo:1},
-		southBuliding: {buildingNo:3},
+		northBuliding: {buildingNo: 1},
+		southBuliding: {buildingNo: 3},
 	}
 ]
 */
