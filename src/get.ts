@@ -1,9 +1,10 @@
-import {PropName, GetNameCallback, IGetPropDescriptor} from './type';
+import {GetPropParam} from './type';
 import {normalizeDescriptor} from 'utility/get';
 import {getPropName} from 'utility/common';
 
-function get(target: any, ...rest: any[]) {
-	const hierarchies: Array<PropName | GetNameCallback | IGetPropDescriptor> = Array.prototype.concat.apply([], rest);
+function get(target: any, ...rest: Array<GetPropParam | GetPropParam[]>) {
+	let hierarchies: GetPropParam[] = [];
+	hierarchies = Array.prototype.concat.apply(hierarchies, rest);
 	let current = target;
 	if (current !== undefined && current !== null) {
 		hierarchies.every(info => {

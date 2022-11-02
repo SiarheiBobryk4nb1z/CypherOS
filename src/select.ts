@@ -1,10 +1,8 @@
-import {PropName, GetNamesCallback, ISelectPropsDescriptor} from './type';
+import {SelectPropParam} from './type';
 import {normalizeDescriptor} from 'utility/select';
 import {getPropNames, cloneContainer} from 'utility/common';
 
-type SelectHierarchyProp = PropName | PropName[] | GetNamesCallback | ISelectPropsDescriptor;
-
-function generate(current: any, result: any, hierarchies: SelectHierarchyProp[], index: number) {
+function generate(current: any, result: any, hierarchies: SelectPropParam[], index: number) {
 	const descriptor = normalizeDescriptor(hierarchies[index]);
 	const {got} = descriptor;
 	const names = getPropNames(current, descriptor);
@@ -31,10 +29,7 @@ function generate(current: any, result: any, hierarchies: SelectHierarchyProp[],
 	});
 }
 
-function select(
-	target: any,
-	...hierarchyProps: SelectHierarchyProp[]
-) {
+function select(target: any, ...hierarchyProps: SelectPropParam[]) {
 	let result;
 	const current = target;
 	if (current !== undefined && current !== null) {
@@ -45,7 +40,7 @@ function select(
 	return result;
 }
 
-function find(current: any, result: any[], hierarchies: SelectHierarchyProp[], index: number) {
+function find(current: any, result: any[], hierarchies: SelectPropParam[], index: number) {
 	const descriptor = normalizeDescriptor(hierarchies[index]);
 	const {got} = descriptor;
 	const names = getPropNames(current, descriptor);
@@ -68,10 +63,7 @@ function find(current: any, result: any[], hierarchies: SelectHierarchyProp[], i
 	});
 }
 
-function pick(
-	target: any,
-	...hierarchyProps: SelectHierarchyProp[]
-) {
+function pick(target: any, ...hierarchyProps: SelectPropParam[]) {
 	const result: any[] = [];
 	const current = target;
 	if (current !== undefined && current !== null) {

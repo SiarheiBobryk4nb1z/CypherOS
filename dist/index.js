@@ -183,7 +183,9 @@
 	}
 
 	function _parseHierarchies(hierarchies) {
-	    return Array.prototype.concat.apply([], hierarchies);
+	    var result = [];
+	    result = Array.prototype.concat.apply(result, hierarchies);
+	    return result;
 	}
 	function setProp(optionalTarget) {
 	    var hierarchies = [];
@@ -263,7 +265,8 @@
 	    for (var _i = 1; _i < arguments.length; _i++) {
 	        rest[_i - 1] = arguments[_i];
 	    }
-	    var hierarchies = Array.prototype.concat.apply([], rest);
+	    var hierarchies = [];
+	    hierarchies = Array.prototype.concat.apply(hierarchies, rest);
 	    var current = target;
 	    if (current !== undefined && current !== null) {
 	        hierarchies.every(function (info) {

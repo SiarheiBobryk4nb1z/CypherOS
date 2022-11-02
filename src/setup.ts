@@ -1,10 +1,10 @@
-import {PropName, GetNameCallback, ISetupPropDescriptor} from './type';
+import {SetupPropParam} from './type';
 import {normalizeDescriptor} from 'utility/setup';
 import {getPropName} from 'utility/common';
 
 function generate(
 	target: any,
-	hierarchies: Array<PropName | GetNameCallback | ISetupPropDescriptor>,
+	hierarchies: SetupPropParam[],
 	forceOverride?: boolean
 ) {
 	let current = target;
@@ -39,11 +39,11 @@ function generate(
 	return current;
 }
 
-function setupIfUndef(target: any, hierarchies: Array<PropName | GetNameCallback | ISetupPropDescriptor>) {
+function setupIfUndef(target: any, hierarchies: SetupPropParam[]) {
 	return generate(target, hierarchies);
 }
 
-function setup(target: any, hierarchies: Array<PropName | ISetupPropDescriptor>) {
+function setup(target: any, hierarchies: SetupPropParam[]) {
 	const current = generate(target, hierarchies.slice(0, -1));
 	const last = generate(current, hierarchies.slice(-1), true);
 

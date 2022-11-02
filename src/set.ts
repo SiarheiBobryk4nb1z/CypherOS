@@ -1,9 +1,10 @@
 import {setupIfUndef} from './setup';
+import {SetupPropParam} from './type';
 
 function _parseArgs(others: any[]) {
 	const value = others[others.length - 1];
 	const rest = Array.prototype.concat.apply([], others.slice(0, -1));  // exclude `value`
-	const hierarchies = rest.slice(0, -1);
+	const hierarchies: SetupPropParam[] = rest.slice(0, -1);
 	const prop = rest[rest.length - 1];
 	return {hierarchies, prop, value};
 }

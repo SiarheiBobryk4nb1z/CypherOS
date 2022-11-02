@@ -34,6 +34,12 @@ interface IGetPropDescriptor extends INameDescriptor, IGotDescriptor {
 interface ISelectPropsDescriptor extends INamesDescriptor, IGotDescriptor {
 }
 
+type GetPropParam = PropName | GetNameCallback | IGetPropDescriptor;
+
+type SetupPropParam = PropName | GetNameCallback | ISetupPropDescriptor;
+
+type SelectPropParam = PropName | PropName[] | GetNamesCallback | ISelectPropsDescriptor;
+
 export {
 	PropName,
 
@@ -48,5 +54,9 @@ export {
 
 	ISetupPropDescriptor,
 	IGetPropDescriptor,
-	ISelectPropsDescriptor
+	ISelectPropsDescriptor,
+
+	GetPropParam,
+	SetupPropParam,
+	SelectPropParam
 };

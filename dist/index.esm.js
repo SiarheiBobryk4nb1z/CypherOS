@@ -153,7 +153,9 @@ function putIfUndef(target, ...others) {
 }
 
 function _parseHierarchies(hierarchies) {
-    return Array.prototype.concat.apply([], hierarchies);
+    let result = [];
+    result = Array.prototype.concat.apply(result, hierarchies);
+    return result;
 }
 function setProp(optionalTarget, ...hierarchies) {
     const arrHierarchies = _parseHierarchies(hierarchies);
@@ -205,7 +207,8 @@ function normalizeDescriptor$1(info) {
 }
 
 function get(target, ...rest) {
-    const hierarchies = Array.prototype.concat.apply([], rest);
+    let hierarchies = [];
+    hierarchies = Array.prototype.concat.apply(hierarchies, rest);
     let current = target;
     if (current !== undefined && current !== null) {
         hierarchies.every(info => {

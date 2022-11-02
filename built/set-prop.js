@@ -1,6 +1,8 @@
 import { setup, setupIfUndef } from './setup';
 function _parseHierarchies(hierarchies) {
-    return Array.prototype.concat.apply([], hierarchies);
+    var result = [];
+    result = Array.prototype.concat.apply(result, hierarchies);
+    return result;
 }
 function setProp(optionalTarget) {
     var hierarchies = [];

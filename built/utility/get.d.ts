@@ -1,3 +1,3 @@
-import { GetNameCallback, IGetPropDescriptor, PropName } from '../type';
-declare function normalizeDescriptor(info: PropName | GetNameCallback | IGetPropDescriptor): IGetPropDescriptor;
+import { IGetPropDescriptor, GetPropParam } from '../type';
+declare function normalizeDescriptor(info: GetPropParam): IGetPropDescriptor;
 export { normalizeDescriptor };

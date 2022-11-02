@@ -1,6 +1,6 @@
-import {GetNameCallback, IGetPropDescriptor, PropName} from '../type';
+import {IGetPropDescriptor, GetPropParam} from '../type';
 
-function normalizeDescriptor(info: PropName | GetNameCallback | IGetPropDescriptor): IGetPropDescriptor {
+function normalizeDescriptor(info: GetPropParam): IGetPropDescriptor {
 	if (typeof info === 'object') {
 		return info;
 	} else if (typeof info === 'function') {

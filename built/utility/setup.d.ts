@@ -1,3 +1,3 @@
-import { GetNameCallback, ISetupPropDescriptor, PropName } from '../type';
-declare function normalizeDescriptor(info: PropName | GetNameCallback | ISetupPropDescriptor): ISetupPropDescriptor;
+import { ISetupPropDescriptor, SetupPropParam } from '../type';
+declare function normalizeDescriptor(info: SetupPropParam): ISetupPropDescriptor;
 export { normalizeDescriptor };

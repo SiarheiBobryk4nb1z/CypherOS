@@ -1,5 +1,4 @@
-import { PropName, GetNamesCallback, ISelectPropsDescriptor } from './type';
-declare type SelectHierarchyProp = PropName | PropName[] | GetNamesCallback | ISelectPropsDescriptor;
-declare function select(target: any, ...hierarchyProps: SelectHierarchyProp[]): object | undefined;
-declare function pick(target: any, ...hierarchyProps: SelectHierarchyProp[]): any[];
+import { SelectPropParam } from './type';
+declare function select(target: any, ...hierarchyProps: SelectPropParam[]): object | undefined;
+declare function pick(target: any, ...hierarchyProps: SelectPropParam[]): any[];
 export { select, pick };

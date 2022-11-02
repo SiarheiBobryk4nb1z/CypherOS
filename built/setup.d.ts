@@ -1,6 +1,6 @@
-import { PropName, GetNameCallback, ISetupPropDescriptor } from './type';
-declare function setupIfUndef(target: any, hierarchies: Array<PropName | GetNameCallback | ISetupPropDescriptor>): any;
-declare function setup(target: any, hierarchies: Array<PropName | ISetupPropDescriptor>): {
+import { SetupPropParam } from './type';
+declare function setupIfUndef(target: any, hierarchies: SetupPropParam[]): any;
+declare function setup(target: any, hierarchies: SetupPropParam[]): {
     current: any;
     last: any;
 };

@@ -1,6 +1,6 @@
-import {GetNameCallback, ISetupPropDescriptor, PropName} from '../type';
+import {ISetupPropDescriptor, SetupPropParam} from '../type';
 
-function normalizeDescriptor(info: PropName | GetNameCallback | ISetupPropDescriptor): ISetupPropDescriptor {
+function normalizeDescriptor(info: SetupPropParam): ISetupPropDescriptor {
 	if (typeof info === 'object') {
 		return info;
 	} else if (typeof info === 'function') {
