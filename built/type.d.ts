@@ -4,23 +4,23 @@ declare type HierarchyCallback = (this: object, parent: object, name: PropName, 
 declare type GetNameCallback = ((this: object, parent: object) => PropName);
 declare type GetNamesCallback = ((this: object, parent: object) => PropName[]);
 interface INameDescriptor {
-    name?: PropName;
-    getName?: GetNameCallback;
+    readonly name?: PropName;
+    readonly getName?: GetNameCallback;
 }
 interface INamesDescriptor {
-    names?: PropName | PropName[];
-    getNames?: GetNamesCallback;
+    readonly names?: PropName | PropName[];
+    readonly getNames?: GetNamesCallback;
 }
 interface IGotDescriptor {
-    got?: HierarchyCallback;
+    readonly got?: HierarchyCallback;
 }
 interface ISetupPropDescriptor extends INameDescriptor, IGotDescriptor {
-    value?: object;
-    type?: new () => object;
-    create?: LastHierarchyCallback;
-    override?: boolean;
-    created?: HierarchyCallback;
-    skipped?: HierarchyCallback;
+    readonly value?: object;
+    readonly type?: new () => object;
+    readonly create?: LastHierarchyCallback;
+    readonly override?: boolean;
+    readonly created?: HierarchyCallback;
+    readonly skipped?: HierarchyCallback;
 }
 interface IGetPropDescriptor extends INameDescriptor, IGotDescriptor {
 }
