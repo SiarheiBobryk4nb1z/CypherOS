@@ -1,6 +1,6 @@
 import {SelectPropParam} from './type';
-import {normalizeDescriptor} from 'utility/select';
-import {getPropNames, cloneContainer} from 'utility/common';
+import {normalizeDescriptor} from './utility/select';
+import {getPropNames, cloneContainer} from './utility/common';
 
 function generate(current: any, result: any, hierarchies: SelectPropParam[], index: number) {
 	const descriptor = normalizeDescriptor(hierarchies[index]);

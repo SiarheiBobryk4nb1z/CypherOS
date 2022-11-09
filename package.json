@@ -4,7 +4,7 @@
   "description": "Get/Set value from/to JS object hierarchy properties",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
-  "types": "built/index.d.ts",
+  "types": "src/index.ts",
   "scripts": {
     "build": "rm -rf built/* dist/*; npx tsc; npx rollup -c",
     "lint": "npx tslint -c tslint.json 'src/**/*.ts'",
@@ -29,9 +29,9 @@
     "rollup": "^1.1.2",
     "rollup-plugin-node-resolve": "^4.0.0",
     "rollup-plugin-typescript": "^1.0.0",
-    "rollup-plugin-uglify": "^6.0.1",
+    "rollup-plugin-uglify": "^6.0.2",
     "tslib": "^1.9.3",
     "tslint": "^5.12.1",
-    "typescript": "^3.2.4"
+    "typescript": "^3.3.3"
   }
 }

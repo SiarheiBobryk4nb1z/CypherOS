@@ -1,6 +1,6 @@
 import {SetupPropParam} from './type';
-import {normalizeDescriptor} from 'utility/setup';
-import {getPropName} from 'utility/common';
+import {normalizeDescriptor} from './utility/setup';
+import {getPropName} from './utility/common';
 
 function generate(
 	target: any,

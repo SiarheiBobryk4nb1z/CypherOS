@@ -1,13 +1,13 @@
-import { normalizeDescriptor } from 'utility/select';
-import { getPropNames, cloneContainer } from 'utility/common';
+import { normalizeDescriptor } from './utility/select';
+import { getPropNames, cloneContainer } from './utility/common';
 function generate(current, result, hierarchies, index) {
-    var descriptor = normalizeDescriptor(hierarchies[index]);
-    var got = descriptor.got;
-    var names = getPropNames(current, descriptor);
-    var lastIndex = hierarchies.length - 1;
-    names.forEach(function (name) {
+    const descriptor = normalizeDescriptor(hierarchies[index]);
+    const { got } = descriptor;
+    const names = getPropNames(current, descriptor);
+    const lastIndex = hierarchies.length - 1;
+    names.forEach(name => {
         if (name in current) {
-            var next = current[name];
+            const next = current[name];
             if (got) {
                 got.call(current, current, name, next);
             }
@@ -23,13 +23,9 @@ function generate(current, result, hierarchies, index) {
         }
     });
 }
-function select(target) {
-    var hierarchyProps = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        hierarchyProps[_i - 1] = arguments[_i];
-    }
-    var result;
-    var current = target;
+function select(target, ...hierarchyProps) {
+    let result;
+    const current = target;
     if (current !== undefined && current !== null) {
         result = cloneContainer(current);
         generate(current, result, hierarchyProps, 0);
@@ -37,13 +33,13 @@ function select(target) {
     return result;
 }
 function find(current, result, hierarchies, index) {
-    var descriptor = normalizeDescriptor(hierarchies[index]);
-    var got = descriptor.got;
-    var names = getPropNames(current, descriptor);
-    var lastIndex = hierarchies.length - 1;
-    names.forEach(function (name) {
+    const descriptor = normalizeDescriptor(hierarchies[index]);
+    const { got } = descriptor;
+    const names = getPropNames(current, descriptor);
+    const lastIndex = hierarchies.length - 1;
+    names.forEach(name => {
         if (name in current) {
-            var next = current[name];
+            const next = current[name];
             if (got) {
                 got.call(current, current, name, next);
             }
@@ -56,13 +52,9 @@ function find(current, result, hierarchies, index) {
         }
     });
 }
-function pick(target) {
-    var hierarchyProps = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        hierarchyProps[_i - 1] = arguments[_i];
-    }
-    var result = [];
-    var current = target;
+function pick(target, ...hierarchyProps) {
+    const result = [];
+    const current = target;
     if (current !== undefined && current !== null) {
         find(current, result, hierarchyProps, 0);
     }

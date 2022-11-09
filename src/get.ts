@@ -1,6 +1,6 @@
 import {GetPropParam} from './type';
-import {normalizeDescriptor} from 'utility/get';
-import {getPropName} from 'utility/common';
+import {normalizeDescriptor} from './utility/get';
+import {getPropName} from './utility/common';
 
 function get(target: any, ...rest: Array<GetPropParam | GetPropParam[]>) {
 	let hierarchies: GetPropParam[] = [];

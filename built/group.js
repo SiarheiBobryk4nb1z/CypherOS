@@ -1,10 +1,10 @@
 import { cloneContainer, getOwnEnumerablePropKeys } from './utility/common';
 function distribute(target, callback, rootContainer) {
-    var targetIsArray = Array.isArray(target) || target instanceof Array;
-    var keys = getOwnEnumerablePropKeys(target);
-    keys.forEach(function (key) {
-        var child = target[key];
-        var groupName = callback.call(target, target, key, child);
+    const targetIsArray = Array.isArray(target) || target instanceof Array;
+    const keys = getOwnEnumerablePropKeys(target);
+    keys.forEach(key => {
+        const child = target[key];
+        const groupName = callback.call(target, target, key, child);
         if (!rootContainer[groupName]) {
             rootContainer[groupName] = cloneContainer(target);
         }
