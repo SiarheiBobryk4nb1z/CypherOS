@@ -20,7 +20,4 @@ function distribute(target, callback, rootContainer) {
 function group(target, callback) {
     return distribute(target, callback, {});
 }
-function assort(target, callback) {
-    return distribute(target, callback, []);
-}
-export { group, assort };
+export { group };

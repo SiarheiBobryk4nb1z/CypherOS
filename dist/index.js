@@ -457,9 +457,6 @@
 	function group(target, callback) {
 	    return distribute(target, callback, {});
 	}
-	function assort(target, callback) {
-	    return distribute(target, callback, []);
-	}
 
 	exports.set = set;
 	exports.assign = assign;
@@ -479,7 +476,6 @@
 	exports.select = select;
 	exports.pick = pick;
 	exports.group = group;
-	exports.assort = assort;
 
 	Object.defineProperty(exports, '__esModule', { value: true });
 

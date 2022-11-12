@@ -383,8 +383,5 @@ function distribute(target, callback, rootContainer) {
 function group(target, callback) {
     return distribute(target, callback, {});
 }
-function assort(target, callback) {
-    return distribute(target, callback, []);
-}
 
-export { set, assign, put, setIfUndef, assignIfUndef, putIfUndef, setProp, assignProp, putProp, setPropIfUndef, assignPropIfUndef, putPropIfUndef, get, traverse, traverseReverse, select, pick, group, assort };
+export { set, assign, put, setIfUndef, assignIfUndef, putIfUndef, setProp, assignProp, putProp, setPropIfUndef, assignPropIfUndef, putPropIfUndef, get, traverse, traverseReverse, select, pick, group };

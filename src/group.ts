@@ -27,11 +27,6 @@ function group(target: any, callback: GroupCallback) {
 	return distribute(target, callback, {});
 }
 
-function assort(target: any, callback: GroupCallback) {
-	return distribute(target, callback, []);
-}
-
 export {
-	group,
-	assort
+	group
 };
