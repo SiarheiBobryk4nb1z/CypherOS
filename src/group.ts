@@ -1,7 +1,5 @@
-import {PropName} from './type';
+import {GroupCallback} from './type';
 import {cloneContainer, getOwnEnumerablePropKeys} from './utility/common';
-
-type GroupCallback = (this: object, parent: object, name: PropName, current: object) => PropName;
 
 function distribute(target: any, callback: GroupCallback, rootContainer: any) {
 	const targetIsArray = Array.isArray(target) || target instanceof Array;
