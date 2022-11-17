@@ -16,6 +16,9 @@ function normalizeDescriptor(info) {
     }
 }
 
+function isArray(source) {
+    return Array.isArray(source) || source instanceof Array;
+}
 function getOwnEnumerablePropKeys(target) {
     const keys = Object.keys(target);
     if (Object.getOwnPropertySymbols) {
@@ -31,7 +34,7 @@ function getOwnEnumerablePropKeys(target) {
     return keys;
 }
 function cloneContainer(from) {
-    if (Array.isArray(from) || from instanceof Array) {
+    if (isArray(from)) {
         return [];
     }
     else if (typeof from === 'object') {
@@ -51,12 +54,12 @@ function getPropName(current, descriptor) {
 function getPropNames(current, descriptor) {
     const { names, getNames } = descriptor;
     if (names !== undefined) {
-        return Array.isArray(names) ? names : [names];
+        return isArray(names) ? names : [names];
     }
     if (getNames) {
         const gotNames = getNames.call(current, current);
         if (gotNames !== undefined) {
-            return Array.isArray(gotNames) ? gotNames : [gotNames];
+            return isArray(gotNames) ? gotNames : [gotNames];
         }
     }
     return getOwnEnumerablePropKeys(current);
@@ -281,7 +284,7 @@ function traverseReverse(target, ...others) {
 }
 
 function normalizeDescriptor$2(info) {
-    if (Array.isArray(info)) {
+    if (isArray(info)) {
         return {
             names: info
         };
@@ -363,7 +366,7 @@ function pick(target, ...hierarchyProps) {
 }
 
 function distribute(target, callback, rootContainer) {
-    const targetIsArray = Array.isArray(target) || target instanceof Array;
+    const targetIsArray = isArray(target);
     const keys = getOwnEnumerablePropKeys(target);
     keys.forEach(key => {
         const child = target[key];

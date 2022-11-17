@@ -1,8 +1,8 @@
 import {GroupCallback} from './type';
-import {cloneContainer, getOwnEnumerablePropKeys} from './utility/common';
+import {isArray, cloneContainer, getOwnEnumerablePropKeys} from './utility/common';
 
 function distribute(target: any, callback: GroupCallback, rootContainer: any) {
-	const targetIsArray = Array.isArray(target) || target instanceof Array;
+	const targetIsArray = isArray(target);
 	const keys = getOwnEnumerablePropKeys(target);
 	keys.forEach(key => {
 		const child = target[key];

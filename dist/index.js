@@ -22,6 +22,9 @@
 	    }
 	}
 
+	function isArray(source) {
+	    return Array.isArray(source) || source instanceof Array;
+	}
 	function getOwnEnumerablePropKeys(target) {
 	    var keys = Object.keys(target);
 	    if (Object.getOwnPropertySymbols) {
@@ -37,7 +40,7 @@
 	    return keys;
 	}
 	function cloneContainer(from) {
-	    if (Array.isArray(from) || from instanceof Array) {
+	    if (isArray(from)) {
 	        return [];
 	    }
 	    else if (typeof from === 'object') {
@@ -57,12 +60,12 @@
 	function getPropNames(current, descriptor) {
 	    var names = descriptor.names, getNames = descriptor.getNames;
 	    if (names !== undefined) {
-	        return Array.isArray(names) ? names : [names];
+	        return isArray(names) ? names : [names];
 	    }
 	    if (getNames) {
 	        var gotNames = getNames.call(current, current);
 	        if (gotNames !== undefined) {
-	            return Array.isArray(gotNames) ? gotNames : [gotNames];
+	            return isArray(gotNames) ? gotNames : [gotNames];
 	        }
 	    }
 	    return getOwnEnumerablePropKeys(current);
@@ -347,7 +350,7 @@
 	}
 
 	function normalizeDescriptor$2(info) {
-	    if (Array.isArray(info)) {
+	    if (isArray(info)) {
 	        return {
 	            names: info
 	        };
@@ -437,7 +440,7 @@
 	}
 
 	function distribute(target, callback, rootContainer) {
-	    var targetIsArray = Array.isArray(target) || target instanceof Array;
+	    var targetIsArray = isArray(target);
 	    var keys = getOwnEnumerablePropKeys(target);
 	    keys.forEach(function (key) {
 	        var child = target[key];

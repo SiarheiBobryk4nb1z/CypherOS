@@ -1,5 +1,6 @@
+import { isArray } from './common';
 function normalizeDescriptor(info) {
-    if (Array.isArray(info)) {
+    if (isArray(info)) {
         return {
             names: info
         };

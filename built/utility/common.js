@@ -1,3 +1,6 @@
+function isArray(source) {
+    return Array.isArray(source) || source instanceof Array;
+}
 function getOwnEnumerablePropKeys(target) {
     const keys = Object.keys(target);
     if (Object.getOwnPropertySymbols) {
@@ -13,7 +16,7 @@ function getOwnEnumerablePropKeys(target) {
     return keys;
 }
 function cloneContainer(from) {
-    if (Array.isArray(from) || from instanceof Array) {
+    if (isArray(from)) {
         return [];
     }
     else if (typeof from === 'object') {
@@ -33,14 +36,14 @@ function getPropName(current, descriptor) {
 function getPropNames(current, descriptor) {
     const { names, getNames } = descriptor;
     if (names !== undefined) {
-        return Array.isArray(names) ? names : [names];
+        return isArray(names) ? names : [names];
     }
     if (getNames) {
         const gotNames = getNames.call(current, current);
         if (gotNames !== undefined) {
-            return Array.isArray(gotNames) ? gotNames : [gotNames];
+            return isArray(gotNames) ? gotNames : [gotNames];
         }
     }
     return getOwnEnumerablePropKeys(current);
 }
-export { getOwnEnumerablePropKeys, cloneContainer, getPropName, getPropNames };
+export { isArray, getOwnEnumerablePropKeys, cloneContainer, getPropName, getPropNames };

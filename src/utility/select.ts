@@ -1,9 +1,10 @@
+import {isArray} from './common';
 import {GetNamesCallback, ISelectPropsDescriptor, PropName} from '../type';
 
 function normalizeDescriptor(
 	info: PropName | PropName[] | GetNamesCallback | ISelectPropsDescriptor
 ): ISelectPropsDescriptor {
-	if (Array.isArray(info)) {
+	if (isArray(info)) {
 		return {
 			names: info
 		};
