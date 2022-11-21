@@ -439,26 +439,74 @@
 	    return result;
 	}
 
-	function distribute(target, callback, rootContainer) {
-	    var targetIsArray = isArray(target);
+	function normalizeDescriptor$3(info) {
+	    if (typeof info === 'object') {
+	        return info;
+	    }
+	    else if (typeof info === 'function') {
+	        return {
+	            by: info
+	        };
+	    }
+	    else {
+	        return {};
+	    }
+	}
+
+	function _createContainer(type) {
+	    if (type) {
+	        return new type();
+	    }
+	    else {
+	        return {};
+	    }
+	}
+	function group(target) {
+	    var params = [];
+	    for (var _i = 1; _i < arguments.length; _i++) {
+	        params[_i - 1] = arguments[_i];
+	    }
+	    if (!params.length) {
+	        return target;
+	    }
+	    var descriptors = params.map(normalizeDescriptor$3).filter(function (d) { return d.by; });
+	    if (!descriptors) {
+	        return target;
+	    }
+	    var lastIndex = descriptors.length - 1;
 	    var keys = getOwnEnumerablePropKeys(target);
+	    var rootContainer = _createContainer(descriptors[0].type);
 	    keys.forEach(function (key) {
 	        var child = target[key];
-	        var groupName = callback.call(target, target, key, child);
-	        if (!rootContainer[groupName]) {
-	            rootContainer[groupName] = cloneContainer(target);
-	        }
-	        if (targetIsArray) {
-	            rootContainer[groupName].push(child);
-	        }
-	        else {
-	            rootContainer[groupName][key] = child;
-	        }
+	        var prevContainer = rootContainer;
+	        var prevName;
+	        descriptors.forEach(function (descriptor, index) {
+	            var type = descriptor.type, by = descriptor.by;
+	            if (index > 0) {
+	                if (!prevContainer[prevName]) {
+	                    prevContainer[prevName] = _createContainer(type);
+	                }
+	                prevContainer = prevContainer[prevName];
+	            }
+	            var groupName = by.call(target, target, key, child);
+	            if (index !== lastIndex) {
+	                prevName = groupName;
+	            }
+	            else {
+	                if (!prevContainer[groupName]) {
+	                    prevContainer[groupName] = cloneContainer(target);
+	                }
+	                var currentContainer = prevContainer[groupName];
+	                if (isArray(currentContainer)) {
+	                    currentContainer.push(child);
+	                }
+	                else {
+	                    currentContainer[key] = child;
+	                }
+	            }
+	        });
 	    });
 	    return rootContainer;
-	}
-	function group(target, callback) {
-	    return distribute(target, callback, {});
 	}
 
 	exports.set = set;

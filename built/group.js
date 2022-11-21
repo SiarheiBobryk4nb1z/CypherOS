@@ -1,23 +1,54 @@
 import { isArray, cloneContainer, getOwnEnumerablePropKeys } from './utility/common';
-function distribute(target, callback, rootContainer) {
-    const targetIsArray = isArray(target);
+import { normalizeDescriptor } from './utility/group';
+function _createContainer(type) {
+    if (type) {
+        return new type();
+    }
+    else {
+        return {};
+    }
+}
+function group(target, ...params) {
+    if (!params.length) {
+        return target;
+    }
+    const descriptors = params.map(normalizeDescriptor).filter(d => d.by);
+    if (!descriptors) {
+        return target;
+    }
+    const lastIndex = descriptors.length - 1;
     const keys = getOwnEnumerablePropKeys(target);
+    const rootContainer = _createContainer(descriptors[0].type);
     keys.forEach(key => {
         const child = target[key];
-        const groupName = callback.call(target, target, key, child);
-        if (!rootContainer[groupName]) {
-            rootContainer[groupName] = cloneContainer(target);
-        }
-        if (targetIsArray) {
-            rootContainer[groupName].push(child);
-        }
-        else {
-            rootContainer[groupName][key] = child;
-        }
+        let prevContainer = rootContainer;
+        let prevName;
+        descriptors.forEach((descriptor, index) => {
+            const { type, by } = descriptor;
+            if (index > 0) {
+                if (!prevContainer[prevName]) {
+                    prevContainer[prevName] = _createContainer(type);
+                }
+                prevContainer = prevContainer[prevName];
+            }
+            const groupName = by.call(target, target, key, child);
+            if (index !== lastIndex) {
+                prevName = groupName;
+            }
+            else {
+                if (!prevContainer[groupName]) {
+                    prevContainer[groupName] = cloneContainer(target);
+                }
+                const currentContainer = prevContainer[groupName];
+                if (isArray(currentContainer)) {
+                    currentContainer.push(child);
+                }
+                else {
+                    currentContainer[key] = child;
+                }
+            }
+        });
     });
     return rootContainer;
-}
-function group(target, callback) {
-    return distribute(target, callback, {});
 }
 export { group };

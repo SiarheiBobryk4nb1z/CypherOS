@@ -48,6 +48,13 @@ type SelectPropParam = PropName | PropName[] | GetNamesCallback | ISelectPropsDe
 // group
 type GroupCallback = (this: object, parent: object, name: PropName, current: object) => PropName;
 
+interface IGroupDescriptor {
+	readonly type?: new () => object;
+	readonly by?: GroupCallback;
+}
+
+type GroupParam = GroupCallback | IGroupDescriptor;
+
 export {
 	PropName,
 
@@ -69,5 +76,7 @@ export {
 	ISelectPropsDescriptor,
 	SelectPropParam,
 
-	GroupCallback
+	GroupCallback,
+	IGroupDescriptor,
+	GroupParam
 };
