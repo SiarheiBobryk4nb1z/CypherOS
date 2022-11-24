@@ -1,4 +1,4 @@
-import {GroupParam, IGroupDescriptor, PropName} from './type';
+import {PropName, GroupParam} from './type';
 import {isArray, cloneContainer, getOwnEnumerablePropKeys} from './utility/common';
 import {normalizeDescriptor} from './utility/group';
 
