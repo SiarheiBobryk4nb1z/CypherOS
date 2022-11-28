@@ -1,11 +1,9 @@
-import {PropName, GetPropParam} from './type';
+import {PropName, HierarchyCallbackReturns, GetPropParam} from './type';
 import {getPropName} from './utility/common';
 import {normalizeDescriptor} from './utility/get';
 
-type TraverseCallback = (this: object, parent: object, name: PropName, current: object) => any;
-
 function _parseArgs(others: any[]) {
-	const callback: TraverseCallback = others[others.length - 1];
+	const callback: HierarchyCallbackReturns<any> = others[others.length - 1];
 	const hierarchies: GetPropParam[] = Array.prototype.concat.apply([], others.slice(0, -1));  // exclude `callback`
 	return {hierarchies, callback};
 }

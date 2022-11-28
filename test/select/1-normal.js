@@ -27,7 +27,11 @@ const rooms = {
 	}
 };
 
-const allFloor1Rooms = select(rooms, ['building1', 'building2', 'building3', 'building4'], () => 'floor1');
+const allFloor1Rooms = select(
+	rooms,
+	['building1', 'building2', 'building3', 'building4'],
+	() => 'floor1'
+);
 assert.deepEqual(allFloor1Rooms, {
 	building1: {
 		floor1: [{roomNo: '1-101'}, {roomNo: '1-102'}, {roomNo: '1-103'}]
@@ -120,9 +124,16 @@ const arrRooms = [
 	}
 ];
 
-const arrAllFloor1Rooms = select(arrRooms, {getNames: () => undefined}, 'floors', 0, 'rooms');
+const arrAllFloor1Rooms = select(
+	arrRooms,
+	{getNames: () => undefined},
+	['buildingNo', 'floors'],
+	0,
+	'rooms'
+);
 assert.deepEqual(arrAllFloor1Rooms, [
 	{
+		buildingNo: 1,
 		floors: [
 			{
 				rooms: [{roomNo: '1-101'}, {roomNo: '1-102'}, {roomNo: '1-103'}]
@@ -130,6 +141,7 @@ assert.deepEqual(arrAllFloor1Rooms, [
 		]
 	},
 	{
+		buildingNo: 2,
 		floors: [
 			{
 				rooms: [{roomNo: '2-101'}, {roomNo: '2-102'}, {roomNo: '2-103'}]
@@ -137,6 +149,7 @@ assert.deepEqual(arrAllFloor1Rooms, [
 		]
 	},
 	{
+		buildingNo: 3,
 		floors: [
 			{
 				rooms: [{roomNo: '3-101'}, {roomNo: '3-102'}, {roomNo: '3-103'}]
@@ -145,44 +158,58 @@ assert.deepEqual(arrAllFloor1Rooms, [
 	}
 ]);
 
-const arrAll01Rooms = select(arrRooms, {getNames: () => undefined}, 'floors', undefined, 'rooms', 0);
+const arrAll01Rooms = select(
+	arrRooms,
+	{getNames: () => undefined},
+	'floors',
+	undefined,
+	{
+		names: 'rooms',
+		mapName: (parent, name, current) => name === 'rooms' ? 'room' : name,
+		mapValue: (parent, name, current) => current[0],
+		mapped: (parent, name, current) => {
+			assert.equal(name, 'room');
+			assert.ok(current.roomNo);
+		}
+	}
+);
 assert.deepEqual(arrAll01Rooms, [
 	{
 		floors: [
 			{
-				rooms: [{roomNo: '1-101'}]
+				room: {roomNo: '1-101'}
 			},
 			{
-				rooms: [{roomNo: '1-201'}]
+				room: {roomNo: '1-201'}
 			},
 			{
-				rooms: [{roomNo: '1-301'}]
+				room: {roomNo: '1-301'}
 			}
 		]
 	},
 	{
 		floors: [
 			{
-				rooms: [{roomNo: '2-101'}]
+				room: {roomNo: '2-101'}
 			},
 			{
-				rooms: [{roomNo: '2-201'}]
+				room: {roomNo: '2-201'}
 			},
 			{
-				rooms: [{roomNo: '2-301'}]
+				room: {roomNo: '2-301'}
 			}
 		]
 	},
 	{
 		floors: [
 			{
-				rooms: [{roomNo: '3-101'}]
+				room: {roomNo: '3-101'}
 			},
 			{
-				rooms: [{roomNo: '3-201'}]
+				room: {roomNo: '3-201'}
 			},
 			{
-				rooms: [{roomNo: '3-301'}]
+				room: {roomNo: '3-301'}
 			}
 		]
 	}

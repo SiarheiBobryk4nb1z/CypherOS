@@ -369,26 +369,35 @@
 	        };
 	    }
 	}
+	function getMapped(current, name, descriptor) {
+	    var got = descriptor.got, mapName = descriptor.mapName, mapValue = descriptor.mapValue, mapped = descriptor.mapped;
+	    var next = current[name];
+	    if (got) {
+	        got.call(current, current, name, next);
+	    }
+	    var mappedName = mapName ? mapName.call(current, current, name, next) : name;
+	    var mappedValue = mapValue ? mapValue.call(current, current, name, next) : next;
+	    if (mapped) {
+	        mapped.call(current, current, mappedName, mappedValue);
+	    }
+	    return { mappedName: mappedName, mappedValue: mappedValue };
+	}
 
 	function generate$1(current, result, hierarchies, index) {
 	    var descriptor = normalizeDescriptor$2(hierarchies[index]);
-	    var got = descriptor.got;
 	    var names = getPropNames(current, descriptor);
 	    var lastIndex = hierarchies.length - 1;
 	    names.forEach(function (name) {
 	        if (name in current) {
-	            var next = current[name];
-	            if (got) {
-	                got.call(current, current, name, next);
-	            }
+	            var _a = getMapped(current, name, descriptor), mappedName = _a.mappedName, mappedValue = _a.mappedValue;
 	            if (index < lastIndex) {
-	                result[name] = cloneContainer(next);
+	                result[mappedName] = cloneContainer(mappedValue);
 	            }
 	            else {
-	                result[name] = next;
+	                result[mappedName] = mappedValue;
 	            }
-	            if (index < lastIndex && result !== undefined && typeof next === 'object') {
-	                generate$1(next, result[name], hierarchies, index + 1);
+	            if (index < lastIndex && result !== undefined && typeof mappedValue === 'object') {
+	                generate$1(mappedValue, result[mappedName], hierarchies, index + 1);
 	            }
 	        }
 	    });
@@ -406,22 +415,19 @@
 	    }
 	    return result;
 	}
+
 	function find(current, result, hierarchies, index) {
 	    var descriptor = normalizeDescriptor$2(hierarchies[index]);
-	    var got = descriptor.got;
 	    var names = getPropNames(current, descriptor);
 	    var lastIndex = hierarchies.length - 1;
 	    names.forEach(function (name) {
 	        if (name in current) {
-	            var next = current[name];
-	            if (got) {
-	                got.call(current, current, name, next);
-	            }
+	            var mappedValue = getMapped(current, name, descriptor).mappedValue;
 	            if (index < lastIndex) {
-	                find(next, result, hierarchies, index + 1);
+	                find(mappedValue, result, hierarchies, index + 1);
 	            }
 	            else {
-	                result.push(next);
+	                result.push(mappedValue);
 	            }
 	        }
 	    });

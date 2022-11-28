@@ -303,26 +303,35 @@ function normalizeDescriptor$2(info) {
         };
     }
 }
+function getMapped(current, name, descriptor) {
+    const { got, mapName, mapValue, mapped } = descriptor;
+    const next = current[name];
+    if (got) {
+        got.call(current, current, name, next);
+    }
+    const mappedName = mapName ? mapName.call(current, current, name, next) : name;
+    const mappedValue = mapValue ? mapValue.call(current, current, name, next) : next;
+    if (mapped) {
+        mapped.call(current, current, mappedName, mappedValue);
+    }
+    return { mappedName, mappedValue };
+}
 
 function generate$1(current, result, hierarchies, index) {
     const descriptor = normalizeDescriptor$2(hierarchies[index]);
-    const { got } = descriptor;
     const names = getPropNames(current, descriptor);
     const lastIndex = hierarchies.length - 1;
     names.forEach(name => {
         if (name in current) {
-            const next = current[name];
-            if (got) {
-                got.call(current, current, name, next);
-            }
+            const { mappedName, mappedValue } = getMapped(current, name, descriptor);
             if (index < lastIndex) {
-                result[name] = cloneContainer(next);
+                result[mappedName] = cloneContainer(mappedValue);
             }
             else {
-                result[name] = next;
+                result[mappedName] = mappedValue;
             }
-            if (index < lastIndex && result !== undefined && typeof next === 'object') {
-                generate$1(next, result[name], hierarchies, index + 1);
+            if (index < lastIndex && result !== undefined && typeof mappedValue === 'object') {
+                generate$1(mappedValue, result[mappedName], hierarchies, index + 1);
             }
         }
     });
@@ -336,22 +345,19 @@ function select(target, ...hierarchyProps) {
     }
     return result;
 }
+
 function find(current, result, hierarchies, index) {
     const descriptor = normalizeDescriptor$2(hierarchies[index]);
-    const { got } = descriptor;
     const names = getPropNames(current, descriptor);
     const lastIndex = hierarchies.length - 1;
     names.forEach(name => {
         if (name in current) {
-            const next = current[name];
-            if (got) {
-                got.call(current, current, name, next);
-            }
+            const { mappedValue } = getMapped(current, name, descriptor);
             if (index < lastIndex) {
-                find(next, result, hierarchies, index + 1);
+                find(mappedValue, result, hierarchies, index + 1);
             }
             else {
-                result.push(next);
+                result.push(mappedValue);
             }
         }
     });

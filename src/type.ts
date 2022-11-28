@@ -3,6 +3,7 @@ type PropName = string | number | symbol;
 
 type LastHierarchyCallback = (this: object, parent: object, name: PropName) => object;
 type HierarchyCallback = (this: object, parent: object, name: PropName, current: object) => void;
+type HierarchyCallbackReturns<T> = (this: object, parent: object, name: PropName, current: object) => T;
 type GetNameCallback = ((this: object, parent: object) => PropName);
 
 interface INameDescriptor {
@@ -10,8 +11,18 @@ interface INameDescriptor {
 	readonly getName?: GetNameCallback;
 }
 
+interface ITypeDescriptor {
+	readonly type?: new () => object;
+}
+
 interface IGotDescriptor {
 	readonly got?: HierarchyCallback;
+}
+
+interface IMapDescriptor {
+	readonly mapName?: HierarchyCallbackReturns<PropName>;
+	readonly mapValue?: HierarchyCallbackReturns<object>;
+	readonly mapped?: HierarchyCallback;
 }
 
 // get
@@ -21,9 +32,8 @@ interface IGetPropDescriptor extends INameDescriptor, IGotDescriptor {
 type GetPropParam = PropName | GetNameCallback | IGetPropDescriptor;
 
 // setup
-interface ISetupPropDescriptor extends INameDescriptor, IGotDescriptor {
+interface ISetupPropDescriptor extends INameDescriptor, ITypeDescriptor, IGotDescriptor {
 	readonly value?: object;
-	readonly type?: new () => object;
 	readonly create?: LastHierarchyCallback;
 	readonly override?: boolean;
 	readonly created?: HierarchyCallback;
@@ -40,7 +50,7 @@ interface INamesDescriptor {
 	readonly getNames?: GetNamesCallback;
 }
 
-interface ISelectPropsDescriptor extends INamesDescriptor, IGotDescriptor {
+interface ISelectPropsDescriptor extends INamesDescriptor, IGotDescriptor, IMapDescriptor {
 }
 
 type SelectPropParam = PropName | PropName[] | GetNamesCallback | ISelectPropsDescriptor;
@@ -48,8 +58,7 @@ type SelectPropParam = PropName | PropName[] | GetNamesCallback | ISelectPropsDe
 // group
 type GroupCallback = (this: object, parent: object, name: PropName, current: object) => PropName;
 
-interface IGroupDescriptor {
-	readonly type?: new () => object;
+interface IGroupDescriptor extends ITypeDescriptor {
 	readonly by?: GroupCallback;
 }
 
@@ -60,8 +69,10 @@ export {
 
 	LastHierarchyCallback,
 	HierarchyCallback,
+	HierarchyCallbackReturns,
 	GetNameCallback,
 	IGotDescriptor,
+	IMapDescriptor,
 
 	INameDescriptor,
 

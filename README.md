@@ -376,9 +376,13 @@ Parameter definition:
 select(targetObject, ...selectedHierarchyProperties);
 ```
 Each selected hierarchy property parameter can be an array of properties, a single primitive property,
-a descriptor object `{names|getNames, got?}` or a callback function as descriptor object's `getNames`.
+a descriptor object `{names|getNames, got?, mapName?, mapValue?, mapped?}` or a callback function as descriptor object's `getNames`.
 - `names` is an array of primitive properties, or a single primitive property
 - `getNames(current)` is a callback function to get property names, should returns array of properties or a single property.
+- `got(parent, name, current)` is a callback function when current hierarchy property value is got.
+- `mapName(parent, name, current)` is a callback function if you want to rename hierarchy property, make sure mapped names are not conflict under same hierarchy.
+- `mapValue(parent, name, current)` is a callback function if you want to transform property value into another shape. Deeper hierarchy selection will based on mapped value.
+- `mapped(parent, mappedName, mappedCurrent)` is a callback function when mapping is done.
 
 To select all properties of an object, specify `undefined` as names, no matter this object is an array or regular object.
 ```javascript
@@ -421,6 +425,7 @@ const allFloor1Rooms = select(rooms, ['building1', 'building2', 'building3', 'bu
 
 ### `pick`
 Similar to `select`, but only picks last hierarchy values into the same array and return.
+Hierarchy selection option `mapName` is useless in this case.
 ```javascript
 import { pick } from 'object-hierarchy-access';
 const rooms = {
