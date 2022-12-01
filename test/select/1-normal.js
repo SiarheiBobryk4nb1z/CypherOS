@@ -19,7 +19,11 @@ const rooms = {
 		floor2: [{roomNo: '3-201'}, {roomNo: '3-202'}, {roomNo: '3-203'}],
 		floor3: [{roomNo: '3-301'}, {roomNo: '3-302'}, {roomNo: '3-303'}]
 	},
-	building4: {},
+	building4: {
+		floor1: 0,
+		floor2: 100,
+		floor3: 200
+	},
 	[buildingX]: {
 		floor1: [{roomNo: 'x-101'}, {roomNo: 'x-102'}, {roomNo: 'x-103'}],
 		floor2: [{roomNo: 'x-201'}, {roomNo: 'x-202'}, {roomNo: 'x-203'}],
@@ -42,7 +46,9 @@ assert.deepEqual(allFloor1Rooms, {
 	building3: {
 		floor1: [{roomNo: '3-101'}, {roomNo: '3-102'}, {roomNo: '3-103'}]
 	},
-	building4: {}
+	building4: {
+		floor1: 0
+	}
 });
 
 const all01Rooms = select(rooms, undefined, {names: undefined}, 0);
@@ -62,7 +68,11 @@ assert.deepEqual(all01Rooms, {
 		floor2: [{roomNo: '3-201'}],
 		floor3: [{roomNo: '3-301'}]
 	},
-	building4: {},
+	building4: {
+		floor1: 0,
+		floor2: 100,
+		floor3: 200
+	},
 	[buildingX]: {
 		floor1: [{roomNo: 'x-101'}],
 		floor2: [{roomNo: 'x-201'}],
