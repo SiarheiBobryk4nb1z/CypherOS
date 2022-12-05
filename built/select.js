@@ -13,7 +13,7 @@ function generate(current, result, hierarchies, index) {
             else {
                 result[mappedName] = mappedValue;
             }
-            if (index < lastIndex && result !== undefined && typeof mappedValue === 'object') {
+            if (index < lastIndex && typeof mappedValue === 'object' && mappedValue !== null) {
                 generate(mappedValue, result[mappedName], hierarchies, index + 1);
             }
         }

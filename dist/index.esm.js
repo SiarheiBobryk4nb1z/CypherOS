@@ -1,5 +1,5 @@
 function normalizeDescriptor(info) {
-    if (typeof info === 'object') {
+    if (typeof info === 'object' && info !== null) {
         return info;
     }
     else if (typeof info === 'function') {
@@ -37,7 +37,7 @@ function cloneContainer(from) {
     if (isArray(from)) {
         return [];
     }
-    else if (typeof from === 'object') {
+    else if (typeof from === 'object' && from !== null) {
         return {};
     }
     else {
@@ -289,7 +289,7 @@ function normalizeDescriptor$2(info) {
             names: info
         };
     }
-    else if (typeof info === 'object') {
+    else if (typeof info === 'object' && info !== null) {
         return info;
     }
     else if (typeof info === 'function') {
@@ -330,7 +330,7 @@ function generate$1(current, result, hierarchies, index) {
             else {
                 result[mappedName] = mappedValue;
             }
-            if (index < lastIndex && result !== undefined && typeof mappedValue === 'object') {
+            if (index < lastIndex && typeof mappedValue === 'object' && mappedValue !== null) {
                 generate$1(mappedValue, result[mappedName], hierarchies, index + 1);
             }
         }
@@ -372,7 +372,7 @@ function pick(target, ...hierarchyProps) {
 }
 
 function normalizeDescriptor$3(info) {
-    if (typeof info === 'object') {
+    if (typeof info === 'object' && info !== null) {
         return info;
     }
     else if (typeof info === 'function') {

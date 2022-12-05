@@ -19,7 +19,7 @@ function cloneContainer(from) {
     if (isArray(from)) {
         return [];
     }
-    else if (typeof from === 'object') {
+    else if (typeof from === 'object' && from !== null) {
         return {};
     }
     else {

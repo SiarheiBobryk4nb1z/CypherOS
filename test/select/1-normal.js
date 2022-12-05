@@ -21,8 +21,8 @@ const rooms = {
 	},
 	building4: {
 		floor1: 0,
-		floor2: 100,
-		floor3: 200
+		floor2: null,
+		floor3: undefined
 	},
 	[buildingX]: {
 		floor1: [{roomNo: 'x-101'}, {roomNo: 'x-102'}, {roomNo: 'x-103'}],
@@ -70,8 +70,8 @@ assert.deepEqual(all01Rooms, {
 	},
 	building4: {
 		floor1: 0,
-		floor2: 100,
-		floor3: 200
+		floor2: null,
+		floor3: undefined
 	},
 	[buildingX]: {
 		floor1: [{roomNo: 'x-101'}],

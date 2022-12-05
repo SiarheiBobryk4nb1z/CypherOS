@@ -5,7 +5,7 @@ function normalizeDescriptor(info) {
             names: info
         };
     }
-    else if (typeof info === 'object') {
+    else if (typeof info === 'object' && info !== null) {
         return info;
     }
     else if (typeof info === 'function') {
