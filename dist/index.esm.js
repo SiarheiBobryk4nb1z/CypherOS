@@ -385,9 +385,13 @@ function normalizeDescriptor$3(info) {
     }
 }
 
-function _createContainer(type) {
+function _createContainer(descriptor, target) {
+    const { type, create } = descriptor;
     if (type) {
         return new type();
+    }
+    else if (create) {
+        return create.call(target, target);
     }
     else {
         return {};
@@ -403,16 +407,22 @@ function group(target, ...params) {
     }
     const lastIndex = descriptors.length - 1;
     const keys = getOwnEnumerablePropKeys(target);
-    const rootContainer = _createContainer(descriptors[0].type);
+    let rootContainer;
     keys.forEach(key => {
         const child = target[key];
-        let prevContainer = rootContainer;
+        let prevContainer;
         let prevName;
         descriptors.forEach((descriptor, index) => {
-            const { type, by } = descriptor;
-            if (index > 0) {
+            const { by } = descriptor;
+            if (index === 0) {
+                if (!rootContainer) {
+                    rootContainer = _createContainer(descriptor, target);
+                }
+                prevContainer = rootContainer;
+            }
+            else {
                 if (!prevContainer[prevName]) {
-                    prevContainer[prevName] = _createContainer(type);
+                    prevContainer[prevName] = _createContainer(descriptor, target);
                 }
                 prevContainer = prevContainer[prevName];
             }

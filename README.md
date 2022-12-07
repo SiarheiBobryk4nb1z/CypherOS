@@ -77,7 +77,7 @@ Property can ba a descriptor object rather than a primitive value for non-last p
 - `getName(parent)` is a callback function to get property name
 - `value` should be an object assign to parent object's `name`
 - `type` is a constructor function(or class) with no parameter that can be used to create object, assign to parent object's `name`
-- `create(parent, name)` is a function that returns a customized object assign to `parent` object's `name`
+- `create(parent, name)` is a callback function that returns a customized object assign to `parent` object's `name`
 - `override` determines if always create new hierarchy object even property already exists
 - `created(parent, name, current)` is a callback function when new hierarchy object has been created
 - `skipped(parent, name, current)` is a callback function when hierarchy object already exists and skipped
@@ -466,10 +466,12 @@ Parameter definition:
 ```javascript
 group(targetObject, ...groupParams);
 ```
-`groupParams` can be an descriptor object which its shape is `{type?, by}`, or a callback function as descriptor object's `by`.
-- `type` is the group container object type, defaults to `Object`.
-- `by(parent, name, current)` is a callback for iterating each property on first hierarchy, should returns a group name.
-`parent` is `targetObject`. `name` is a property name of first hierarchy. `current` is `parent[name]`. 
+`groupParams` can be an descriptor object which its shape is `{type?|create?, by}`, or a callback function as descriptor object's `by`.
+- `type` is the group container object type, defaults to `Object`
+- `create(parent)` is a callback function to create group container object
+- `by(parent, name, current)` is a callback for iterating each property on first hierarchy, should returns a group name
+
+`parent` is `targetObject`. `name` is a property name of first hierarchy. `current` is `parent[name]`.
 
 Specify multiple `groupParams` will create multiple group hierarchies.
 ```javascript

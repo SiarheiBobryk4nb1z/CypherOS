@@ -152,6 +152,19 @@ assert.deepEqual(groupByHasFloor0ByArray, {
 	]
 });
 
+const groupByHasFloor0ByArrayCreate = group(
+	rooms,
+	(parent, name, current) => current.floor0 ? 'hasFloor0' : 'hasNoFloor0',
+	{
+		create: (target) => {
+			assert.equal(target, rooms);
+			return [];
+		},
+		by: (parent, name, current) => Object.keys(current).length % 2
+	}
+);
+assert.deepEqual(groupByHasFloor0ByArrayCreate, groupByHasFloor0ByArray);
+
 const arrRooms = [
 	{
 		buildingNo: 1,

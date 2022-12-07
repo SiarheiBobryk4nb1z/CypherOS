@@ -1,14 +1,14 @@
 // common
 type PropName = string | number | symbol;
 
+type ObjectCallback = ((this: object, parent: object) => PropName);
 type LastHierarchyCallback = (this: object, parent: object, name: PropName) => object;
 type HierarchyCallback = (this: object, parent: object, name: PropName, current: object) => void;
 type HierarchyCallbackReturns<T> = (this: object, parent: object, name: PropName, current: object) => T;
-type GetNameCallback = ((this: object, parent: object) => PropName);
 
 interface INameDescriptor {
 	readonly name?: PropName;
-	readonly getName?: GetNameCallback;
+	readonly getName?: ObjectCallback;
 }
 
 interface ITypeDescriptor {
@@ -29,7 +29,7 @@ interface IMapDescriptor {
 interface IGetPropDescriptor extends INameDescriptor, IGotDescriptor {
 }
 
-type GetPropParam = PropName | GetNameCallback | IGetPropDescriptor;
+type GetPropParam = PropName | ObjectCallback | IGetPropDescriptor;
 
 // setup
 interface ISetupPropDescriptor extends INameDescriptor, ITypeDescriptor, IGotDescriptor {
@@ -40,7 +40,7 @@ interface ISetupPropDescriptor extends INameDescriptor, ITypeDescriptor, IGotDes
 	readonly skipped?: HierarchyCallback;
 }
 
-type SetupPropParam = PropName | GetNameCallback | ISetupPropDescriptor;
+type SetupPropParam = PropName | ObjectCallback | ISetupPropDescriptor;
 
 // select
 type GetNamesCallback = ((this: object, parent: object) => PropName[]);
@@ -60,6 +60,7 @@ type GroupCallback = (this: object, parent: object, name: PropName, current: obj
 
 interface IGroupDescriptor extends ITypeDescriptor {
 	readonly by?: GroupCallback;
+	readonly create?: ObjectCallback;
 }
 
 type GroupParam = GroupCallback | IGroupDescriptor;
@@ -70,7 +71,7 @@ export {
 	LastHierarchyCallback,
 	HierarchyCallback,
 	HierarchyCallbackReturns,
-	GetNameCallback,
+	ObjectCallback,
 	IGotDescriptor,
 	IMapDescriptor,
 

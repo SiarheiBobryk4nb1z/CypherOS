@@ -459,9 +459,13 @@
 	    }
 	}
 
-	function _createContainer(type) {
+	function _createContainer(descriptor, target) {
+	    var type = descriptor.type, create = descriptor.create;
 	    if (type) {
 	        return new type();
+	    }
+	    else if (create) {
+	        return create.call(target, target);
 	    }
 	    else {
 	        return {};
@@ -481,16 +485,22 @@
 	    }
 	    var lastIndex = descriptors.length - 1;
 	    var keys = getOwnEnumerablePropKeys(target);
-	    var rootContainer = _createContainer(descriptors[0].type);
+	    var rootContainer;
 	    keys.forEach(function (key) {
 	        var child = target[key];
-	        var prevContainer = rootContainer;
+	        var prevContainer;
 	        var prevName;
 	        descriptors.forEach(function (descriptor, index) {
-	            var type = descriptor.type, by = descriptor.by;
-	            if (index > 0) {
+	            var by = descriptor.by;
+	            if (index === 0) {
+	                if (!rootContainer) {
+	                    rootContainer = _createContainer(descriptor, target);
+	                }
+	                prevContainer = rootContainer;
+	            }
+	            else {
 	                if (!prevContainer[prevName]) {
-	                    prevContainer[prevName] = _createContainer(type);
+	                    prevContainer[prevName] = _createContainer(descriptor, target);
 	                }
 	                prevContainer = prevContainer[prevName];
 	            }
