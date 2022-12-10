@@ -9,9 +9,7 @@ function _parseArgs(others: any[]) {
 }
 
 function traverse(target: any, ...others: any[]) {
-	const args = _parseArgs(others);
-	const hierarchies = args.hierarchies;
-	const callback = args.callback;
+	const {hierarchies, callback} = _parseArgs(others);
 	let current = target;
 	if (current !== undefined && current !== null) {
 		hierarchies.every(info => {
@@ -31,9 +29,7 @@ function traverse(target: any, ...others: any[]) {
 }
 
 function traverseReverse(target: any, ...others: any[]) {
-	const args = _parseArgs(others);
-	const hierarchies = args.hierarchies;
-	const callback = args.callback;
+	const {hierarchies, callback} = _parseArgs(others);
 	let current = target;
 	if (current !== undefined && current !== null) {
 		const params: Array<{

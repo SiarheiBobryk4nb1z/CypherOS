@@ -297,9 +297,7 @@
 	    for (var _i = 1; _i < arguments.length; _i++) {
 	        others[_i - 1] = arguments[_i];
 	    }
-	    var args = _parseArgs$1(others);
-	    var hierarchies = args.hierarchies;
-	    var callback = args.callback;
+	    var _a = _parseArgs$1(others), hierarchies = _a.hierarchies, callback = _a.callback;
 	    var current = target;
 	    if (current !== undefined && current !== null) {
 	        hierarchies.every(function (info) {
@@ -321,9 +319,7 @@
 	    for (var _i = 1; _i < arguments.length; _i++) {
 	        others[_i - 1] = arguments[_i];
 	    }
-	    var args = _parseArgs$1(others);
-	    var hierarchies = args.hierarchies;
-	    var callback = args.callback;
+	    var _a = _parseArgs$1(others), hierarchies = _a.hierarchies, callback = _a.callback;
 	    var current = target;
 	    if (current !== undefined && current !== null) {
 	        var params_1 = [];
@@ -525,24 +521,24 @@
 	    return rootContainer;
 	}
 
-	exports.set = set;
 	exports.assign = assign;
-	exports.put = put;
-	exports.setIfUndef = setIfUndef;
 	exports.assignIfUndef = assignIfUndef;
-	exports.putIfUndef = putIfUndef;
-	exports.setProp = setProp;
 	exports.assignProp = assignProp;
-	exports.putProp = putProp;
-	exports.setPropIfUndef = setPropIfUndef;
 	exports.assignPropIfUndef = assignPropIfUndef;
-	exports.putPropIfUndef = putPropIfUndef;
 	exports.get = get;
+	exports.group = group;
+	exports.pick = pick;
+	exports.put = put;
+	exports.putIfUndef = putIfUndef;
+	exports.putProp = putProp;
+	exports.putPropIfUndef = putPropIfUndef;
+	exports.select = select;
+	exports.set = set;
+	exports.setIfUndef = setIfUndef;
+	exports.setProp = setProp;
+	exports.setPropIfUndef = setPropIfUndef;
 	exports.traverse = traverse;
 	exports.traverseReverse = traverseReverse;
-	exports.select = select;
-	exports.pick = pick;
-	exports.group = group;
 
 	Object.defineProperty(exports, '__esModule', { value: true });
 

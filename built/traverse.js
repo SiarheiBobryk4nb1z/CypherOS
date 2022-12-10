@@ -6,9 +6,7 @@ function _parseArgs(others) {
     return { hierarchies, callback };
 }
 function traverse(target, ...others) {
-    const args = _parseArgs(others);
-    const hierarchies = args.hierarchies;
-    const callback = args.callback;
+    const { hierarchies, callback } = _parseArgs(others);
     let current = target;
     if (current !== undefined && current !== null) {
         hierarchies.every(info => {
@@ -26,9 +24,7 @@ function traverse(target, ...others) {
     }
 }
 function traverseReverse(target, ...others) {
-    const args = _parseArgs(others);
-    const hierarchies = args.hierarchies;
-    const callback = args.callback;
+    const { hierarchies, callback } = _parseArgs(others);
     let current = target;
     if (current !== undefined && current !== null) {
         const params = [];

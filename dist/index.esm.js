@@ -235,9 +235,7 @@ function _parseArgs$1(others) {
     return { hierarchies, callback };
 }
 function traverse(target, ...others) {
-    const args = _parseArgs$1(others);
-    const hierarchies = args.hierarchies;
-    const callback = args.callback;
+    const { hierarchies, callback } = _parseArgs$1(others);
     let current = target;
     if (current !== undefined && current !== null) {
         hierarchies.every(info => {
@@ -255,9 +253,7 @@ function traverse(target, ...others) {
     }
 }
 function traverseReverse(target, ...others) {
-    const args = _parseArgs$1(others);
-    const hierarchies = args.hierarchies;
-    const callback = args.callback;
+    const { hierarchies, callback } = _parseArgs$1(others);
     let current = target;
     if (current !== undefined && current !== null) {
         const params = [];
@@ -447,4 +443,4 @@ function group(target, ...params) {
     return rootContainer;
 }
 
-export { set, assign, put, setIfUndef, assignIfUndef, putIfUndef, setProp, assignProp, putProp, setPropIfUndef, assignPropIfUndef, putPropIfUndef, get, traverse, traverseReverse, select, pick, group };
+export { assign, assignIfUndef, assignProp, assignPropIfUndef, get, group, pick, put, putIfUndef, putProp, putPropIfUndef, select, set, setIfUndef, setProp, setPropIfUndef, traverse, traverseReverse };
