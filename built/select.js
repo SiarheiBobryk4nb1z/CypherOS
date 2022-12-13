@@ -1,12 +1,12 @@
 import { getPropNames, cloneContainer } from './utility/common';
-import { normalizeDescriptor, getMapped } from './utility/select';
+import { normalizeDescriptor, getMappedNameValue } from './utility/select';
 function generate(current, result, hierarchies, index) {
     const descriptor = normalizeDescriptor(hierarchies[index]);
     const names = getPropNames(current, descriptor);
     const lastIndex = hierarchies.length - 1;
     names.forEach(name => {
         if (name in current) {
-            const { mappedName, mappedValue } = getMapped(current, name, descriptor);
+            const { mappedName, mappedValue } = getMappedNameValue(current, name, descriptor);
             if (index < lastIndex) {
                 result[mappedName] = cloneContainer(mappedValue);
             }

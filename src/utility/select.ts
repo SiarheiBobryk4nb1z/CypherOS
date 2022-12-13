@@ -21,7 +21,7 @@ function normalizeDescriptor(
 	}
 }
 
-function getMapped(current: any, name: PropName, descriptor: IGotDescriptor & IMapDescriptor) {
+function getMappedNameValue(current: any, name: PropName, descriptor: IGotDescriptor & IMapDescriptor) {
 	const {got, mapName, mapValue, mapped} = descriptor;
 
 	const next = current[name];
@@ -42,5 +42,5 @@ function getMapped(current: any, name: PropName, descriptor: IGotDescriptor & IM
 
 export {
 	normalizeDescriptor,
-	getMapped
+	getMappedNameValue
 };

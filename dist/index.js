@@ -365,7 +365,7 @@
 	        };
 	    }
 	}
-	function getMapped(current, name, descriptor) {
+	function getMappedNameValue(current, name, descriptor) {
 	    var got = descriptor.got, mapName = descriptor.mapName, mapValue = descriptor.mapValue, mapped = descriptor.mapped;
 	    var next = current[name];
 	    if (got) {
@@ -385,7 +385,7 @@
 	    var lastIndex = hierarchies.length - 1;
 	    names.forEach(function (name) {
 	        if (name in current) {
-	            var _a = getMapped(current, name, descriptor), mappedName = _a.mappedName, mappedValue = _a.mappedValue;
+	            var _a = getMappedNameValue(current, name, descriptor), mappedName = _a.mappedName, mappedValue = _a.mappedValue;
 	            if (index < lastIndex) {
 	                result[mappedName] = cloneContainer(mappedValue);
 	            }
@@ -418,7 +418,7 @@
 	    var lastIndex = hierarchies.length - 1;
 	    names.forEach(function (name) {
 	        if (name in current) {
-	            var mappedValue = getMapped(current, name, descriptor).mappedValue;
+	            var mappedValue = getMappedNameValue(current, name, descriptor).mappedValue;
 	            if (index < lastIndex) {
 	                find(mappedValue, result, hierarchies, index + 1);
 	            }

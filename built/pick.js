@@ -1,12 +1,12 @@
 import { getPropNames } from './utility/common';
-import { normalizeDescriptor, getMapped } from './utility/select';
+import { normalizeDescriptor, getMappedNameValue } from './utility/select';
 function find(current, result, hierarchies, index) {
     const descriptor = normalizeDescriptor(hierarchies[index]);
     const names = getPropNames(current, descriptor);
     const lastIndex = hierarchies.length - 1;
     names.forEach(name => {
         if (name in current) {
-            const { mappedValue } = getMapped(current, name, descriptor);
+            const { mappedValue } = getMappedNameValue(current, name, descriptor);
             if (index < lastIndex) {
                 find(mappedValue, result, hierarchies, index + 1);
             }

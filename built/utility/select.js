@@ -19,7 +19,7 @@ function normalizeDescriptor(info) {
         };
     }
 }
-function getMapped(current, name, descriptor) {
+function getMappedNameValue(current, name, descriptor) {
     const { got, mapName, mapValue, mapped } = descriptor;
     const next = current[name];
     if (got) {
@@ -32,4 +32,4 @@ function getMapped(current, name, descriptor) {
     }
     return { mappedName, mappedValue };
 }
-export { normalizeDescriptor, getMapped };
+export { normalizeDescriptor, getMappedNameValue };

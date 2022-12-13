@@ -1,6 +1,6 @@
 import {SelectPropParam} from './type';
 import {getPropNames} from './utility/common';
-import {normalizeDescriptor, getMapped} from './utility/select';
+import {normalizeDescriptor, getMappedNameValue} from './utility/select';
 
 function find(current: any, result: any[], hierarchies: SelectPropParam[], index: number) {
 	const descriptor = normalizeDescriptor(hierarchies[index]);
@@ -9,7 +9,7 @@ function find(current: any, result: any[], hierarchies: SelectPropParam[], index
 	const lastIndex = hierarchies.length - 1;
 	names.forEach(name => {
 		if (name in current) {
-			const {mappedValue} = getMapped(current, name, descriptor);
+			const {mappedValue} = getMappedNameValue(current, name, descriptor);
 
 			if (index < lastIndex) {
 				find(mappedValue, result, hierarchies, index + 1);

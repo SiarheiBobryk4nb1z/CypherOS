@@ -299,7 +299,7 @@ function normalizeDescriptor$2(info) {
         };
     }
 }
-function getMapped(current, name, descriptor) {
+function getMappedNameValue(current, name, descriptor) {
     const { got, mapName, mapValue, mapped } = descriptor;
     const next = current[name];
     if (got) {
@@ -319,7 +319,7 @@ function generate$1(current, result, hierarchies, index) {
     const lastIndex = hierarchies.length - 1;
     names.forEach(name => {
         if (name in current) {
-            const { mappedName, mappedValue } = getMapped(current, name, descriptor);
+            const { mappedName, mappedValue } = getMappedNameValue(current, name, descriptor);
             if (index < lastIndex) {
                 result[mappedName] = cloneContainer(mappedValue);
             }
@@ -348,7 +348,7 @@ function find(current, result, hierarchies, index) {
     const lastIndex = hierarchies.length - 1;
     names.forEach(name => {
         if (name in current) {
-            const { mappedValue } = getMapped(current, name, descriptor);
+            const { mappedValue } = getMappedNameValue(current, name, descriptor);
             if (index < lastIndex) {
                 find(mappedValue, result, hierarchies, index + 1);
             }
