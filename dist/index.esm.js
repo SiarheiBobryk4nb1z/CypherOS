@@ -208,6 +208,14 @@ function normalizeDescriptor$1(info) {
         };
     }
 }
+function getValue(current, name, descriptor) {
+    const next = current[name];
+    const { got } = descriptor;
+    if (got) {
+        got.call(current, current, name, next);
+    }
+    return next;
+}
 
 function get(target, ...rest) {
     let hierarchies = [];
@@ -216,13 +224,9 @@ function get(target, ...rest) {
     if (current !== undefined && current !== null) {
         hierarchies.every(info => {
             const descriptor = normalizeDescriptor$1(info);
-            const { got } = descriptor;
             const name = getPropName(current, descriptor);
-            const parent = current;
-            current = current[name];
-            if (got) {
-                got.call(parent, parent, name, current);
-            }
+            const next = getValue(current, name, descriptor);
+            current = next;
             return current;
         });
     }
@@ -240,13 +244,10 @@ function traverse(target, ...others) {
     if (current !== undefined && current !== null) {
         hierarchies.every(info => {
             const descriptor = normalizeDescriptor$1(info);
-            const { got } = descriptor;
             const name = getPropName(current, descriptor);
+            const next = getValue(current, name, descriptor);
             const parent = current;
-            current = current[name];
-            if (got) {
-                got.call(parent, parent, name, current);
-            }
+            current = next;
             const result = callback.call(parent, parent, name, current);
             return result !== false;
         });
@@ -259,13 +260,10 @@ function traverseReverse(target, ...others) {
         const params = [];
         hierarchies.every(info => {
             const descriptor = normalizeDescriptor$1(info);
-            const { got } = descriptor;
             const name = getPropName(current, descriptor);
+            const next = getValue(current, name, descriptor);
             const parent = current;
-            current = current[name];
-            if (got) {
-                got.call(parent, parent, name, current);
-            }
+            current = next;
             params.push({ parent, name, current });
             return current;
         });

@@ -262,6 +262,14 @@
 	        };
 	    }
 	}
+	function getValue(current, name, descriptor) {
+	    var next = current[name];
+	    var got = descriptor.got;
+	    if (got) {
+	        got.call(current, current, name, next);
+	    }
+	    return next;
+	}
 
 	function get(target) {
 	    var rest = [];
@@ -274,13 +282,9 @@
 	    if (current !== undefined && current !== null) {
 	        hierarchies.every(function (info) {
 	            var descriptor = normalizeDescriptor$1(info);
-	            var got = descriptor.got;
 	            var name = getPropName(current, descriptor);
-	            var parent = current;
-	            current = current[name];
-	            if (got) {
-	                got.call(parent, parent, name, current);
-	            }
+	            var next = getValue(current, name, descriptor);
+	            current = next;
 	            return current;
 	        });
 	    }
@@ -302,13 +306,10 @@
 	    if (current !== undefined && current !== null) {
 	        hierarchies.every(function (info) {
 	            var descriptor = normalizeDescriptor$1(info);
-	            var got = descriptor.got;
 	            var name = getPropName(current, descriptor);
+	            var next = getValue(current, name, descriptor);
 	            var parent = current;
-	            current = current[name];
-	            if (got) {
-	                got.call(parent, parent, name, current);
-	            }
+	            current = next;
 	            var result = callback.call(parent, parent, name, current);
 	            return result !== false;
 	        });
@@ -325,13 +326,10 @@
 	        var params_1 = [];
 	        hierarchies.every(function (info) {
 	            var descriptor = normalizeDescriptor$1(info);
-	            var got = descriptor.got;
 	            var name = getPropName(current, descriptor);
+	            var next = getValue(current, name, descriptor);
 	            var parent = current;
-	            current = current[name];
-	            if (got) {
-	                got.call(parent, parent, name, current);
-	            }
+	            current = next;
 	            params_1.push({ parent: parent, name: name, current: current });
 	            return current;
 	        });

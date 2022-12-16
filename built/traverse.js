@@ -1,5 +1,5 @@
 import { getPropName } from './utility/common';
-import { normalizeDescriptor } from './utility/get';
+import { normalizeDescriptor, getValue } from './utility/get';
 function _parseArgs(others) {
     const callback = others[others.length - 1];
     const hierarchies = Array.prototype.concat.apply([], others.slice(0, -1)); // exclude `callback`
@@ -11,13 +11,10 @@ function traverse(target, ...others) {
     if (current !== undefined && current !== null) {
         hierarchies.every(info => {
             const descriptor = normalizeDescriptor(info);
-            const { got } = descriptor;
             const name = getPropName(current, descriptor);
+            const next = getValue(current, name, descriptor);
             const parent = current;
-            current = current[name];
-            if (got) {
-                got.call(parent, parent, name, current);
-            }
+            current = next;
             const result = callback.call(parent, parent, name, current);
             return result !== false;
         });
@@ -30,13 +27,10 @@ function traverseReverse(target, ...others) {
         const params = [];
         hierarchies.every(info => {
             const descriptor = normalizeDescriptor(info);
-            const { got } = descriptor;
             const name = getPropName(current, descriptor);
+            const next = getValue(current, name, descriptor);
             const parent = current;
-            current = current[name];
-            if (got) {
-                got.call(parent, parent, name, current);
-            }
+            current = next;
             params.push({ parent, name, current });
             return current;
         });

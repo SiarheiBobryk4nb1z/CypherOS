@@ -1,5 +1,5 @@
-import { normalizeDescriptor } from './utility/get';
 import { getPropName } from './utility/common';
+import { normalizeDescriptor, getValue } from './utility/get';
 function get(target, ...rest) {
     let hierarchies = [];
     hierarchies = Array.prototype.concat.apply(hierarchies, rest);
@@ -7,13 +7,9 @@ function get(target, ...rest) {
     if (current !== undefined && current !== null) {
         hierarchies.every(info => {
             const descriptor = normalizeDescriptor(info);
-            const { got } = descriptor;
             const name = getPropName(current, descriptor);
-            const parent = current;
-            current = current[name];
-            if (got) {
-                got.call(parent, parent, name, current);
-            }
+            const next = getValue(current, name, descriptor);
+            current = next;
             return current;
         });
     }

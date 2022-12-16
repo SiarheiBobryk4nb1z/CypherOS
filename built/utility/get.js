@@ -13,4 +13,12 @@ function normalizeDescriptor(info) {
         };
     }
 }
-export { normalizeDescriptor };
+function getValue(current, name, descriptor) {
+    const next = current[name];
+    const { got } = descriptor;
+    if (got) {
+        got.call(current, current, name, next);
+    }
+    return next;
+}
+export { normalizeDescriptor, getValue };
