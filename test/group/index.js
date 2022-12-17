@@ -1,1 +1,2 @@
-require('./1-normal');
+require('./1-object');
+require('./2-array');
