@@ -49,7 +49,13 @@ function getPropName(current, descriptor) {
     if (name !== undefined) {
         return name;
     }
-    return getName && getName.call(current, current) || 'undefined';
+    if (getName) {
+        return getName.call(current, current);
+    }
+}
+function getNonEmptyPropName(current, descriptor) {
+    const name = getPropName(current, descriptor);
+    return name !== undefined ? name : 'undefined';
 }
 function getPropNames(current, descriptor) {
     const { names, getNames } = descriptor;
@@ -70,7 +76,7 @@ function generate(target, hierarchies, forceOverride) {
     hierarchies.forEach(info => {
         const descriptor = normalizeDescriptor(info);
         const { value, type, create, override, created, skipped, got } = descriptor;
-        const name = getPropName(current, descriptor);
+        const name = getNonEmptyPropName(current, descriptor);
         if (forceOverride || override || !current[name] || typeof current[name] !== 'object') {
             const obj = value ? value :
                 type ? new type() :
@@ -224,7 +230,7 @@ function get(target, ...rest) {
     if (current !== undefined && current !== null) {
         hierarchies.every(info => {
             const descriptor = normalizeDescriptor$1(info);
-            const name = getPropName(current, descriptor);
+            const name = getNonEmptyPropName(current, descriptor);
             const next = getValue(current, name, descriptor);
             current = next;
             return current;
@@ -244,7 +250,7 @@ function traverse(target, ...others) {
     if (current !== undefined && current !== null) {
         hierarchies.every(info => {
             const descriptor = normalizeDescriptor$1(info);
-            const name = getPropName(current, descriptor);
+            const name = getNonEmptyPropName(current, descriptor);
             const next = getValue(current, name, descriptor);
             const parent = current;
             current = next;
@@ -260,7 +266,7 @@ function traverseReverse(target, ...others) {
         const params = [];
         hierarchies.every(info => {
             const descriptor = normalizeDescriptor$1(info);
-            const name = getPropName(current, descriptor);
+            const name = getNonEmptyPropName(current, descriptor);
             const next = getValue(current, name, descriptor);
             const parent = current;
             current = next;

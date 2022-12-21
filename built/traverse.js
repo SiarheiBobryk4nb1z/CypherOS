@@ -1,4 +1,4 @@
-import { getPropName } from './utility/common';
+import { getNonEmptyPropName } from './utility/common';
 import { normalizeDescriptor, getValue } from './utility/get';
 function _parseArgs(others) {
     const callback = others[others.length - 1];
@@ -11,7 +11,7 @@ function traverse(target, ...others) {
     if (current !== undefined && current !== null) {
         hierarchies.every(info => {
             const descriptor = normalizeDescriptor(info);
-            const name = getPropName(current, descriptor);
+            const name = getNonEmptyPropName(current, descriptor);
             const next = getValue(current, name, descriptor);
             const parent = current;
             current = next;
@@ -27,7 +27,7 @@ function traverseReverse(target, ...others) {
         const params = [];
         hierarchies.every(info => {
             const descriptor = normalizeDescriptor(info);
-            const name = getPropName(current, descriptor);
+            const name = getNonEmptyPropName(current, descriptor);
             const next = getValue(current, name, descriptor);
             const parent = current;
             current = next;

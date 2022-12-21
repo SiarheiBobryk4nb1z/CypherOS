@@ -31,7 +31,13 @@ function getPropName(current, descriptor) {
     if (name !== undefined) {
         return name;
     }
-    return getName && getName.call(current, current) || 'undefined';
+    if (getName) {
+        return getName.call(current, current);
+    }
+}
+function getNonEmptyPropName(current, descriptor) {
+    const name = getPropName(current, descriptor);
+    return name !== undefined ? name : 'undefined';
 }
 function getPropNames(current, descriptor) {
     const { names, getNames } = descriptor;
@@ -46,4 +52,4 @@ function getPropNames(current, descriptor) {
     }
     return getOwnEnumerablePropKeys(current);
 }
-export { isArray, getOwnEnumerablePropKeys, cloneContainer, getPropName, getPropNames };
+export { isArray, getOwnEnumerablePropKeys, cloneContainer, getPropName, getNonEmptyPropName, getPropNames };

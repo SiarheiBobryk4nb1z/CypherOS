@@ -1,6 +1,6 @@
 import {SetupPropParam} from './type';
 import {normalizeDescriptor} from './utility/setup';
-import {getPropName} from './utility/common';
+import {getNonEmptyPropName} from './utility/common';
 
 function generate(
 	target: any,
@@ -12,7 +12,7 @@ function generate(
 		const descriptor = normalizeDescriptor(info);
 		const {value, type, create, override, created, skipped, got} = descriptor;
 
-		const name = getPropName(current, descriptor);
+		const name = getNonEmptyPropName(current, descriptor);
 		if (forceOverride || override || !current[name] || typeof current[name] !== 'object') {
 			const obj = value ? value :
 				type ? new type() :

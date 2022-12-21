@@ -33,13 +33,20 @@ function cloneContainer(from: object): object {
 	}
 }
 
-function getPropName(current: object, descriptor: INameDescriptor): PropName {
+function getPropName(current: object, descriptor: INameDescriptor): PropName | undefined {
 	const {name, getName} = descriptor;
 	if (name !== undefined) {
 		return name;
 	}
 
-	return getName && getName.call(current, current) || 'undefined';
+	if (getName) {
+		return getName.call(current, current);
+	}
+}
+
+function getNonEmptyPropName(current: object, descriptor: INameDescriptor): PropName {
+	const name = getPropName(current, descriptor);
+	return name !== undefined ? name : 'undefined';
 }
 
 function getPropNames(current: object, descriptor: INamesDescriptor): PropName[] {
@@ -65,5 +72,6 @@ export {
 	cloneContainer,
 
 	getPropName,
+	getNonEmptyPropName,
 	getPropNames
 };

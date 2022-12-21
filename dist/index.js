@@ -55,7 +55,13 @@
 	    if (name !== undefined) {
 	        return name;
 	    }
-	    return getName && getName.call(current, current) || 'undefined';
+	    if (getName) {
+	        return getName.call(current, current);
+	    }
+	}
+	function getNonEmptyPropName(current, descriptor) {
+	    var name = getPropName(current, descriptor);
+	    return name !== undefined ? name : 'undefined';
 	}
 	function getPropNames(current, descriptor) {
 	    var names = descriptor.names, getNames = descriptor.getNames;
@@ -76,7 +82,7 @@
 	    hierarchies.forEach(function (info) {
 	        var descriptor = normalizeDescriptor(info);
 	        var value = descriptor.value, type = descriptor.type, create = descriptor.create, override = descriptor.override, created = descriptor.created, skipped = descriptor.skipped, got = descriptor.got;
-	        var name = getPropName(current, descriptor);
+	        var name = getNonEmptyPropName(current, descriptor);
 	        if (forceOverride || override || !current[name] || typeof current[name] !== 'object') {
 	            var obj = value ? value :
 	                type ? new type() :
@@ -282,7 +288,7 @@
 	    if (current !== undefined && current !== null) {
 	        hierarchies.every(function (info) {
 	            var descriptor = normalizeDescriptor$1(info);
-	            var name = getPropName(current, descriptor);
+	            var name = getNonEmptyPropName(current, descriptor);
 	            var next = getValue(current, name, descriptor);
 	            current = next;
 	            return current;
@@ -306,7 +312,7 @@
 	    if (current !== undefined && current !== null) {
 	        hierarchies.every(function (info) {
 	            var descriptor = normalizeDescriptor$1(info);
-	            var name = getPropName(current, descriptor);
+	            var name = getNonEmptyPropName(current, descriptor);
 	            var next = getValue(current, name, descriptor);
 	            var parent = current;
 	            current = next;
@@ -326,7 +332,7 @@
 	        var params_1 = [];
 	        hierarchies.every(function (info) {
 	            var descriptor = normalizeDescriptor$1(info);
-	            var name = getPropName(current, descriptor);
+	            var name = getNonEmptyPropName(current, descriptor);
 	            var next = getValue(current, name, descriptor);
 	            var parent = current;
 	            current = next;
