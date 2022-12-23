@@ -1,5 +1,4 @@
-import { getNonEmptyPropName } from './utility/common';
-import { normalizeDescriptor, getValue } from './utility/get';
+import { normalizeDescriptor, getNameValue } from './utility/get';
 function get(target, ...rest) {
     let hierarchies = [];
     hierarchies = Array.prototype.concat.apply(hierarchies, rest);
@@ -7,9 +6,8 @@ function get(target, ...rest) {
     if (current !== undefined && current !== null) {
         hierarchies.every(info => {
             const descriptor = normalizeDescriptor(info);
-            const name = getNonEmptyPropName(current, descriptor);
-            const next = getValue(current, name, descriptor);
-            current = next;
+            const { value } = getNameValue(current, descriptor);
+            current = value;
             return current;
         });
     }

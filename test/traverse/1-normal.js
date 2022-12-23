@@ -26,7 +26,7 @@ assert.deepEqual(result2, [
 
 const result3 = [];
 const obj3 = {x: {y: {z: 300}}};
-traverse(obj3, () => 'x', {
+traverse(obj3, p => p.x, {
 	getName: () => 'y', got: (parent, name, current) => {
 		assert.deepEqual(parent, obj3.x);
 		assert.equal(name, 'y');
@@ -38,4 +38,4 @@ traverse(obj3, () => 'x', {
 		return false;
 	}
 });
-assert.deepEqual(result3, ['x', 'y']);
+assert.deepEqual(result3, ['undefined', 'y']);

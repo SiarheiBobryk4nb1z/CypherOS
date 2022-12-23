@@ -1,6 +1,10 @@
 const assert = require('assert').strict;
 const {get} = require('../../');
 
-const obj = {a: {value: 1, b1: {c: 100}, b2: {c: 200}}};
-assert.equal(get(obj, 'a', curr => curr.value === 1 ? 'b1' : 'b2', 'c'), 100);
-assert.equal(get(obj, () => 'a', curr => curr.value === 1 ? 'b2' : 'b1', 'c'), 200);
+const obj = {a: {b: {c: 100}}};
+
+const result1 = get(obj, 'a', parent => {
+	assert.equal(parent, obj.a);
+	return parent.b.c;
+});
+assert.equal(result1, 100);

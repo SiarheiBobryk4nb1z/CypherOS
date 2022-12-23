@@ -1,10 +1,11 @@
+import { getPropName } from './common';
 function normalizeDescriptor(info) {
     if (typeof info === 'object') {
         return info;
     }
     else if (typeof info === 'function') {
         return {
-            getName: info
+            getValue: info
         };
     }
     else {
@@ -13,12 +14,23 @@ function normalizeDescriptor(info) {
         };
     }
 }
-function getValue(current, name, descriptor) {
-    const next = current[name];
+function getNameValue(current, descriptor) {
+    const { getValue } = descriptor;
+    let name = getPropName(current, descriptor);
+    let value;
+    if (name !== undefined) {
+        value = current[name];
+    }
+    else {
+        name = 'undefined';
+        if (getValue) {
+            value = getValue.call(current, current);
+        }
+    }
     const { got } = descriptor;
     if (got) {
-        got.call(current, current, name, next);
+        got.call(current, current, name, value);
     }
-    return next;
+    return { name, value };
 }
-export { normalizeDescriptor, getValue };
+export { normalizeDescriptor, getNameValue };

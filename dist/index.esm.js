@@ -205,7 +205,7 @@ function normalizeDescriptor$1(info) {
     }
     else if (typeof info === 'function') {
         return {
-            getName: info
+            getValue: info
         };
     }
     else {
@@ -214,13 +214,24 @@ function normalizeDescriptor$1(info) {
         };
     }
 }
-function getValue(current, name, descriptor) {
-    const next = current[name];
+function getNameValue(current, descriptor) {
+    const { getValue } = descriptor;
+    let name = getPropName(current, descriptor);
+    let value;
+    if (name !== undefined) {
+        value = current[name];
+    }
+    else {
+        name = 'undefined';
+        if (getValue) {
+            value = getValue.call(current, current);
+        }
+    }
     const { got } = descriptor;
     if (got) {
-        got.call(current, current, name, next);
+        got.call(current, current, name, value);
     }
-    return next;
+    return { name, value };
 }
 
 function get(target, ...rest) {
@@ -230,9 +241,8 @@ function get(target, ...rest) {
     if (current !== undefined && current !== null) {
         hierarchies.every(info => {
             const descriptor = normalizeDescriptor$1(info);
-            const name = getNonEmptyPropName(current, descriptor);
-            const next = getValue(current, name, descriptor);
-            current = next;
+            const { value } = getNameValue(current, descriptor);
+            current = value;
             return current;
         });
     }
@@ -250,10 +260,9 @@ function traverse(target, ...others) {
     if (current !== undefined && current !== null) {
         hierarchies.every(info => {
             const descriptor = normalizeDescriptor$1(info);
-            const name = getNonEmptyPropName(current, descriptor);
-            const next = getValue(current, name, descriptor);
+            const { name, value } = getNameValue(current, descriptor);
             const parent = current;
-            current = next;
+            current = value;
             const result = callback.call(parent, parent, name, current);
             return result !== false;
         });
@@ -266,10 +275,9 @@ function traverseReverse(target, ...others) {
         const params = [];
         hierarchies.every(info => {
             const descriptor = normalizeDescriptor$1(info);
-            const name = getNonEmptyPropName(current, descriptor);
-            const next = getValue(current, name, descriptor);
+            const { name, value } = getNameValue(current, descriptor);
             const parent = current;
-            current = next;
+            current = value;
             params.push({ parent, name, current });
             return current;
         });

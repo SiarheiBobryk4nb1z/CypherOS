@@ -2,11 +2,12 @@ const assert = require('assert').strict;
 const {get} = require('../../');
 
 const obj = {a: {b: {c: 100}}};
-assert.equal(get(obj, 'a', {name: 'b'}, {getName: () => 'c'}), 100);
+const result1 = get(obj, 'a', {name: 'b'}, {getName: () => 'c'});
+assert.equal(result1, 100);
 
-get(obj,
+const result2 = get(obj,
 	{
-		name: 'a',
+		getName: () => 'a',
 		got: (parent, name, current) => {
 			assert.deepEqual(parent, {a: {b: {c: 100}}});
 			assert.equal(name, 'a');
@@ -30,3 +31,17 @@ get(obj,
 		}
 	}
 );
+assert.equal(result2, 100);
+
+const result3 = get(obj, {
+	getValue: parent => parent.a,
+	got: (parent, name, current) => {
+		assert.equal(parent, obj);
+		assert.equal(name, 'undefined');
+		assert.equal(current, obj.a);
+	}
+}, parent => {
+	assert.equal(parent, obj.a);
+	return parent.b.c;
+});
+assert.equal(result3, 100);

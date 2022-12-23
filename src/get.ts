@@ -1,6 +1,5 @@
 import {GetPropParam} from './type';
-import {getNonEmptyPropName} from './utility/common';
-import {normalizeDescriptor, getValue} from './utility/get';
+import {normalizeDescriptor, getNameValue} from './utility/get';
 
 function get(target: any, ...rest: Array<GetPropParam | GetPropParam[]>) {
 	let hierarchies: GetPropParam[] = [];
@@ -9,10 +8,9 @@ function get(target: any, ...rest: Array<GetPropParam | GetPropParam[]>) {
 	if (current !== undefined && current !== null) {
 		hierarchies.every(info => {
 			const descriptor = normalizeDescriptor(info);
-			const name = getNonEmptyPropName(current, descriptor);
-			const next = getValue(current, name, descriptor);
+			const {value} = getNameValue(current, descriptor);
 
-			current = next;
+			current = value;
 			return current;
 		});
 	}

@@ -270,7 +270,8 @@ Property can be a descriptor object, which its shape is `{name|getName, got?}`.
 
 - `name` is a primitive property name
 - `getName(parent)` is a callback function to get property name
-- `got(parent, name, current)` is a callback when value has been got via `name` property from `parent`.
+- `getValue(parent)` is a callback function to get property value directly
+- `got(parent, name, current)` is a callback when value has been got from `parent`'s `name` property, `name` will be 'undefined' if value is got by `getValue`
 
 ```javascript
 import { get } from 'object-hierarchy-access';
@@ -287,7 +288,7 @@ get(obj,
 		}
 	},
 	{
-		name: 'b',
+		getName: () => 'b',
 		got: (parent, name, current) => {
 			/*
 			parent => {b: {c: 100}};
@@ -297,11 +298,11 @@ get(obj,
 		}
 	},
 	{
-		name: 'c',
+		getValue: parent => parent.c,
 		got: (parent, name, current) => {
 			/*
 			parent => {c: 100};
-			name => 'c';
+			name => 'undefined';
 			current => 100;
 			*/
 		}
@@ -310,10 +311,10 @@ get(obj,
 ```
 
 #### Function property
-Property can also be a function, it just act as `getName` callback in object descriptor.
+Property can also be a function, it just act as `getValue` callback in object descriptor.
 ```javascript
 const obj = {a: {value: 1, b1: {c: 100}, b2: {c: 200}}};
-get(obj, 'a', parent => parent.value === 1 ? 'b1' : 'b2', 'c'); // returns 100
+get(obj, 'a', parent => parent.value === 1 ? parent.b1 : parent.b2, 'c'); // returns 100
 ```
 
 ### `traverse`

@@ -27,6 +27,7 @@ interface IMapDescriptor {
 
 // get
 interface IGetPropDescriptor extends INameDescriptor, IGotDescriptor {
+	getValue?: (this: object, parent: object) => any;
 }
 
 type GetPropParam = PropName | ObjectCallback | IGetPropDescriptor;

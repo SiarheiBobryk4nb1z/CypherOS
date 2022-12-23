@@ -259,7 +259,7 @@
 	    }
 	    else if (typeof info === 'function') {
 	        return {
-	            getName: info
+	            getValue: info
 	        };
 	    }
 	    else {
@@ -268,13 +268,24 @@
 	        };
 	    }
 	}
-	function getValue(current, name, descriptor) {
-	    var next = current[name];
+	function getNameValue(current, descriptor) {
+	    var getValue = descriptor.getValue;
+	    var name = getPropName(current, descriptor);
+	    var value;
+	    if (name !== undefined) {
+	        value = current[name];
+	    }
+	    else {
+	        name = 'undefined';
+	        if (getValue) {
+	            value = getValue.call(current, current);
+	        }
+	    }
 	    var got = descriptor.got;
 	    if (got) {
-	        got.call(current, current, name, next);
+	        got.call(current, current, name, value);
 	    }
-	    return next;
+	    return { name: name, value: value };
 	}
 
 	function get(target) {
@@ -288,9 +299,8 @@
 	    if (current !== undefined && current !== null) {
 	        hierarchies.every(function (info) {
 	            var descriptor = normalizeDescriptor$1(info);
-	            var name = getNonEmptyPropName(current, descriptor);
-	            var next = getValue(current, name, descriptor);
-	            current = next;
+	            var value = getNameValue(current, descriptor).value;
+	            current = value;
 	            return current;
 	        });
 	    }
@@ -312,10 +322,9 @@
 	    if (current !== undefined && current !== null) {
 	        hierarchies.every(function (info) {
 	            var descriptor = normalizeDescriptor$1(info);
-	            var name = getNonEmptyPropName(current, descriptor);
-	            var next = getValue(current, name, descriptor);
+	            var _a = getNameValue(current, descriptor), name = _a.name, value = _a.value;
 	            var parent = current;
-	            current = next;
+	            current = value;
 	            var result = callback.call(parent, parent, name, current);
 	            return result !== false;
 	        });
@@ -332,10 +341,9 @@
 	        var params_1 = [];
 	        hierarchies.every(function (info) {
 	            var descriptor = normalizeDescriptor$1(info);
-	            var name = getNonEmptyPropName(current, descriptor);
-	            var next = getValue(current, name, descriptor);
+	            var _a = getNameValue(current, descriptor), name = _a.name, value = _a.value;
 	            var parent = current;
-	            current = next;
+	            current = value;
 	            params_1.push({ parent: parent, name: name, current: current });
 	            return current;
 	        });
