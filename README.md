@@ -241,7 +241,7 @@ setPropIfUndef(obj,'a','b',{name:'c', value:{}, override:true}); // obj.a.b.c ==
 
 ## Summary: names for assigning methods
 Returns\Category|Setting Value|Creating Hierarchy Property
-----------------|------------|------------------
+----------------|-------------|------------------
 Root Object|`set`, `setIfUndef`|`setProp`, `setPropIfUndef`
 Second Last Hierarchy|`assign`, `assignIfUndef`|`assignProp`, `assignPropIfUndef`
 Last Hierarchy|`put`, `putIfUndef`|`putProp`, `putPropIfUndef`
@@ -266,7 +266,7 @@ get(obj, ['a', 'b', 'c']); // returns 100
 ```
 
 #### Object property
-Property can be a descriptor object, which its shape is `{name|getName, got?}`.
+Property can be a descriptor object, which its shape is `{name|getName|getValue, got?}`.
 
 - `name` is a primitive property name
 - `getName(parent)` is a callback function to get property name
@@ -311,7 +311,7 @@ get(obj,
 ```
 
 #### Function property
-Property can also be a function, it just act as `getValue` callback in object descriptor.
+Property can also be a function, it just acts as `getValue` callback in object descriptor.
 ```javascript
 const obj = {a: {value: 1, b1: {c: 100}, b2: {c: 200}}};
 get(obj, 'a', parent => parent.value === 1 ? parent.b1 : parent.b2, 'c'); // returns 100
