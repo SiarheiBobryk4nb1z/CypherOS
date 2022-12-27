@@ -1,5 +1,4 @@
 import {PropName, HierarchyCallbackReturns, GetPropParam} from './type';
-import {getNonEmptyPropName} from './utility/common';
 import {normalizeDescriptor, getNameValue} from './utility/get';
 
 function _parseArgs(others: any[]) {
