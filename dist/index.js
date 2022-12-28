@@ -357,6 +357,38 @@
 	    }
 	}
 
+	function array2map(arr, key, value) {
+	    if (!isArray(arr)) {
+	        return;
+	    }
+	    var result = {};
+	    for (var i = 0; i < arr.length; i++) {
+	        var item = arr[i];
+	        var keyProp = get(item, key);
+	        var valueProp = get(item, value);
+	        result[keyProp] = valueProp;
+	    }
+	    return result;
+	}
+
+	function map2array(obj, keyName, valueName) {
+	    if (!obj) {
+	        return;
+	    }
+	    var result = [];
+	    getOwnEnumerablePropKeys(obj).forEach(function (key) {
+	        var _a;
+	        var value = obj[key];
+	        var keyProp = typeof keyName === 'function' ? keyName.call(obj, obj, key, value) : keyName;
+	        var valueProp = typeof valueName === 'function' ? valueName.call(obj, obj, key, value) : valueName;
+	        result.push((_a = {},
+	            _a[keyProp] = key,
+	            _a[valueProp] = value,
+	            _a));
+	    });
+	    return result;
+	}
+
 	function normalizeDescriptor$2(info) {
 	    if (isArray(info)) {
 	        return {
@@ -533,12 +565,14 @@
 	    return rootContainer;
 	}
 
+	exports.array2map = array2map;
 	exports.assign = assign;
 	exports.assignIfUndef = assignIfUndef;
 	exports.assignProp = assignProp;
 	exports.assignPropIfUndef = assignPropIfUndef;
 	exports.get = get;
 	exports.group = group;
+	exports.map2array = map2array;
 	exports.pick = pick;
 	exports.put = put;
 	exports.putIfUndef = putIfUndef;

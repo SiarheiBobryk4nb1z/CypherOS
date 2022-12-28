@@ -317,6 +317,98 @@ const obj = {a: {value: 1, b1: {c: 100}, b2: {c: 200}}};
 get(obj, 'a', parent => parent.value === 1 ? parent.b1 : parent.b2, 'c'); // returns 100
 ```
 
+### `array2map`
+Turns array of object into a hash map entries.
+
+Parameter definition:
+```javascript
+array2map(sourceArray, keyHierarchyProperty|[keyHierarchyProperties], valueHierarchyProperty|[valueHierarchyProperties]);
+```
+"hierarchyProperty" is same as `get`'s, can be a property name, a descriptor, or a function act as `getValue`.
+It is used for each item in array.
+
+```javascript
+import { array2map } from 'object-hierarchy-access';
+
+const products = [
+	{
+		productId: 'p1',
+		price: 100
+	},
+	{
+		productId: 'p2',
+		price: 200
+	}
+];
+
+const productPrices = array2map(products, 'productId', 'price');
+/*
+{
+	p1: 100,
+	p2: 200
+}
+*/
+```
+
+```javascript
+import { array2map } from 'object-hierarchy-access';
+
+const products = [
+	{
+		product: {id: 'p1'},
+		price: {value: 100}
+	},
+	{
+		product: {id: 'p2'},
+		price: {value: 200}
+	}
+];
+
+const productPrices = array2map(products, ['product', 'id'], ['price', 'value']);
+/*
+{
+	p1: 100,
+	p2: 200
+}
+*/
+```
+
+### `map2array`
+Turns hash map entries object into array.
+
+Parameter definition:
+```javascript
+map2array(sourceEntry, keyPropName|getKeyPropName, valuePropName|getValuePropName);
+```
+- `keyPropName` will becomes result item's property name to hold *key*
+- `getKeyPropName(source, hashKey, hashValue)` can customize `keyName` for each entry
+- `valuePropName` will becomes result item's property name to hold *value*
+- `getValuePropName(source, hashKey, hashValue)` can customize `valueName` for each entry
+
+```javascript
+import { map2array } from 'object-hierarchy-access';
+
+const productPrices = {
+	p1: 100,
+	p2: 200
+};
+
+const products = map2array(productPrices, 'productId', 'price');
+/*
+[
+	{
+		productId: 'p1',
+		price: 100
+	},
+	{
+		productId: 'p2',
+		price: 200
+	}
+]
+*/
+```
+To customize getting value from more complex structure, consider using `pick`.
+
 ### `traverse`
 Go through each hierarchy with a callback `(parent, name, current) => false?`.
 Valid hierarchy property format is same as `get`.
@@ -454,6 +546,33 @@ const allFloor1Rooms = pick(rooms, ['building1', 'building2', 'building3', 'buil
 	{roomNo: '2-101'}, {roomNo: '2-102'}, {roomNo: '2-103'},
 	{roomNo: '3-101'}, {roomNo: '3-102'}, {roomNo: '3-103'},
 	{roomNo: 'x-101'}, {roomNo: 'x-102'}, {roomNo: 'x-103'}
+]
+*/
+```
+
+```javascript
+import { pick } from 'object-hierarchy-access';
+const productPrices = {
+	p1: {price: 100},
+	p2: {price: 200}
+};
+const products = pick(productPrices, {
+	names: undefined,
+	mapValue: (parent, name, current) => ({
+		productId: name,
+		price: current.price
+	})
+});
+/*
+[
+	{
+		productId: 'p1',
+		price: 100
+	},
+	{
+		productId: 'p2',
+		price: 200
+	}
 ]
 */
 ```

@@ -15,6 +15,8 @@ require('./assign-prop-if-undef');
 require('./put-prop-if-undef');
 
 require('./get');
+require('./array2map');
+require('./map2array');
 require('./traverse');
 require('./traverse-reverse');
 
@@ -22,3 +24,4 @@ require('./select');
 require('./pick');
 
 require('./group');
+

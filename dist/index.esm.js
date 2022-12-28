@@ -291,6 +291,37 @@ function traverseReverse(target, ...others) {
     }
 }
 
+function array2map(arr, key, value) {
+    if (!isArray(arr)) {
+        return;
+    }
+    const result = {};
+    for (let i = 0; i < arr.length; i++) {
+        const item = arr[i];
+        const keyProp = get(item, key);
+        const valueProp = get(item, value);
+        result[keyProp] = valueProp;
+    }
+    return result;
+}
+
+function map2array(obj, keyName, valueName) {
+    if (!obj) {
+        return;
+    }
+    const result = [];
+    getOwnEnumerablePropKeys(obj).forEach(key => {
+        const value = obj[key];
+        const keyProp = typeof keyName === 'function' ? keyName.call(obj, obj, key, value) : keyName;
+        const valueProp = typeof valueName === 'function' ? valueName.call(obj, obj, key, value) : valueName;
+        result.push({
+            [keyProp]: key,
+            [valueProp]: value
+        });
+    });
+    return result;
+}
+
 function normalizeDescriptor$2(info) {
     if (isArray(info)) {
         return {
@@ -455,4 +486,4 @@ function group(target, ...params) {
     return rootContainer;
 }
 
-export { assign, assignIfUndef, assignProp, assignPropIfUndef, get, group, pick, put, putIfUndef, putProp, putPropIfUndef, select, set, setIfUndef, setProp, setPropIfUndef, traverse, traverseReverse };
+export { array2map, assign, assignIfUndef, assignProp, assignPropIfUndef, get, group, map2array, pick, put, putIfUndef, putProp, putPropIfUndef, select, set, setIfUndef, setProp, setPropIfUndef, traverse, traverseReverse };

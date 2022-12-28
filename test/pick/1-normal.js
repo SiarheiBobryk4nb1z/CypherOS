@@ -40,3 +40,26 @@ assert.deepEqual(allFloor1Rooms, [
 	{roomNo: '3-101'}, {roomNo: '3-102'}, {roomNo: '3-103'},
 	{roomNo: 'x-101'}, {roomNo: 'x-102'}, {roomNo: 'x-103'}
 ]);
+
+
+const productPrices = {
+	p1: {price: 100},
+	p2: {price: 200}
+};
+const products = pick(productPrices, {
+	names: undefined,
+	mapValue: (parent, name, current) => ({
+		productId: name,
+		price: current.price
+	})
+});
+assert.deepEqual(products, [
+	{
+		productId: 'p1',
+		price: 100
+	},
+	{
+		productId: 'p2',
+		price: 200
+	}
+]);
