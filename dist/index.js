@@ -191,9 +191,8 @@
 	    return current[prop];
 	}
 
-	function _parseHierarchies(hierarchies) {
-	    var result = [];
-	    result = Array.prototype.concat.apply(result, hierarchies);
+	function _normalizeHierarchies(hierarchies) {
+	    var result = Array.prototype.concat.apply([], hierarchies);
 	    return result;
 	}
 	function setProp(optionalTarget) {
@@ -201,7 +200,7 @@
 	    for (var _i = 1; _i < arguments.length; _i++) {
 	        hierarchies[_i - 1] = arguments[_i];
 	    }
-	    var arrHierarchies = _parseHierarchies(hierarchies);
+	    var arrHierarchies = _normalizeHierarchies(hierarchies);
 	    var target = optionalTarget || {};
 	    setup(target, arrHierarchies);
 	    return target;
@@ -211,7 +210,7 @@
 	    for (var _i = 1; _i < arguments.length; _i++) {
 	        hierarchies[_i - 1] = arguments[_i];
 	    }
-	    var arrHierarchies = _parseHierarchies(hierarchies);
+	    var arrHierarchies = _normalizeHierarchies(hierarchies);
 	    var current = setup(target, arrHierarchies).current;
 	    return current;
 	}
@@ -220,7 +219,7 @@
 	    for (var _i = 1; _i < arguments.length; _i++) {
 	        hierarchies[_i - 1] = arguments[_i];
 	    }
-	    var arrHierarchies = _parseHierarchies(hierarchies);
+	    var arrHierarchies = _normalizeHierarchies(hierarchies);
 	    var last = setup(target, arrHierarchies).last;
 	    return last;
 	}
@@ -229,7 +228,7 @@
 	    for (var _i = 1; _i < arguments.length; _i++) {
 	        hierarchies[_i - 1] = arguments[_i];
 	    }
-	    var arrHierarchies = _parseHierarchies(hierarchies);
+	    var arrHierarchies = _normalizeHierarchies(hierarchies);
 	    var target = optionalTarget || {};
 	    setupIfUndef(target, arrHierarchies);
 	    return target;
@@ -239,7 +238,7 @@
 	    for (var _i = 1; _i < arguments.length; _i++) {
 	        hierarchies[_i - 1] = arguments[_i];
 	    }
-	    var arrHierarchies = _parseHierarchies(hierarchies);
+	    var arrHierarchies = _normalizeHierarchies(hierarchies);
 	    var current = setupIfUndef(target, arrHierarchies.slice(0, -1));
 	    setupIfUndef(current, arrHierarchies.slice(-1));
 	    return current;
@@ -249,7 +248,7 @@
 	    for (var _i = 1; _i < arguments.length; _i++) {
 	        hierarchies[_i - 1] = arguments[_i];
 	    }
-	    var arrHierarchies = _parseHierarchies(hierarchies);
+	    var arrHierarchies = _normalizeHierarchies(hierarchies);
 	    return setupIfUndef(target, arrHierarchies);
 	}
 
@@ -293,8 +292,7 @@
 	    for (var _i = 1; _i < arguments.length; _i++) {
 	        rest[_i - 1] = arguments[_i];
 	    }
-	    var hierarchies = [];
-	    hierarchies = Array.prototype.concat.apply(hierarchies, rest);
+	    var hierarchies = Array.prototype.concat.apply([], rest);
 	    var current = target;
 	    if (current !== undefined && current !== null) {
 	        hierarchies.every(function (info) {

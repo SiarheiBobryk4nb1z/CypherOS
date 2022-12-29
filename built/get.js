@@ -1,7 +1,6 @@
 import { normalizeDescriptor, getNameValue } from './utility/get';
 function get(target, ...rest) {
-    let hierarchies = [];
-    hierarchies = Array.prototype.concat.apply(hierarchies, rest);
+    const hierarchies = Array.prototype.concat.apply([], rest);
     let current = target;
     if (current !== undefined && current !== null) {
         hierarchies.every(info => {

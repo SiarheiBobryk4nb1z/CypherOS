@@ -2,8 +2,7 @@ import {GetPropParam} from './type';
 import {normalizeDescriptor, getNameValue} from './utility/get';
 
 function get(target: any, ...rest: Array<GetPropParam | GetPropParam[]>) {
-	let hierarchies: GetPropParam[] = [];
-	hierarchies = Array.prototype.concat.apply(hierarchies, rest);
+	const hierarchies: GetPropParam[] = Array.prototype.concat.apply([], rest);
 	let current = target;
 	if (current !== undefined && current !== null) {
 		hierarchies.every(info => {
