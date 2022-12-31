@@ -305,6 +305,26 @@
 	    return current;
 	}
 
+	function exist(target) {
+	    var rest = [];
+	    for (var _i = 1; _i < arguments.length; _i++) {
+	        rest[_i - 1] = arguments[_i];
+	    }
+	    if (target === undefined || target === null) {
+	        return false;
+	    }
+	    var hierarchies = Array.prototype.concat.apply([], rest);
+	    var current = target;
+	    for (var i = 0; i < hierarchies.length; i++) {
+	        var prop = hierarchies[i];
+	        if (!current || !(prop in current)) {
+	            return false;
+	        }
+	        current = current[prop];
+	    }
+	    return true;
+	}
+
 	function _parseArgs$1(others) {
 	    var callback = others[others.length - 1];
 	    var hierarchies = Array.prototype.concat.apply([], others.slice(0, -1)); // exclude `callback`
@@ -568,6 +588,7 @@
 	exports.assignIfUndef = assignIfUndef;
 	exports.assignProp = assignProp;
 	exports.assignPropIfUndef = assignPropIfUndef;
+	exports.exist = exist;
 	exports.get = get;
 	exports.group = group;
 	exports.map2array = map2array;

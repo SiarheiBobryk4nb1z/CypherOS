@@ -247,6 +247,22 @@ function get(target, ...rest) {
     return current;
 }
 
+function exist(target, ...rest) {
+    if (target === undefined || target === null) {
+        return false;
+    }
+    const hierarchies = Array.prototype.concat.apply([], rest);
+    let current = target;
+    for (let i = 0; i < hierarchies.length; i++) {
+        const prop = hierarchies[i];
+        if (!current || !(prop in current)) {
+            return false;
+        }
+        current = current[prop];
+    }
+    return true;
+}
+
 function _parseArgs$1(others) {
     const callback = others[others.length - 1];
     const hierarchies = Array.prototype.concat.apply([], others.slice(0, -1)); // exclude `callback`
@@ -484,4 +500,4 @@ function group(target, ...params) {
     return rootContainer;
 }
 
-export { array2map, assign, assignIfUndef, assignProp, assignPropIfUndef, get, group, map2array, pick, put, putIfUndef, putProp, putPropIfUndef, select, set, setIfUndef, setProp, setPropIfUndef, traverse, traverseReverse };
+export { array2map, assign, assignIfUndef, assignProp, assignPropIfUndef, exist, get, group, map2array, pick, put, putIfUndef, putProp, putPropIfUndef, select, set, setIfUndef, setProp, setPropIfUndef, traverse, traverseReverse };

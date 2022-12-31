@@ -15,6 +15,7 @@ require('./assign-prop-if-undef');
 require('./put-prop-if-undef');
 
 require('./get');
+require('./exist');
 require('./array2map');
 require('./map2array');
 require('./traverse');

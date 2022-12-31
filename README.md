@@ -317,6 +317,23 @@ const obj = {a: {value: 1, b1: {c: 100}, b2: {c: 200}}};
 get(obj, 'a', parent => parent.value === 1 ? parent.b1 : parent.b2, 'c'); // returns 100
 ```
 
+### `exist`
+Check if hierarchical property name exists on target object,
+not care if last hierarchy property value is `undefined` or `null`.
+
+Parameter definition:
+```javascript
+exist(target, ...propertyNames);
+exist(target, [propertyNames]);
+```
+
+```javascript
+import { exist } from 'object-hierarchy-access';
+const obj = {a: {b: {c: 0}}};
+exist(obj, 'a', 'b', 'c');  // true
+exist(obj, 'a', 'b', 'd');  // false
+```
+
 ### `array2map`
 Turns array of object into a hash map entries.
 
