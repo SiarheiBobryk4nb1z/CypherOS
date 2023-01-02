@@ -602,8 +602,9 @@ If original object is an Array, the grouped data are also arrays.
 Parameter definition:
 ```javascript
 group(targetObject, ...groupParams);
+group(targetObject, [groupParams]);
 ```
-`groupParams` can be an descriptor object which its shape is `{type?|create?, by}`, or a callback function as descriptor object's `by`.
+`groupParam` can be an descriptor object which its shape is `{type?|create?, by}`, or a callback function as descriptor object's `by`.
 - `type` is the group container object type, defaults to `Object`
 - `create(parent)` is a callback function to create group container object
 - `by(parent, name, current)` is a callback for iterating each property on first hierarchy, should returns a group name

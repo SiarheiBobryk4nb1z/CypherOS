@@ -16,8 +16,8 @@ function group(target, ...params) {
     if (!params.length) {
         return target;
     }
-    const descriptors = params.map(normalizeDescriptor).filter(d => d.by);
-    if (!descriptors) {
+    const descriptors = Array.prototype.concat.apply([], params).map(normalizeDescriptor).filter(d => d.by);
+    if (!descriptors.length) {
         return target;
     }
     const lastIndex = descriptors.length - 1;

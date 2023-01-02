@@ -14,12 +14,12 @@ function _createContainer(descriptor: IGroupDescriptor, target: object) {
 	}
 }
 
-function group(target: any, ...params: GroupParam[]) {
+function group(target: any, ...params: Array<GroupParam | GroupParam[]>) {
 	if (!params.length) {
 		return target;
 	}
-	const descriptors = params.map(normalizeDescriptor).filter(d => d.by);
-	if (!descriptors) {
+	const descriptors = Array.prototype.concat.apply([], params).map(normalizeDescriptor).filter(d => d.by);
+	if (!descriptors.length) {
 		return target;
 	}
 

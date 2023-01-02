@@ -537,8 +537,8 @@
 	    if (!params.length) {
 	        return target;
 	    }
-	    var descriptors = params.map(normalizeDescriptor$3).filter(function (d) { return d.by; });
-	    if (!descriptors) {
+	    var descriptors = Array.prototype.concat.apply([], params).map(normalizeDescriptor$3).filter(function (d) { return d.by; });
+	    if (!descriptors.length) {
 	        return target;
 	    }
 	    var lastIndex = descriptors.length - 1;
