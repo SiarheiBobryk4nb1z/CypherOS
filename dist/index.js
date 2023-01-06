@@ -25,6 +25,9 @@
 	function isArray(source) {
 	    return Array.isArray(source) || source instanceof Array;
 	}
+	function isObject(source) {
+	    return typeof source === 'object' && source !== null;
+	}
 	function getOwnEnumerablePropKeys(target) {
 	    var keys = Object.keys(target);
 	    if (Object.getOwnPropertySymbols) {
@@ -43,7 +46,7 @@
 	    if (isArray(from)) {
 	        return [];
 	    }
-	    else if (typeof from === 'object' && from !== null) {
+	    else if (isObject(from)) {
 	        return {};
 	    }
 	    else {
@@ -583,6 +586,91 @@
 	    return rootContainer;
 	}
 
+	function _getDimTypes(input, maxDim) {
+	    if (maxDim === void 0) { maxDim = 16; }
+	    var types = [];
+	    if (isObject(input)) {
+	        var type = isArray(input) ? Array : Object;
+	        var dimItems = [input];
+	        var _loop_1 = function (iDim) {
+	            var nextType = Array;
+	            var nextDimItems = [];
+	            dimItems.forEach(function (dimItem) {
+	                getOwnEnumerablePropKeys(dimItem).forEach(function (key) {
+	                    var nextDimItem = dimItem[key];
+	                    if (isObject(nextDimItem)) {
+	                        if (!isArray(nextDimItem)) {
+	                            nextType = Object;
+	                        }
+	                        nextDimItems.push(nextDimItem);
+	                    }
+	                });
+	            });
+	            types.push(type);
+	            if (!nextDimItems.length) {
+	                return "break";
+	            }
+	            type = nextType;
+	            dimItems = nextDimItems;
+	        };
+	        for (var iDim = 0; iDim <= maxDim; iDim++) {
+	            var state_1 = _loop_1(iDim);
+	            if (state_1 === "break")
+	                break;
+	        }
+	    }
+	    return types;
+	}
+	function redim(data) {
+	    var newDimsOrder = [];
+	    for (var _i = 1; _i < arguments.length; _i++) {
+	        newDimsOrder[_i - 1] = arguments[_i];
+	    }
+	    if (!data) {
+	        return data;
+	    }
+	    // newDims: new order of old dims
+	    var newDims = Array.prototype.concat.apply([], newDimsOrder);
+	    if (!newDims.length) {
+	        return data;
+	    }
+	    var oldDimMin = Math.min.apply(Math, newDims);
+	    if (oldDimMin < 0) {
+	        return;
+	    }
+	    var oldDimMax = Math.max.apply(Math, newDims);
+	    var newDimMax = newDims.length - 1;
+	    var dimTypes = _getDimTypes(data, oldDimMax);
+	    if (!dimTypes.length || oldDimMax >= dimTypes.length) {
+	        return;
+	    }
+	    var result = new dimTypes[newDims[0]];
+	    var _walk = function _walk(path, current, currentDim) {
+	        if (currentDim <= oldDimMax) {
+	            getOwnEnumerablePropKeys(current).forEach(function (key) {
+	                var nextDim = currentDim + 1;
+	                if (exist(current, key)) {
+	                    _walk(path.concat(key), current[key], nextDim);
+	                }
+	            });
+	        }
+	        else {
+	            var newHierarchyDescriptors = newDims.map((function (oldDim, newDim) {
+	                return newDim < newDimMax ? {
+	                    name: path[oldDim],
+	                    type: dimTypes[newDims[newDim + 1]],
+	                } : {
+	                    name: path[oldDim],
+	                    value: current
+	                };
+	            }));
+	            setProp(result, newHierarchyDescriptors);
+	        }
+	    };
+	    _walk([], data, 0);
+	    return result;
+	}
+
 	exports.array2map = array2map;
 	exports.assign = assign;
 	exports.assignIfUndef = assignIfUndef;
@@ -597,6 +685,7 @@
 	exports.putIfUndef = putIfUndef;
 	exports.putProp = putProp;
 	exports.putPropIfUndef = putPropIfUndef;
+	exports.redim = redim;
 	exports.select = select;
 	exports.set = set;
 	exports.setIfUndef = setIfUndef;

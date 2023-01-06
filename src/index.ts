@@ -8,3 +8,4 @@ export * from './map2array';
 export * from './select';
 export * from './pick';
 export * from './group';
+export * from './redim';

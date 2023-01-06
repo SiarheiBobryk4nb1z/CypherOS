@@ -25,4 +25,4 @@ require('./select');
 require('./pick');
 
 require('./group');
-
+require('./redim');

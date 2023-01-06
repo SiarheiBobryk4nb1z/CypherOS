@@ -1,6 +1,9 @@
 function isArray(source) {
     return Array.isArray(source) || source instanceof Array;
 }
+function isObject(source) {
+    return typeof source === 'object' && source !== null;
+}
 function getOwnEnumerablePropKeys(target) {
     const keys = Object.keys(target);
     if (Object.getOwnPropertySymbols) {
@@ -19,7 +22,7 @@ function cloneContainer(from) {
     if (isArray(from)) {
         return [];
     }
-    else if (typeof from === 'object' && from !== null) {
+    else if (isObject(from)) {
         return {};
     }
     else {
@@ -52,4 +55,4 @@ function getPropNames(current, descriptor) {
     }
     return getOwnEnumerablePropKeys(current);
 }
-export { isArray, getOwnEnumerablePropKeys, cloneContainer, getPropName, getNonEmptyPropName, getPropNames };
+export { isArray, isObject, getOwnEnumerablePropKeys, cloneContainer, getPropName, getNonEmptyPropName, getPropNames };

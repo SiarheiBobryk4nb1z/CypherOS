@@ -7,8 +7,12 @@
 <body>
 <script src="../../../dist/index.js"></script>
 <script>
-	var set = ObjectHierarchyAccess.set;
-	var get = ObjectHierarchyAccess.get;
+	var g = window;
+
+	Object.keys(ObjectHierarchyAccess).forEach(function(method) {
+		g[method] = ObjectHierarchyAccess[method];
+	});
+
 	var obj = set({}, 'a', 'b', 'c', 100);
 	document.write(get(obj, 'a', 'b', 'c'));
 </script>

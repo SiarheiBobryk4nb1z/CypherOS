@@ -1,6 +1,8 @@
 // common
 type PropName = string | number | symbol;
 
+type ObjectConstructor = new () => object;
+
 type ObjectCallback = ((this: object, parent: object) => PropName);
 type LastHierarchyCallback = (this: object, parent: object, name: PropName) => object;
 type HierarchyCallback = (this: object, parent: object, name: PropName, current: object) => void;
@@ -12,7 +14,7 @@ interface INameDescriptor {
 }
 
 interface ITypeDescriptor {
-	readonly type?: new () => object;
+	readonly type?: ObjectConstructor;
 }
 
 interface IGotDescriptor {
@@ -68,6 +70,7 @@ type GroupParam = GroupCallback | IGroupDescriptor;
 
 export {
 	PropName,
+	ObjectConstructor,
 
 	LastHierarchyCallback,
 	HierarchyCallback,

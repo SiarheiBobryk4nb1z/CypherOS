@@ -4,6 +4,10 @@ function isArray(source: any): source is any[] {
 	return Array.isArray(source) || source instanceof Array;
 }
 
+function isObject(source: any): source is object {
+	return typeof source === 'object' && source !== null
+}
+
 function getOwnEnumerablePropKeys(target: object) {
 	const keys: Array<string | symbol> = Object.keys(target);
 
@@ -26,7 +30,7 @@ function getOwnEnumerablePropKeys(target: object) {
 function cloneContainer(from: object): object {
 	if (isArray(from)) {
 		return [];
-	} else if (typeof from === 'object' && from !== null) {
+	} else if (isObject(from)) {
 		return {};
 	} else {
 		return from;
@@ -68,6 +72,7 @@ function getPropNames(current: object, descriptor: INamesDescriptor): PropName[]
 
 export {
 	isArray,
+	isObject,
 	getOwnEnumerablePropKeys,
 	cloneContainer,
 
