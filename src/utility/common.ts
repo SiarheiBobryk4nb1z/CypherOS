@@ -8,16 +8,14 @@ function isObject(source: any): source is object {
 	return typeof source === 'object' && source !== null
 }
 
-function getOwnEnumerablePropKeys(target: object) {
-	const keys: Array<string | symbol> = Object.keys(target);
+function getOwnEnumerablePropKeys(target: object): PropName[] {
+	const keys: PropName[] = Object.keys(target);
 
 	if (Object.getOwnPropertySymbols) {
-		const symbols =
-			Object.getOwnPropertySymbols(target)
-				.filter(symbol => {
-					const descriptor = Object.getOwnPropertyDescriptor(target, symbol);
-					return descriptor && descriptor.enumerable;
-				});
+		const symbols = Object.getOwnPropertySymbols(target).filter(symbol => {
+			const descriptor = Object.getOwnPropertyDescriptor(target, symbol);
+			return descriptor && descriptor.enumerable;
+		});
 
 		if (symbols.length) {
 			keys.push(...symbols);

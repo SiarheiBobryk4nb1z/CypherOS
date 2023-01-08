@@ -7,8 +7,7 @@ function isObject(source) {
 function getOwnEnumerablePropKeys(target) {
     const keys = Object.keys(target);
     if (Object.getOwnPropertySymbols) {
-        const symbols = Object.getOwnPropertySymbols(target)
-            .filter(symbol => {
+        const symbols = Object.getOwnPropertySymbols(target).filter(symbol => {
             const descriptor = Object.getOwnPropertyDescriptor(target, symbol);
             return descriptor && descriptor.enumerable;
         });

@@ -31,8 +31,7 @@
 	function getOwnEnumerablePropKeys(target) {
 	    var keys = Object.keys(target);
 	    if (Object.getOwnPropertySymbols) {
-	        var symbols = Object.getOwnPropertySymbols(target)
-	            .filter(function (symbol) {
+	        var symbols = Object.getOwnPropertySymbols(target).filter(function (symbol) {
 	            var descriptor = Object.getOwnPropertyDescriptor(target, symbol);
 	            return descriptor && descriptor.enumerable;
 	        });
