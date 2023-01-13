@@ -38,10 +38,12 @@ const obj2 = [
 	{a: 1, b: 2, c: 3},
 	{a: 10, b: 20, c: 30},
 	{a: 100, b: 200},
+	{d: Symbol.iterator}
 ];
 const result2 = redim(obj2, [1, 0]);
 assert.deepEqual(result2, {
 	a: [1, 10, 100],
 	b: [2, 20, 200],
-	c: [3, 30]
+	c: [3, 30],
+	d: [, , , Symbol.iterator]
 });
