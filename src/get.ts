@@ -1,4 +1,4 @@
-import {GetPropParam} from './type';
+import type {GetPropParam} from './type';
 import {normalizeDescriptor, getNameValue} from './utility/get';
 
 function get(target: any, ...rest: Array<GetPropParam | GetPropParam[]>) {

@@ -1,4 +1,4 @@
-import {SetupPropParam} from './type';
+import type {SetupPropParam} from './type';
 import {normalizeDescriptor} from './utility/setup';
 import {getNonEmptyPropName} from './utility/common';
 

@@ -1,5 +1,5 @@
 import {setup, setupIfUndef} from './setup';
-import {GetPropParam} from './type';
+import type {GetPropParam} from './type';
 
 function _normalizeHierarchies(hierarchies: Array<GetPropParam | GetPropParam[]>): GetPropParam[] {
 	const result: GetPropParam[] = Array.prototype.concat.apply([], hierarchies);

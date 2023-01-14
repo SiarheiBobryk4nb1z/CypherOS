@@ -1,8 +1,8 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 	typeof define === 'function' && define.amd ? define(['exports'], factory) :
-	(global = global || self, factory(global.ObjectHierarchyAccess = {}));
-}(this, function (exports) { 'use strict';
+	(global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.ObjectHierarchyAccess = {}));
+}(this, (function (exports) { 'use strict';
 
 	function normalizeDescriptor(info) {
 	    if (typeof info === 'object' && info !== null) {
@@ -695,4 +695,4 @@
 
 	Object.defineProperty(exports, '__esModule', { value: true });
 
-}));
+})));

@@ -1,5 +1,5 @@
 import {isArray} from './utility/common';
-import {GetPropParam} from './type';
+import type {GetPropParam} from './type';
 import {get} from './get';
 
 function array2map(

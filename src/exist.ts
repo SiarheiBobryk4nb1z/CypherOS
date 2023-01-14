@@ -1,4 +1,4 @@
-import {PropName} from './type';
+import type {PropName} from './type';
 
 function exist(target: any, ...rest: Array<PropName | PropName[]>) {
 	if (target === undefined || target === null) {

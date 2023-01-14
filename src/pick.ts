@@ -1,4 +1,4 @@
-import {SelectPropParam} from './type';
+import type {SelectPropParam} from './type';
 import {getPropNames} from './utility/common';
 import {normalizeDescriptor, getMappedNameValue} from './utility/select';
 

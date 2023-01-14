@@ -1,5 +1,5 @@
 import {setupIfUndef} from './setup';
-import {SetupPropParam} from './type';
+import type {SetupPropParam} from './type';
 
 function _parseArgs(others: any[]) {
 	const value = others[others.length - 1];
