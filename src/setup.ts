@@ -2,6 +2,8 @@ import type {SetupPropParam} from './type';
 import {normalizeDescriptor} from './utility/setup';
 import {getNonEmptyPropName} from './utility/common';
 
+const propProto = '__proto__';
+
 function generate(
 	target: any,
 	hierarchies: SetupPropParam[],
@@ -13,7 +15,13 @@ function generate(
 		const {value, type, create, override, created, skipped, got} = descriptor;
 
 		const name = getNonEmptyPropName(current, descriptor);
-		if (forceOverride || override || !current[name] || typeof current[name] !== 'object') {
+		if (
+			forceOverride ||
+			override ||
+			!current[name] ||
+			typeof current[name] !== 'object' ||
+			(name === propProto && current[name] === Object.prototype)
+		) {
 			const obj = value ? value :
 				type ? new type() :
 					create ? create.call(current, current, name) :
