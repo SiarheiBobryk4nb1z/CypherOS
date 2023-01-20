@@ -68,7 +68,7 @@ interface IGroupDescriptor extends ITypeDescriptor {
 
 type GroupParam = GroupCallback | IGroupDescriptor;
 
-export {
+export type {
 	PropName,
 	ObjectConstructor,
 
