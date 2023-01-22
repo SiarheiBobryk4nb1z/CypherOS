@@ -1,4 +1,4 @@
-import {PropName, INameDescriptor, INamesDescriptor} from '../type';
+import type {PropName, INameDescriptor, INamesDescriptor} from '../type';
 
 function isArray(source: any): source is any[] {
 	return Array.isArray(source) || source instanceof Array;

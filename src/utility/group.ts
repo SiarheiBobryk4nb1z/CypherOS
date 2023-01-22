@@ -1,4 +1,4 @@
-import {GroupParam, IGroupDescriptor} from '../type';
+import type {GroupParam, IGroupDescriptor} from '../type';
 
 function normalizeDescriptor(info: GroupParam): IGroupDescriptor {
 	if (typeof info === 'object' && info !== null) {

@@ -1,4 +1,4 @@
-import {GetPropParam, IGetPropDescriptor} from '../type';
+import type {GetPropParam, IGetPropDescriptor} from '../type';
 import {getPropName} from './common';
 
 function normalizeDescriptor(info: GetPropParam): IGetPropDescriptor {

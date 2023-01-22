@@ -1,5 +1,5 @@
 import {isArray} from './common';
-import {PropName, SelectPropParam, IGotDescriptor, IMapDescriptor, ISelectPropsDescriptor} from '../type';
+import type {PropName, SelectPropParam, IGotDescriptor, IMapDescriptor, ISelectPropsDescriptor} from '../type';
 
 function normalizeDescriptor(info: SelectPropParam): ISelectPropsDescriptor {
 	if (isArray(info)) {

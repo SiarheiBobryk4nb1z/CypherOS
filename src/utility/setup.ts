@@ -1,4 +1,4 @@
-import {ISetupPropDescriptor, SetupPropParam} from '../type';
+import type {ISetupPropDescriptor, SetupPropParam} from '../type';
 
 function normalizeDescriptor(info: SetupPropParam): ISetupPropDescriptor {
 	if (typeof info === 'object' && info !== null) {
