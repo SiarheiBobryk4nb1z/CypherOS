@@ -26,14 +26,14 @@
   },
   "homepage": "https://github.com/mjpclab/object-hierarchy-access#readme",
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^4.6.1",
-    "@typescript-eslint/parser": "^4.6.1",
-    "eslint": "^7.13.0",
-    "rollup": "^2.33.1",
-    "rollup-plugin-node-resolve": "^5.0.2",
+    "@rollup/plugin-node-resolve": "^11.0.1",
+    "@typescript-eslint/eslint-plugin": "^4.11.0",
+    "@typescript-eslint/parser": "^4.11.0",
+    "eslint": "^7.16.0",
+    "rollup": "^2.35.1",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript": "^1.0.1",
     "tslib": "^2.0.3",
-    "typescript": "^4.0.5"
+    "typescript": "^4.1.3"
   }
 }
